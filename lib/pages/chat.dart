@@ -19,13 +19,14 @@ class _ChatPageState extends State<ChatPage> {
   var myFocusNode = FocusNode();
 
   void makeUserMessage(String a) {
-    setState(() {
-      messages.add(ChatMessage(messageContent: a, messageType: "sender"));
-    });
-    fieldText.clear();
-    myFocusNode.unfocus();
+    if (a != "") {
+      setState(() {
+        messages.add(ChatMessage(messageContent: a, messageType: "sender"));
+      });
+      fieldText.clear();
+      temporaryString = "";
+    }
     myFocusNode.requestFocus();
-    temporaryString = "";
   }
 
   updateMessage(value) {

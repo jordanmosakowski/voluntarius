@@ -38,33 +38,30 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.green,
         ),
         home: Scaffold(
-          appBar: AppBar(
-            title: const Text("Voluntarius")
-          ),
-          body: Builder(
-            builder: (context){
-              User? user = Provider.of<User?>(context);
-              if(user==null){
-                return SignInPage();
-              }
-              Stream<UserData> userData = FirebaseFirestore.instance
+            appBar: AppBar(title: const Text("Voluntarius")),
+            body: Builder(
+              builder: (context) {
+                User? user = Provider.of<User?>(context);
+                if (user == null) {
+                  return ChatPage();
+                }
+                Stream<UserData> userData = FirebaseFirestore.instance
                     .collection('users')
                     .doc(user.uid)
                     .snapshots()
                     .map((snap) => UserData.fromFirestore(snap));
-              return MultiProvider(
-                providers: [
-                  StreamProvider<UserData>.value(initialData: UserData(
-                    id: "", name: "", 
-                    notificationTokens: [], 
-                    averageStars: 0, 
-                    numReviews: 0), value: userData)
-                ],
-                child: MapPage()
-                );
-            },
-          )
-        ),
+                return MultiProvider(providers: [
+                  StreamProvider<UserData>.value(
+                      initialData: UserData(
+                          id: "",
+                          name: "",
+                          notificationTokens: [],
+                          averageStars: 0,
+                          numReviews: 0),
+                      value: userData)
+                ], child: MapPage());
+              },
+            )),
       ),
     );
   }
