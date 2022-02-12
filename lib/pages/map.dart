@@ -19,35 +19,31 @@ class _MapPageState extends State<MapPage> {
   {
     _controller = _cntlr;
     _location.onLocationChanged.listen((l) {
-      _controller.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(l.latitude ?? 0, l.longitude ?? 0),zoom: 15),
-          ),
-      );
+      print(l.latitude);
+      print(l.longitude);
+      // _controller.animateCamera(
+      //   // CameraUpdate.newCameraPosition(
+      //   //   CameraPosition(target: LatLng(l.latitude ?? 0, l.longitude ?? 0),zoom: 15),
+      //   //   ),
+      // );
     });
   }
 
   
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Voluntarius")
-      ),
-      body: GoogleMap(
-          initialCameraPosition: CameraPosition(target: _initialcameraposition, zoom: 15),
-          markers: {
-            const Marker(
-              markerId: MarkerId("SCDI"),
-              position: LatLng(37.3490496, -121.9388039),
-              
-            )
-          },
-          mapType: MapType.normal,
-          onMapCreated: _onMapCreated,
-          myLocationEnabled: true,
-        ),
-      
+    return  GoogleMap(
+      initialCameraPosition: CameraPosition(target: _initialcameraposition, zoom: 15),
+      markers: {
+        const Marker(
+          markerId: MarkerId("SCDI"),
+          position: LatLng(37.3490496, -121.9388039),
+          
+        )
+      },
+      mapType: MapType.normal,
+      onMapCreated: _onMapCreated,
+      myLocationEnabled: true,
     );
   }
 }
