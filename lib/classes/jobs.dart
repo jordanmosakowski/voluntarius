@@ -2,22 +2,22 @@ import 'package:location/location.dart';
 
 class Jobs {
   String descriptions;
-  String requestor_UID;
-  int hours_required;
-  int people_required;
+  String requestorUID;
+  int hoursRequired;
+  int peopleRequired;
   int urgency;
-  int credit_to_earn;
-  DateTime appointment_time;
+  int creditsToEarn;
+  DateTime appointmentTime;
   Location location;
 
   Jobs({
     required this.descriptions,
-    required this.requestor_UID,
-    required this.hours_required,
-    required this.people_required,
+    required this.requestorUID,
+    required this.hoursRequired,
+    required this.peopleRequired,
     required this.urgency,
-    required this.credit_to_earn,
-    required this.appointment_time,
+    required this.creditsToEarn,
+    required this.appointmentTime,
     required this.location,
   });
 }
