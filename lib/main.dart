@@ -34,11 +34,27 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  // This widget is the root of your application.
+  int _selectedIndex =0;
+  @override
+  static const List<Widget> _widgetOptions = <Widget>[
+    MapPage(),
+    ChatPage(),
+    ProfilePage(),
+  ];
+  void _onItemTapped(int index){
+    setState(() {
+      _selectedIndex=index;
+    });
+  }
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
@@ -77,10 +93,21 @@ class MyApp extends StatelessWidget {
                     averageStars: 0, 
                     numReviews: 0), value: userData)
                 ],
-                child: ProfilePage()
+                child: _widgetOptions.elementAt(_selectedIndex),
                 );
             },
-          )
+          ),
+          bottomNavigationBar: BottomNavigationBar(items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Local Jobs'),
+           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Current Jobs'),
+            BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Account'),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.green[800],
+          onTap: _onItemTapped,
+          
+          ),
+
         ),
       ),
     );

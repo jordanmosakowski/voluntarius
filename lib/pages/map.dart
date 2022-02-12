@@ -32,8 +32,8 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
-  List<String> jobs = ["Pylons", "Barrel Roll", "The Way"];
-  List<String> descs =["You must construct additional pylons", "Do a Barrel Roll", "Do you know da wae:"];
+  List<String> jobs = ["Pylons", "Barrel Roll", "The Way","a","b","c","d"];
+  List<String> descs =["You must construct additional pylons", "Do a Barrel Roll", "Do you know da wae?","a","b","c","d"];
 
   double getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
     var R = 6371; // Radius of the earth in km
