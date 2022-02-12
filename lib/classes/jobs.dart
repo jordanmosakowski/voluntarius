@@ -1,23 +1,53 @@
 import 'package:location/location.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class Job {
-  String descriptions;
-  String requestorUID;
+  String id;
+  String description;
+  String requestorId;
   int hoursRequired;
   int peopleRequired;
-  int urgency;
-  int creditsToEarn;
+  String urgency;
   DateTime appointmentTime;
-  Location location;
+  GeoFirePoint location;
 
   Job({
-    required this.descriptions,
-    required this.requestorUID,
+    required this.id,
+    required this.description,
+    required this.requestorId,
     required this.hoursRequired,
     required this.peopleRequired,
     required this.urgency,
-    required this.creditsToEarn,
     required this.appointmentTime,
     required this.location,
   });
+
+  static Job fromFirestore(DocumentSnapshot snap){
+    Map<String,dynamic> data = snap.data() as Map<String, dynamic>;
+    return Job(
+      id: data['id'],
+      description: data["description"] ?? "",
+      requestorId: data["requestorId"] ?? "",
+      hoursRequired: data["hoursRequired"] ?? 0,
+      peopleRequired: data["peopleRequired"] ?? 0,
+      urgency: data["urgency"] ?? "",
+      //TODO: Fix this importing
+      appointmentTime: data["appointmentTime"],
+      location: data["location"],
+    );
+  }
+
+  Map<String,dynamic> toJson(){
+    return {
+      "description": description,
+      "requestorId": requestorId,
+      "hoursRequired": hoursRequired,
+      "peopleRequired": peopleRequired,
+      "urgency": urgency,
+      "appointmentTime": appointmentTime,
+      "location": location.data,
+    };
+  }
 }
