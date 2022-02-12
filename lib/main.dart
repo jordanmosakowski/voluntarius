@@ -11,12 +11,26 @@ import 'package:voluntarius/pages/map.dart';
 import 'package:voluntarius/pages/profile.dart';
 import 'package:voluntarius/pages/request.dart';
 import 'package:voluntarius/pages/sign_in.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+  print('User granted permission: ${settings.authorizationStatus}');
   runApp(MyApp());
 }
 
@@ -36,6 +50,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.green,
+          textTheme: GoogleFonts.poppinsTextTheme(
+            Theme.of(context).textTheme, // If this is not set, then ThemeData.light().textTheme is used.
+          ),
         ),
         home: Scaffold(
             appBar: AppBar(title: const Text("Voluntarius")),

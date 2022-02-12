@@ -57,12 +57,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyB3lsRXpi-vgeUjgfLHQ2S0rtls52fqKYY',
-    appId: '1:432059990875:ios:bf2b1d8aaf1ac2a9e6d07e',
+    appId: '1:432059990875:ios:0f1f63800a077330e6d07e',
     messagingSenderId: '432059990875',
     projectId: 'voluntarius-h4h',
     storageBucket: 'voluntarius-h4h.appspot.com',
-    iosClientId:
-        '432059990875-h87cukobv8fcosm0t3ok7nef8s6re0mj.apps.googleusercontent.com',
-    iosBundleId: 'com.example.voluntarius',
+    iosClientId: '432059990875-8vlpq05dm23cji95aokdpevkn26f0a8f.apps.googleusercontent.com',
+    iosBundleId: 'app.web.voluntarius',
   );
 }
