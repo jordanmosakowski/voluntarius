@@ -26,7 +26,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<User?>.value(value: FirebaseAuth.instance.authStateChanges(), initialData: null),
+        StreamProvider<User?>.value(
+            value: FirebaseAuth.instance.authStateChanges(), initialData: null),
       ],
       child: MaterialApp(
         title: 'Voluntarius',
@@ -35,20 +36,17 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.green,
         ),
         home: Scaffold(
-          appBar: AppBar(
-            title: const Text("Voluntarius")
-          ),
-          body: Builder(
-            builder: (context){
-              User? user = Provider.of<User?>(context);
-              print(user);
-              if(user==null){
-                return SignInPage();
-              }
-              return MapPage();
-            },
-          )
-        ),
+            appBar: AppBar(title: const Text("Voluntarius")),
+            body: Builder(
+              builder: (context) {
+                User? user = Provider.of<User?>(context);
+                print(user);
+                if (user == null) {
+                  return ChatPage();
+                }
+                return ChatPage();
+              },
+            )),
       ),
     );
   }
