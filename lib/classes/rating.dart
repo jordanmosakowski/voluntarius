@@ -19,7 +19,7 @@ class Rating {
   static Rating fromFirestore(DocumentSnapshot snap){
     Map<String,dynamic> data = snap.data() as Map<String, dynamic>;
     return Rating(
-      id: data['id'],
+      id: snap.id,
       reviewerId: data['reviewerId'],
       revieweeId: data['revieweeId'],
       rating: data['rating'],

@@ -11,7 +11,7 @@ class Claim {
   static Claim fromFirestore(DocumentSnapshot snap){
     Map<String,dynamic> data = snap.data() as Map<String, dynamic>;
     return Claim(
-      id: data['id'],
+      id: snap.id,
       approved: data['approved'] ?? false,
       userId: data['userId'] ?? "",
       jobId: data['jobId'] ?? ""
