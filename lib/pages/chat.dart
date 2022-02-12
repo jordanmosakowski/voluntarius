@@ -12,6 +12,32 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  List<ChatMessage> messages = [];
+
+  final fieldText = TextEditingController();
+  var temporaryString = " ";
+  var myFocusNode = FocusNode();
+
+  void makeUserMessage(String a) {
+    setState(() {
+      messages.add(ChatMessage(messageContent: a, messageType: "sender"));
+    });
+    fieldText.clear();
+    myFocusNode.unfocus();
+    myFocusNode.requestFocus();
+    temporaryString = "";
+  }
+
+  updateMessage(value) {
+    temporaryString = value;
+  }
+
+  makeFriendMessage(String input) {
+    setState(() {
+      messages.add(ChatMessage(messageContent: input, messageType: "receiver"));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,8 +46,7 @@ class _ChatPageState extends State<ChatPage> {
           ListView.builder(
             itemCount: messages.length,
             shrinkWrap: true,
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            physics: NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.only(top: 10, bottom: 60),
             itemBuilder: (context, index) {
               return Container(
                 padding:
@@ -35,7 +60,7 @@ class _ChatPageState extends State<ChatPage> {
                       borderRadius: BorderRadius.circular(20),
                       color: (messages[index].messageType == "receiver"
                           ? Colors.grey.shade200
-                          : Colors.blue[200]),
+                          : Colors.green[200]),
                     ),
                     padding: EdgeInsets.all(16),
                     child: Text(
@@ -61,6 +86,17 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                   Expanded(
                     child: TextField(
+                      autofocus: true,
+                      controller: fieldText,
+                      focusNode: myFocusNode,
+                      onSubmitted: (value) {
+                        Future.delayed(Duration(milliseconds: 10), () {
+                          makeUserMessage(value);
+                        });
+                      },
+                      onChanged: (value) {
+                        updateMessage(value);
+                      },
                       decoration: InputDecoration(
                         hintText: "Write message...",
                         hintStyle: TextStyle(
@@ -78,13 +114,15 @@ class _ChatPageState extends State<ChatPage> {
                     width: 15,
                   ),
                   FloatingActionButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      makeUserMessage(temporaryString);
+                    },
                     child: Icon(
                       Icons.send,
                       color: Colors.white,
                       size: 18,
                     ),
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.green,
                     elevation: 0,
                   ),
                 ],
@@ -96,14 +134,3 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 }
-
-List<ChatMessage> messages = [
-  ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
-  ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
-  ChatMessage(
-      messageContent: "Hey Kriss, I am doing fine dude. wbu?",
-      messageType: "sender"),
-  ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
-  ChatMessage(
-      messageContent: "Is there any thing wrong?", messageType: "sender"),
-];
