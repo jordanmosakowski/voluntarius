@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -30,9 +32,22 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
-  List<String> jobs = ["Pylons", "Barrel Roll", "The Way"];
-  List<String> descs =["You must construct additional pylons", "Do a Barrel Roll", "Do you know da wae:"];
+  List<String> jobs = ["Pylons", "Barrel Roll", "The Way","a","b","c","d"];
+  List<String> descs =["You must construct additional pylons", "Do a Barrel Roll", "Do you know da wae?","a","b","c","d"];
 
+  double getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = pi * 180 * (lat2-lat1);  // deg2rad below
+    var dLon = pi * 180 * (lon2-lon1); 
+    var a = 
+      sin(dLat/2) * sin(dLat/2) +
+      cos(pi * 180 * (lat1)) * cos(pi * 180 * (lat2)) * 
+      sin(dLon/2) * sin(dLon/2)
+      ; 
+    var c = 2 * atan2(sqrt(a), sqrt(1-a)); 
+    var d = R * c; // Distance in km
+    return d;
+  }
   
   @override
   Widget build(BuildContext context) {
