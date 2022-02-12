@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<User?>.value(value: FirebaseAuth.instance.authStateChanges(), initialData: null),
+        StreamProvider<User?>.value(
+            value: FirebaseAuth.instance.authStateChanges(), initialData: null),
       ],
       child: MaterialApp(
         title: 'Voluntarius',
