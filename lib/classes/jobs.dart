@@ -1,6 +1,6 @@
 import 'package:location/location.dart';
 
-class Jobs {
+class Job {
   String descriptions;
   String requestorUID;
   int hoursRequired;
@@ -10,7 +10,7 @@ class Jobs {
   DateTime appointmentTime;
   Location location;
 
-  Jobs({
+  Job({
     required this.descriptions,
     required this.requestorUID,
     required this.hoursRequired,
