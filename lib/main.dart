@@ -76,7 +76,7 @@ class _MyAppState extends State<MyApp> {
               builder: (context) {
                 User? user = Provider.of<User?>(context);
                 if (user == null) {
-                  return ChatPage();
+                  return SignInPage();
                 }
                 Stream<UserData> userData = FirebaseFirestore.instance
                     .collection('users')
