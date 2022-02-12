@@ -1,21 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class User {
+class UserData {
   String id;
   List<String> notificationTokens;
   double averageStars;
   int numReviews;
+  String name;
 
-  User(
+  UserData(
       {required this.id,
+      required this.name,
       required this.notificationTokens,
       required this.averageStars,
       required this.numReviews});
 
-  static User fromFirestore(DocumentSnapshot snap){
+  static UserData fromFirestore(DocumentSnapshot snap){
     Map<String,dynamic> data = snap.data() as Map<String, dynamic>;
-    return User(
+    return UserData(
       id: snap.id,
+      name: data['name'],
       notificationTokens: data['notificationTokens'],
       averageStars: data['averageStars'],
       numReviews: data['numReviews']
@@ -26,7 +29,8 @@ class User {
     return {
       'notificationTokens': notificationTokens,
       'averageStars': averageStars,
-      'numReviews': numReviews
+      'numReviews': numReviews,
+      "name": name,
     };
   }
 }

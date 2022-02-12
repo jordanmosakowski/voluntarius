@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:voluntarius/firebase_options.dart';
 import 'package:voluntarius/pages/home.dart';
 import 'package:voluntarius/pages/chat.dart';
 import 'package:voluntarius/pages/map.dart';
@@ -6,8 +10,12 @@ import 'package:voluntarius/pages/profile.dart';
 import 'package:voluntarius/pages/request.dart';
 import 'package:voluntarius/pages/sign_in.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,17 +24,31 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Voluntarius',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text("Voluntarius")
+    return MultiProvider(
+      providers: [
+        StreamProvider<User?>.value(value: FirebaseAuth.instance.authStateChanges(), initialData: null),
+      ],
+      child: MaterialApp(
+        title: 'Voluntarius',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.green,
         ),
-        body: MapPage()
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text("Voluntarius")
+          ),
+          body: Builder(
+            builder: (context){
+              User? user = Provider.of<User?>(context);
+              print(user);
+              if(user==null){
+                return SignInPage();
+              }
+              return MapPage();
+            },
+          )
+        ),
       ),
     );
   }
