@@ -11,7 +11,6 @@ import 'package:voluntarius/pages/map.dart';
 import 'package:voluntarius/pages/profile.dart';
 import 'package:voluntarius/pages/request.dart';
 import 'package:voluntarius/pages/sign_in.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,7 +60,7 @@ class MyApp extends StatelessWidget {
                     averageStars: 0, 
                     numReviews: 0), value: userData)
                 ],
-                child: ProfilePage()
+                child: MapPage()
                 );
             },
           )
