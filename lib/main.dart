@@ -7,6 +7,7 @@ import 'package:voluntarius/classes/user.dart';
 import 'package:voluntarius/firebase_options.dart';
 import 'package:voluntarius/pages/home.dart';
 import 'package:voluntarius/pages/chat.dart';
+import 'package:voluntarius/pages/jobs.dart';
 import 'package:voluntarius/pages/map.dart';
 import 'package:voluntarius/pages/profile.dart';
 import 'package:voluntarius/pages/request.dart';
@@ -47,7 +48,7 @@ class _MyAppState extends State<MyApp> {
   @override
   static const List<Widget> _widgetOptions = <Widget>[
     MapPage(),
-    ChatPage(),
+    JobsPage(),
     ProfilePage(),
   ];
   void _onItemTapped(int index) {
