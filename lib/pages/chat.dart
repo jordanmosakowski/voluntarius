@@ -17,11 +17,12 @@ class _ChatPageState extends State<ChatPage> {
   final fieldText = TextEditingController();
   var temporaryString = " ";
   var myFocusNode = FocusNode();
+  var myUserID = "12345"; // GET USER ID!!!!
 
   void makeUserMessage(String a) {
     if (a != "") {
       setState(() {
-        messages.add(ChatMessage(messageContent: a, messageType: "sender"));
+        messages.add(ChatMessage(messageContent: a, userID: myUserID));
       });
       fieldText.clear();
       temporaryString = "";
@@ -35,7 +36,9 @@ class _ChatPageState extends State<ChatPage> {
 
   makeFriendMessage(String input) {
     setState(() {
-      messages.add(ChatMessage(messageContent: input, messageType: "receiver"));
+      messages.add(ChatMessage(
+          messageContent: input,
+          userID: "INCOMING USER ID!!!!!")); //GET SENDER ID
     });
   }
 
@@ -53,13 +56,13 @@ class _ChatPageState extends State<ChatPage> {
                 padding:
                     EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
                 child: Align(
-                  alignment: (messages[index].messageType == "receiver"
+                  alignment: (messages[index].userID != myUserID
                       ? Alignment.topLeft
                       : Alignment.topRight),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: (messages[index].messageType == "receiver"
+                      color: (messages[index].userID != myUserID
                           ? Colors.grey.shade200
                           : Colors.green[200]),
                     ),
