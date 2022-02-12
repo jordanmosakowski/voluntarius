@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:voluntarius/classes/user.dart';
 import 'package:voluntarius/widgets/text_field.dart';
@@ -20,6 +21,10 @@ class _SignInPageState extends State<SignInPage> {
   bool creating = true;
 
   Future<void> createAccount() async{
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    String? token = await messaging.getToken(
+      vapidKey: "BAa6hVgOZDzYfEO62OfH7Kfvjfe1-8Am4gm9fYurJP0NR9nnELXzPK1e4PsX_rJdrfRC5d8lP_Bt0IIT_9WSX24",
+    );
     try {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text,
@@ -29,7 +34,7 @@ class _SignInPageState extends State<SignInPage> {
       await FirebaseFirestore.instance.collection("users").doc(user!.uid).set(UserData(
         id: user.uid, 
         averageStars: 0, 
-        notificationTokens: [], 
+        notificationTokens: [if(token!=null) token], 
         numReviews: 0,
         name: nameController.text,
       ).toJson());
@@ -45,11 +50,24 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Future<void> signIn() async{
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    String? token = await messaging.getToken(
+      vapidKey: "BAa6hVgOZDzYfEO62OfH7Kfvjfe1-8Am4gm9fYurJP0NR9nnELXzPK1e4PsX_rJdrfRC5d8lP_Bt0IIT_9WSX24",
+    );
     try {
       UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text,
         password: pwController.text
       );
+      User? user = FirebaseAuth.instance.currentUser;
+      UserData userData = UserData.fromFirestore(await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(user!.uid).get());
+      if(token!=null && user!=null){
+        userData.notificationTokens.add(token);
+        await FirebaseFirestore.instance.collection("users").doc(user!.uid).update(userData.toJson());
+      }
+      
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
