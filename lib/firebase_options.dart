@@ -61,7 +61,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '432059990875',
     projectId: 'voluntarius-h4h',
     storageBucket: 'voluntarius-h4h.appspot.com',
-    iosClientId: '432059990875-h87cukobv8fcosm0t3ok7nef8s6re0mj.apps.googleusercontent.com',
+    iosClientId:
+        '432059990875-h87cukobv8fcosm0t3ok7nef8s6re0mj.apps.googleusercontent.com',
     iosBundleId: 'com.example.voluntarius',
   );
 }
