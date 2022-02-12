@@ -19,8 +19,8 @@ class UserData {
     return UserData(
       id: snap.id,
       name: data['name'],
-      notificationTokens: data['notificationTokens'],
-      averageStars: data['averageStars'],
+      notificationTokens: data['notificationTokens'].cast<String>(),
+      averageStars: data['averageStars'].toDouble(),
       numReviews: data['numReviews']
     );
   }

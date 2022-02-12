@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:voluntarius/classes/user.dart';
 import 'package:voluntarius/firebase_options.dart';
 import 'package:voluntarius/pages/home.dart';
 import 'package:voluntarius/pages/chat.dart';
@@ -26,7 +28,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<User?>.value(value: FirebaseAuth.instance.authStateChanges(), initialData: null),
+        StreamProvider<User?>.value(
+            value: FirebaseAuth.instance.authStateChanges(), initialData: null),
       ],
       child: MaterialApp(
         title: 'Voluntarius',
@@ -41,11 +44,24 @@ class MyApp extends StatelessWidget {
           body: Builder(
             builder: (context){
               User? user = Provider.of<User?>(context);
-              print(user);
               if(user==null){
                 return SignInPage();
               }
-              return MapPage();
+              Stream<UserData> userData = FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(user.uid)
+                    .snapshots()
+                    .map((snap) => UserData.fromFirestore(snap));
+              return MultiProvider(
+                providers: [
+                  StreamProvider<UserData>.value(initialData: UserData(
+                    id: "", name: "", 
+                    notificationTokens: [], 
+                    averageStars: 0, 
+                    numReviews: 0), value: userData)
+                ],
+                child: MapPage()
+                );
             },
           )
         ),
