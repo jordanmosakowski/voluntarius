@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:voluntarius/widgets/job_tile.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({ Key? key }) : super(key: key);
@@ -29,21 +30,46 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
+  List<String> jobs = ["Pylons", "Barrel Roll", "The Way"];
+  List<String> descs =["You must construct additional pylons", "Do a Barrel Roll", "Do you know da wae:"];
+
   
   @override
   Widget build(BuildContext context) {
-    return  GoogleMap(
-      initialCameraPosition: CameraPosition(target: _initialcameraposition, zoom: 15),
-      markers: {
-        const Marker(
-          markerId: MarkerId("SCDI"),
-          position: LatLng(37.3490496, -121.9388039),
-          
+    return  Column(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GoogleMap(
+              initialCameraPosition: CameraPosition(target: _initialcameraposition, zoom: 15),
+              markers: {
+                const Marker(
+                  markerId: MarkerId("SCDI"),
+                  position: LatLng(37.3490496, -121.9388039),
+                  
+                )
+              },
+              mapType: MapType.normal,
+              onMapCreated: _onMapCreated,
+              myLocationEnabled: true,
+            ),
+          ),
+        ),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.all(8),
+            children: [
+              for(int i=0; i<jobs.length; i++)
+                JobTile(
+                  c: (i+1) * 100,
+                  Job: jobs[i], dist: 50, desc: descs[i],
+                )
+            ],
+          )
         )
-      },
-      mapType: MapType.normal,
-      onMapCreated: _onMapCreated,
-      myLocationEnabled: true,
+      ],
     );
   }
+
 }
