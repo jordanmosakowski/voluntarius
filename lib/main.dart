@@ -4,6 +4,7 @@ import 'package:voluntarius/pages/chat.dart';
 import 'package:voluntarius/pages/map.dart';
 import 'package:voluntarius/pages/profile.dart';
 import 'package:voluntarius/pages/request.dart';
+import 'package:voluntarius/pages/sign_in.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +22,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: MapPage(),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text("Voluntarius")
+        ),
+        body: MapPage()
+      ),
     );
   }
 }
