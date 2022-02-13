@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
 import 'package:voluntarius/pages/chat.dart';
 import 'package:voluntarius/pages/request.dart';
@@ -15,7 +16,12 @@ class JobsPage extends StatefulWidget {
 class _JobsPageState extends State<JobsPage> {
   @override
   Widget build(BuildContext context) {
-    List<Job> jobs = Provider.of<List<Job>>(context); //my created
+    List<Job> jobs = Provider.of<List<Job>>(context); 
+    List<Claim> claims = Provider.of<List<Claim>>(context);
+    for(Claim c in claims){
+      c.getJob().then((a) => setState(() {}));
+    }
+    print("Claims: ${claims.length}");
     print(jobs.length);
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -44,7 +50,12 @@ class _JobsPageState extends State<JobsPage> {
         for (int i = 0; i < jobs.length; i++) ReqTile(c: 500, j: jobs[i]),
         Divider(),
         Center(child: Text("My Claimed Jobs", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30))),
+
+        for (int i = 0; i < claims.length; i++)
+          if(claims[i].job!=null)
+            ReqTile(c: 500, j: claims[i].job!),
         
+
         // Expanded(
         //       child: ListView(
         //     padding: const EdgeInsets.all(8),
