@@ -27,7 +27,7 @@ class JobTile extends StatelessWidget {
           ),
         child: ListTile(
           title: Text(job.title),
-          subtitle: Text("Distance: " + dist.toString() + " mi"),
+          subtitle: Text("Distance: " + dist.toString() + " km"),
           trailing: ElevatedButton(
               onPressed: () {
                 showDialog(
