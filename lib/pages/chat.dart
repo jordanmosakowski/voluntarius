@@ -11,8 +11,8 @@ import 'package:voluntarius/classes/user.dart';
 import '../classes/chatMessagesModel.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage(this.job, {Key? key}) : super(key: key);
-  final Job job;
+  const ChatPage(this._job, {Key? key}) : super(key: key);
+  final Job _job;
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -33,7 +33,7 @@ class _ChatPageState extends State<ChatPage> {
             userId: uid,
             userName: name,
             timeStamp: DateTime.now(),
-            jobId: widget.job.id,
+            jobId: widget._job.id,
           ).toJson());
       fieldText.clear();
       temporaryString = "";
@@ -50,7 +50,7 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
     stream = FirebaseFirestore.instance
         .collection("messages")
-        .where("jobId", isEqualTo: widget.job)
+        .where("jobId", isEqualTo: widget._job.id)
         .orderBy("timeStamp")
         .snapshots()
         .map((snap) =>
@@ -95,7 +95,7 @@ class _ChatPageState extends State<ChatPage> {
           centerTitle: true,
           title: Row(
             children: <Widget>[
-              Text(widget.job.title,
+              Text(widget._job.title,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40)),
             ],

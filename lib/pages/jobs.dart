@@ -47,7 +47,7 @@ class _JobsPageState extends State<JobsPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ChatPage(Job(
+                  builder: (context) => ChatPage(new Job(
                       appointmentTime: DateTime.now(),
                       description: "a",
                       hoursRequired: 1,
