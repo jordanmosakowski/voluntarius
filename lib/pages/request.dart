@@ -296,8 +296,8 @@ class _reqFormState extends State<reqForm> {
     LocationData locationData =
         Provider.of<LocationData>(context, listen: false);
     final fireloc =
-        // GeoFirePoint(locationData.latitude ?? 0, locationData.longitude ?? 0);
-        GeoFirePoint(37.3520526,-121.942183);
+        GeoFirePoint(locationData.latitude ?? 0, locationData.longitude ?? 0);
+        // GeoFirePoint(37.3520526,-121.942183);
     final Job rjob = Job(
         id: "",
         title: title,

@@ -142,7 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Text("Print Volunteer Hours"),
                 ),
                 onPressed: () async {
-                  if (!kIsWeb) {
+                  if (!true) {
                     Printing.sharePdf(
                         bytes: await generateDocument(
                             PdfPageFormat.letter, userData),
