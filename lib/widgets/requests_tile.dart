@@ -36,7 +36,7 @@ class ReqTile extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text("Title: "+j.title),
+              Text("Title: " + j.title),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
@@ -50,7 +50,7 @@ class ReqTile extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("Description: "+j.description),
+              Text("Description: " + j.description),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
@@ -64,13 +64,16 @@ class ReqTile extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("Hours Required: "+ j.hoursRequired.toString()),
+              Text("Hours Required: " + j.hoursRequired.toString()),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext) => _buildNestedPopupDialog(
-                          context, j.hoursRequired, j.id, "hoursRequired"),
+                          context,
+                          j.hoursRequired.toString(),
+                          j.id,
+                          "hoursRequired"),
                     );
                   },
                   child: Icon(Icons.edit)),
@@ -78,19 +81,22 @@ class ReqTile extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("People Required: "+ j.peopleRequired.toString()),
+              Text("People Required: " + j.peopleRequired.toString()),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext) => _buildNestedPopupDialog(
-                          context, j.peopleRequired, j.id, "peopleRequired"),
+                          context,
+                          j.peopleRequired.toString(),
+                          j.id,
+                          "peopleRequired"),
                     );
                   },
                   child: Icon(Icons.edit)),
             ],
           ),
-        
+
           // ElevatedButton(onPressed: onPressed, child: child)(child: Text("Hours Required: " + j.hoursRequired.toString())),
           // ElevatedButton(onPressed: onPressed, child: child)(child: Text("People Required: " + j.peopleRequired.toString())),
           // ElevatedButton(onPressed: onPressed, child: child)(child: Text("Appointment Time: " + j.appointmentTime.toString()))
