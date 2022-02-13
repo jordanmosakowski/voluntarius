@@ -6,6 +6,8 @@ import 'package:voluntarius/pages/chat.dart';
 import 'package:voluntarius/pages/request.dart';
 import 'package:voluntarius/widgets/requests_tile.dart';
 
+import '../widgets/claimed_tile.dart';
+
 class JobsPage extends StatefulWidget {
   const JobsPage({Key? key}) : super(key: key);
 
@@ -56,7 +58,7 @@ class _JobsPageState extends State<JobsPage> {
 
         for (int i = 0; i < claims.length; i++)
           if(claims[i].job!=null)
-            ReqTile(c: 100, j: claims[i].job!),
+            ClmTile(c: 100, j: claims[i].job!),
         
 
         // Expanded(
