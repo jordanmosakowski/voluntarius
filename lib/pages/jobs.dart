@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:provider/provider.dart';
 import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
@@ -45,7 +46,19 @@ class _JobsPageState extends State<JobsPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ChatPage("test2")),
+              MaterialPageRoute(
+                  builder: (context) => ChatPage(
+                      Job(
+                          appointmentTime: DateTime.now(),
+                          description: "a",
+                          hoursRequired: 1,
+                          id: "claims",
+                          peopleRequired: 1,
+                          requestorId: "aa",
+                          title: "all",
+                          urgency: "now",
+                          location: GeoFirePoint(0, 0)),
+                      "all")),
             );
           },
         ),

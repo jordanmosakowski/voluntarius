@@ -5,14 +5,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:voluntarius/classes/job.dart';
 import 'package:voluntarius/classes/user.dart';
 
 import '../classes/chatMessagesModel.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage(this.jobId, {Key? key}) : super(key: key);
-
-  final String jobId;
+  const ChatPage(this.job, this.roomname, {Key? key}) : super(key: key);
+  final String roomname;
+  final Job job;
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -25,7 +26,6 @@ class _ChatPageState extends State<ChatPage> {
   final ScrollController _controller = ScrollController();
   var temporaryString = " ";
   var myFocusNode = FocusNode();
-  var myUserID = "12345"; // GET USER ID!!!!
 
   void makeUserMessage(String a, String uid, String name) {
     if (a != "") {
@@ -34,7 +34,7 @@ class _ChatPageState extends State<ChatPage> {
             userId: uid,
             userName: name,
             timeStamp: DateTime.now(),
-            jobId: widget.jobId,
+            jobId: (widget.roomname == "all") ? "all" : widget.job.id,
           ).toJson());
       fieldText.clear();
       temporaryString = "";
@@ -51,7 +51,8 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
     stream = FirebaseFirestore.instance
         .collection("messages")
-        .where("jobId", isEqualTo: widget.jobId)
+        .where("jobId",
+            isEqualTo: (widget.roomname == "all") ? "all" : widget.job)
         .orderBy("timeStamp")
         .snapshots()
         .map((snap) =>
@@ -96,7 +97,7 @@ class _ChatPageState extends State<ChatPage> {
           centerTitle: true,
           title: Row(
             children: <Widget>[
-              Text("title",
+              Text((widget.roomname == "all") ? "all" : widget.job.title,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40)),
             ],
