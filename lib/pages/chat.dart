@@ -157,7 +157,7 @@ class _ChatPageState extends State<ChatPage> {
                                 constraints: BoxConstraints(maxWidth: 1000),
                                 child: Text(
                                   messages[index].messageContent,
-                                  style: TextStyle(fontSize: 24),
+                                  style: TextStyle(fontSize: 20),
                                 ),
                               ),
                             ],
@@ -178,13 +178,11 @@ class _ChatPageState extends State<ChatPage> {
                     color: Colors.white,
                     child: Row(
                       children: <Widget>[
-                        SizedBox(
-                          width: 15,
-                        ),
+                        SizedBox(width: 15, height: 30),
                         Expanded(
                           child: TextField(
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 20,
                             ),
                             expands: false,
                             autofocus: true,
