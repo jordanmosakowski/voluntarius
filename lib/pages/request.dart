@@ -50,14 +50,13 @@ class _reqFormState extends State<reqForm> {
   int hoursRequired = 0;
   int peopleRequired = 0;
   Location location = new Location();
-  LocationData? locationData;
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
   GeoFirePoint? fireloc;
   bool dateset = false, locset = false;
   init() {
     super.initState();
-    _setPlace(context);
+    // _setPlace(context);
     selectedDate = DateTime.now();
     selectedTime = TimeOfDay.fromDateTime(selectedDate);
   }
@@ -78,6 +77,7 @@ class _reqFormState extends State<reqForm> {
     'December'
   ];
   Widget build(BuildContext context) {
+    LocationData locationData = Provider.of<LocationData>(context);
     return Form(
         key: _formKey,
         child: ListView(
@@ -91,7 +91,7 @@ class _reqFormState extends State<reqForm> {
                 ),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return 'enter text';
+                    return 'Enter text';
                   }
 
                   return null;
@@ -115,7 +115,7 @@ class _reqFormState extends State<reqForm> {
                 ),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return 'enter text';
+                    return 'Enter text';
                   }
                   return null;
                 },
@@ -134,11 +134,11 @@ class _reqFormState extends State<reqForm> {
                 ],
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'hours required',
+                  hintText: 'Hours required',
                 ),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return 'enter number';
+                    return 'Enter number';
                   }
                   return null;
                 },
@@ -159,7 +159,7 @@ class _reqFormState extends State<reqForm> {
                 ),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return 'enter number';
+                    return 'Enter number';
                   }
                   return null;
                 },
@@ -168,52 +168,58 @@ class _reqFormState extends State<reqForm> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(children: [
-                      Text("Event Date: "),
-                      SizedBox(
-                        width: 150,
-                        child: InkWell(
-                          child: Center(
-                            child: Text(
-                                '${DateFormat.yMMMMd('en_US').format(selectedDate)}'),
-                          ),
-                          onTap: () => _selectDate(context),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 100,
-                        child: InkWell(
-                          child: Center(
-                              child: Text(
-                                  '${DateFormat.jm().format(selectedDate)}')),
-                          onTap: () => _selectTime(context),
-                        ),
-                      ),
-                    ], mainAxisAlignment: MainAxisAlignment.center),
-                  ]),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                Text("Approx. Date and Time: ", style: TextStyle(fontSize: 18),),
+                Row(children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 1.0),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+                    child: InkWell(
+                      child: Text(
+                          '${DateFormat.yMMMMd('en_US').format(selectedDate)}', style: TextStyle(fontSize: 18),),
+                      onTap: () => _selectDate(context),
+                    ),
+                  ),
+                  Container(width: 30),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 1.0),
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+                    child: InkWell(
+                      child: Center(
+                          child: Text(
+                              '${DateFormat.jm().format(selectedDate)}', style: TextStyle(fontSize: 18),)),
+                      onTap: () => _selectTime(context),
+                    ),
+                  ),
+                ],)
+              ], mainAxisAlignment: MainAxisAlignment.center),
             ),
-            Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          //in the future set location with map view
-                          _setPlace(context);
-                          print("set loc");
-                        },
-                        child: Text("set location"),
-                      ),
-                      Text(
-                          "location: ${locationData?.longitude ?? 0},${locationData?.latitude ?? 0}!"),
-                    ])),
+            // Padding(
+            //     padding: const EdgeInsets.only(top: 20.0),
+            //     child: Column(
+            //       mainAxisSize: MainAxisSize.min,
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         children: [
+            //           ElevatedButton(
+            //             onPressed: () {
+            //               //in the future set location with map view
+            //               _setPlace(context);
+            //               print("set loc");
+            //             },
+            //             child: Text("set location"),
+            //           ),
+            //           Text(
+            //               "location: ${locationData?.longitude ?? 0},${locationData?.latitude ?? 0}!"),
+            //         ])),
             Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Column(
@@ -223,9 +229,7 @@ class _reqFormState extends State<reqForm> {
                       ElevatedButton(
                         //submit
                         onPressed: () {
-                          if (_formKey.currentState!.validate() &&
-                              dateset &&
-                              locset) {
+                          if (_formKey.currentState!.validate()) {
                             _makeJob(context);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Processing Data')),
@@ -238,7 +242,7 @@ class _reqFormState extends State<reqForm> {
                             );
                           }
                         },
-                        child: const Text('Submit'),
+                        child: const Text('Submit Request'),
                       ),
                     ])),
           ],
@@ -278,21 +282,22 @@ class _reqFormState extends State<reqForm> {
   }
 
   _setPlace(BuildContext context) async {
-    final LocationData? loc = await location.getLocation();
+    // final LocationData? loc = await location.getLocation();
 
-    print('longitude:${loc!.longitude}');
-    if (loc != null && locationData != loc) {
-      setState(() {
-        locationData = loc;
-        locset = true;
-      });
-    }
+    // print('longitude:${loc!.longitude}');
+    // if (loc != null && locationData != loc) {
+    //   setState(() {
+    //     locationData = loc;
+    //     locset = true;
+    //   });
+    // }
   }
 
   _makeJob(BuildContext context) async {
     User? user = Provider.of<User?>(context, listen: false);
+    LocationData locationData = Provider.of<LocationData>(context,listen: false);
     final fireloc =
-        GeoFirePoint(locationData?.latitude ?? 0, locationData?.longitude ?? 0);
+        GeoFirePoint(locationData.latitude ?? 0, locationData.longitude ?? 0);
     final Job rjob = Job(
         id: "",
         title: title,

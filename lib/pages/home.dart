@@ -32,33 +32,20 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Location location = Location();
-
-  late Stream<LocationData>? locationStream;
-
-  @override
-  initState() {
-    super.initState();
-    locationStream = location.onLocationChanged.asBroadcastStream();
-    location.getLocation();
-    locationStream!.listen((LocationData? l) {
-      print("location updated ${l?.latitude} ${l?.longitude}");
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
           User? user = Provider.of<User?>(context);
           return Scaffold(
-            appBar: AppBar(
+            appBar: user != null ? AppBar(
               title: const Text("Voluntarius",
                   style: TextStyle(fontSize: 40, fontWeight: FontWeight.w600)),
               leading: new Image(
                   image: AssetImage('assets/whitetransparentbk.png'),
                   height: 30,
                   width: 50),
-            ),
+            ) : null,
             body: SafeArea(
               child: Builder(
                 builder: (context) {
@@ -72,11 +59,6 @@ class _HomePageState extends State<HomePage> {
                       .map((snap) => UserData.fromFirestore(snap));
                   return MultiProvider(
                     providers: [
-                      StreamProvider<LocationData>.value(
-                        initialData: LocationData.fromMap(
-                            {"latitude": 0.0, "longitude": 0.0}),
-                        value: locationStream,
-                      ),
                       StreamProvider<UserData>.value(
                           initialData: UserData(
                               id: "",

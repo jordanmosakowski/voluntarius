@@ -104,6 +104,8 @@ class _SignInPageState extends State<SignInPage> {
               image: AssetImage('assets/colortransparentbk.png'),
               height: 75,
               width: 125),
+          const Text("Voluntarius",
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.w600)),
           VoluntariusTextField(
             "Email",
             controller: emailController,

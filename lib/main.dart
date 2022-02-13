@@ -82,9 +82,28 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  Location location = Location();
+
+  late Stream<LocationData>? locationStream;
+
+  @override
+  initState() {
+    super.initState();
+    locationStream = location.onLocationChanged.asBroadcastStream();
+    location.getLocation();
+    locationStream!.listen((LocationData? l) {
+      print("location updated ${l?.latitude} ${l?.longitude}");
+    });
+  }
+
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        StreamProvider<LocationData>.value(
+          initialData: LocationData.fromMap(
+              {"latitude": 0.0, "longitude": 0.0}),
+          value: locationStream,
+        ),
         StreamProvider<User?>.value(
             value: FirebaseAuth.instance.authStateChanges(), initialData: null),
       ],
