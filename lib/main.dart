@@ -142,9 +142,7 @@ class _MyAppState extends State<MyApp> {
                             .where("userId", isEqualTo: user.uid)
                             .snapshots()
                             .map((snap) => snap.docs
-                                .map(
-                                  (doc) => Claim.fromFirestore(doc, true)
-                                )
+                                .map((doc) => Claim.fromFirestore(doc))
                                 .toList()))
                   ],
                   child: _widgetOptions.elementAt(_selectedIndex),
