@@ -13,17 +13,26 @@ class ReqTile extends StatelessWidget {
   final Job j;
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      tileColor: Colors.green[c],
-      title: Text(j.title),
-      trailing: ElevatedButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext) => _buildJobPopupDialog(context),
-            );
-          },
-          child: Text("Options")),
+    return Padding(
+      padding: const EdgeInsets.all(3.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.green[c],
+        ),
+        child: ListTile(
+          // tileColor: 
+          title: Text(j.title),
+          trailing: ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext) => _buildJobPopupDialog(context),
+                );
+              },
+              child: Text("Options")),
+        ),
+      ),
     );
   }
 

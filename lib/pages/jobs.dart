@@ -47,15 +47,16 @@ class _JobsPageState extends State<JobsPage> {
             );
           },
         ),
-        Divider(),
-        Center(child: Text("My Requested Jobs", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30))),
-        for (int i = 0; i < jobs.length; i++) ReqTile(c: 500, j: jobs[i]),
-        Divider(),
-        Center(child: Text("My Claimed Jobs", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30))),
+        const Divider(),
+        const Center(child: Text("My Requested Jobs", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30))),
+        for (int i = 0; i < jobs.length; i++) 
+          ReqTile(c: 100, j: jobs[i]),
+        const Divider(),
+        const Center(child: Text("My Claimed Jobs", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30))),
 
         for (int i = 0; i < claims.length; i++)
           if(claims[i].job!=null)
-            ReqTile(c: 500, j: claims[i].job!),
+            ReqTile(c: 100, j: claims[i].job!),
         
 
         // Expanded(
