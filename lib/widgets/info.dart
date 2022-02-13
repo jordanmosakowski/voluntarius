@@ -20,45 +20,58 @@ class info extends StatelessWidget {
   final Job j;
   @override
   Widget build(BuildContext context) {
-    return Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text("Description: " + j.description),
-          Text("Hours Required: " + j.hoursRequired.toString()),
-          Text("People Required: " + j.peopleRequired.toString()),
-          Text("Appointment Time: " + DateFormat.yMMMMd('en_US').add_jm().format(j.appointmentTime)),
-          // IconButton(
-          //   onPressed: () async{
-          //     final DynamicLinkParameters parameters = DynamicLinkParameters(
-          //     uriPrefix: 'https://my-awesome-app.page.link',
-          //     link: Uri.parse('https://voluntarius.web.app/info/${j.id}'),
-          //     androidParameters: const AndroidParameters(
-          //       packageName: "com.example.voluntarius",
-          //       minimumVersion: 1,
-          //     ),
-          //     iosParameters: const IOSParameters(
-          //       bundleId: "app.web.voluntarius",
-          //       minimumVersion: '1',
-          //     ),
-          //   );
+    return Container(
+      child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text("Description", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(j.description),
+            Text("Hours Required", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(j.hoursRequired.toString()),
+            Text("Number of People", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(j.peopleRequired.toString()),
+            Text("Approximate Date & Time", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(DateFormat.yMMMMd('en_US').add_jm().format(j.appointmentTime)),
 
-          //     final Uri uri = await FirebaseDynamicLinks.instance.buildLink(parameters);
-          //     String url = uri.toString();
-          //     if(!kIsWeb){
-          //       Share.share(url);
-          //     }
-          //     else{
-          //       Clipboard.setData(ClipboardData(text: url));
-          //       final snackBar = SnackBar(
-          //         content: const Text('Copied URL to Clipboard'),
-          //       );
-          //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          //     }
-          //   },
-          //   icon: Icon(Icons.ios_share)
-          // )
-        ],
-      );
+
+
+            // Text("Description: " + j.description.toString()),
+            // Text("Hours Required: " + j.hoursRequired.toString()),
+            // Text("People Required: " + j.peopleRequired.toString()),
+            // Text("Appointment Time: " + DateFormat.yMMMMd('en_US').add_jm().format(j.appointmentTime)),
+            // IconButton(
+            //   onPressed: () async{
+            //     final DynamicLinkParameters parameters = DynamicLinkParameters(
+            //     uriPrefix: 'https://my-awesome-app.page.link',
+            //     link: Uri.parse('https://voluntarius.web.app/info/${j.id}'),
+            //     androidParameters: const AndroidParameters(
+            //       packageName: "com.example.voluntarius",
+            //       minimumVersion: 1,
+            //     ),
+            //     iosParameters: const IOSParameters(
+            //       bundleId: "app.web.voluntarius",
+            //       minimumVersion: '1',
+            //     ),
+            //   );
+
+            //     final Uri uri = await FirebaseDynamicLinks.instance.buildLink(parameters);
+            //     String url = uri.toString();
+            //     if(!kIsWeb){
+            //       Share.share(url);
+            //     }
+            //     else{
+            //       Clipboard.setData(ClipboardData(text: url));
+            //       final snackBar = SnackBar(
+            //         content: const Text('Copied URL to Clipboard'),
+            //       );
+            //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            //     }
+            //   },
+            //   icon: Icon(Icons.ios_share)
+            // )
+          ],
+        ),
+    );
   }
 }

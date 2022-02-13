@@ -79,9 +79,10 @@ class _JobTileState extends State<JobTile> {
           title: Text(widget.job.title),
           // subtitle: Text("Distance: " + widget.dist.toString() + " km"),
           subtitle: Text("Due "+DateFormat.yMMMMd('en_US').add_jm().format(widget.job.appointmentTime)),
-          trailing: ElevatedButton(
+          trailing: IconButton(
               onPressed: widget.openPopup,
-              child: Text("More Info")),
+              icon: Icon(Icons.visibility)
+            ),
         ),
       ),
     );
