@@ -28,6 +28,7 @@ class Job {
 
   static Job fromFirestore(DocumentSnapshot snap){
     Map<String,dynamic> data = snap.data() as Map<String, dynamic>;
+    print("WE HAVE DATA");
     return Job(
       id: snap.id,
       description: data["description"] ?? "",
@@ -37,8 +38,11 @@ class Job {
       urgency: data["urgency"] ?? "",
       title: data['title'] ?? "",
       //TODO: Fix this importing
-      appointmentTime: data["appointmentTime"],
-      location: data["location"],
+      appointmentTime: data["appointmentTime"].toDate(),
+      location: GeoFirePoint(
+        data['location']['geopoint'].latitude,
+        data['location']['geopoint'].longitude,
+      )
     );
   }
 

@@ -9,7 +9,7 @@ class JobTile extends StatelessWidget {
    }) : super(key: key);
   final int c;
   final String Job;
-  final int dist;
+  final double dist;
   final String desc;
   @override
   Widget build(BuildContext context) {
