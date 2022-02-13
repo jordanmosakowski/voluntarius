@@ -80,6 +80,13 @@ class _SignInPageState extends State<SignInPage> {
         print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text(
+            'Incorrect Password',
+            style: TextStyle(fontSize: 24, color: Colors.red),
+          )),
+        );
       }
     }
   }
