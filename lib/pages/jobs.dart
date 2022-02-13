@@ -35,7 +35,7 @@ class _JobsPageState extends State<JobsPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ChatPage("test1")),
+              MaterialPageRoute(builder: (context) => const ChatPage("test2")),
             );
           },
         ),
