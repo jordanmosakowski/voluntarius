@@ -120,7 +120,7 @@ class _ChatPageState extends State<ChatPage> {
                           children: [
                             if (messages[index].userId != userData.id)
                               Text(
-                                messages[index].userName,
+                                "  " + messages[index].userName,
                               ),
                             Container(
                               decoration: BoxDecoration(
@@ -167,12 +167,12 @@ class _ChatPageState extends State<ChatPage> {
                           controller: fieldText,
                           focusNode: myFocusNode,
                           onSubmitted: (value) {
-                            UserData userData =
-                                Provider.of<UserData>(context, listen: false);
-                            makeUserMessage(value, userData.id, userData.name);
-                            // Future.delayed(Duration(milliseconds: 10), () {
-                            //   myFocusNode.requestFocus();
-                            // });
+                            Future.delayed(Duration(milliseconds: 10), () {
+                              UserData userData =
+                                  Provider.of<UserData>(context, listen: false);
+                              makeUserMessage(
+                                  value, userData.id, userData.name);
+                            });
                           },
                           onChanged: (value) {
                             updateMessage(value);
