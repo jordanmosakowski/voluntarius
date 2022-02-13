@@ -98,9 +98,14 @@ class _ReqTileState extends State<ReqTile> {
                               .collection("claims")
                               .doc(claim.id)
                               .update({"approved": true});
+                              FirebaseFirestore.instance
+                              .collection("jobs")
+                              .doc(claim.jobId)
+                              .update({"peopleRequired": widget.j.peopleRequired-1});
                           setState(() {
                             claim.approved = true;
                             print("Appoved");
+                            
                           });
                         },
                       ),
@@ -123,6 +128,11 @@ class _ReqTileState extends State<ReqTile> {
                               .collection("claims")
                               .doc(claim.id)
                               .delete();
+                              if(claim.approved){
+                               FirebaseFirestore.instance
+                              .collection("jobs")
+                              .doc(claim.jobId)
+                              .update({"peopleRequired": widget.j.peopleRequired+1});}
                           setState(() {
                             claims.remove(claim);
                             print("Removed");
