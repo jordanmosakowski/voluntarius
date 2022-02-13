@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:voluntarius/classes/job.dart';
+import 'package:voluntarius/classes/user.dart';
 
 class Claim {
   String jobId;
   String userId;
   bool approved;
   Job? job;
+  UserData? userData;
   String id;
 
   Claim(

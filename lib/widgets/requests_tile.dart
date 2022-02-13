@@ -26,25 +26,25 @@ class _ReqTileState extends State<ReqTile> {
     loadVolunteers();
   }
 
-  List<UserData> userData = [];
+  List<Claim> claims = [];
 
   Future<void> loadVolunteers() async {
     QuerySnapshot query = await FirebaseFirestore.instance
         .collection("claims")
         .where("jobId", isEqualTo: widget.j.id)
         .get();
-    List<Claim> claims =
-        query.docs.map((doc) => Claim.fromFirestore(doc)).toList();
+    setState(() {
+    
+      claims = query.docs.map((doc) => Claim.fromFirestore(doc)).toList();
+    });
     for (int i = 0; i < claims.length; i++) {
       UserData data = UserData.fromFirestore(await FirebaseFirestore.instance
           .collection("users")
           .doc(claims[i].userId)
           .get());
-      userData.add(data);
+      claims[i].userData = data;
     }
-    setState(() {
-      print(userData.map((u) => u.name).join("\n"));
-    });
+    setState(() {});
   }
 
   @override
@@ -70,7 +70,57 @@ class _ReqTileState extends State<ReqTile> {
           // tileColor: Colors.green[widget.c],
           title: Text("Volunteers"),
           // isThreeLine: true,
-          subtitle: Text(userData.map((d) => d.name).join("\n")),
+          subtitle: Column(
+            children: [
+              ...claims.map((Claim claim) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 3.0),
+                child: Row(
+                  children: [
+                    Text(claim.userData?.name ?? claim.userId),
+                    Container(width: 10),
+                    if(!claim.approved)
+                      InkWell(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(3),
+                            color: Colors.green,
+                          ),
+                          padding: EdgeInsets.all(3.0),
+                          child: Text(" Approve ",style: TextStyle(color: Colors.white),),
+                        ),
+                        onTap: () async{
+                          FirebaseFirestore.instance.collection("claims").doc(claim.id).update({"approved": true});
+                          setState(() {
+                            // claims.remove(claim);
+                            print("Removed");
+                          });
+                        },
+                      ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: InkWell(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(3),
+                            color: Colors.green,
+                          ),
+                          padding: EdgeInsets.all(3.0),
+                          child: Text(claim.approved ? " Remove " : " Reject ",style: TextStyle(color: Colors.white),),
+                        ),
+                        onTap: () async{
+                          await FirebaseFirestore.instance.collection("claims").doc(claim.id).delete();
+                          setState(() {
+                            claims.remove(claim);
+                            print("Removed");
+                          });
+                        },
+                      ),
+                    ),
+                  ]
+                ),
+              ))
+            ]
+          ),
         ),
         ListTile(
           // tileColor: Colors.green[widget.c],
