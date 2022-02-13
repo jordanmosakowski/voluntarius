@@ -3,7 +3,6 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:provider/provider.dart';
 import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
-import 'package:voluntarius/main.dart';
 import 'package:voluntarius/pages/chat.dart';
 import 'package:voluntarius/pages/request.dart';
 import 'package:voluntarius/widgets/requests_tile.dart';
@@ -35,11 +34,10 @@ class _JobsPageState extends State<JobsPage> {
         ElevatedButton(
           child: const Text("Make new request"),
           onPressed: () {
-            router.navigateTo(context, "/request");
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const RequestPage()),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const RequestPage()),
+            );
           },
         ),
         Divider(height: 20,),
@@ -47,21 +45,20 @@ class _JobsPageState extends State<JobsPage> {
           
           child: const Text("Chat"),
           onPressed: () {
-            router.navigateTo(context, "/chat/allchat");
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => ChatPage(new Job(
-            //           appointmentTime: DateTime.now(),
-            //           description: "a",
-            //           hoursRequired: 1,
-            //           id: "allchat",
-            //           peopleRequired: 1,
-            //           requestorId: "asndaooain",
-            //           title: "all",
-            //           urgency: "now",
-            //           location: GeoFirePoint(0, 0)))),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChatPage(new Job(
+                      appointmentTime: DateTime.now(),
+                      description: "a",
+                      hoursRequired: 1,
+                      id: "allchat",
+                      peopleRequired: 1,
+                      requestorId: "asndaooain",
+                      title: "all",
+                      urgency: "now",
+                      location: GeoFirePoint(0, 0)))),
+            );
           },
         ),
         const Divider(),

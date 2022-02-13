@@ -26,6 +26,7 @@ class Job {
 
   static Job fromFirestore(DocumentSnapshot snap) {
     Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
+    print("WE HAVE DATA");
     return Job(
         id: snap.id,
         description: data["description"] ?? "",
