@@ -44,11 +44,13 @@ class _MapPageState extends State<MapPage> {
     "d"
   ];
 
-  void clickTile(Job job){
+  void clickTile(Job job) {
     _controller.animateCamera(
       CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(job.location.latitude, job.location.longitude),zoom: 19),
-        ),
+        CameraPosition(
+            target: LatLng(job.location.latitude, job.location.longitude),
+            zoom: 19),
+      ),
     );
   }
 
@@ -107,24 +109,27 @@ class _MapPageState extends State<MapPage> {
                   // },
                   markers: jobs
                       .map((job) => Marker(
-                        onTap: (){
-                          print("Complete");
-                          int index = jobs.indexOf(job);
-                          print(_scrollController.position.maxScrollExtent);
-                          double position = _scrollController.position.maxScrollExtent / jobs.length;
-                          _scrollController.animateTo(
-                            position * index,
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.fastOutSlowIn,
-                          );
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext) => _buildPopupDialog(context,job),
-                          );
-                        },
-                        markerId: MarkerId(job.id),
-                        position: LatLng(
-                            job.location.latitude, job.location.longitude)))
+                          onTap: () {
+                            print("Complete");
+                            int index = jobs.indexOf(job);
+                            print(_scrollController.position.maxScrollExtent);
+                            double position =
+                                _scrollController.position.maxScrollExtent /
+                                    jobs.length;
+                            _scrollController.animateTo(
+                              position * index,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.fastOutSlowIn,
+                            );
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext) =>
+                                  _buildPopupDialog(context, job),
+                            );
+                          },
+                          markerId: MarkerId(job.id),
+                          position: LatLng(
+                              job.location.latitude, job.location.longitude)))
                       .toSet(),
                   mapType: MapType.normal,
                   onMapCreated: _onMapCreated,
@@ -133,19 +138,22 @@ class _MapPageState extends State<MapPage> {
               ),
             ),
             Expanded(
-            child: ListView(
+                child: ListView(
               controller: _scrollController,
               padding: const EdgeInsets.all(8.0),
               children: [
                 for (int i = 0; i < jobs.length; i++)
                   JobTile(
-                    openPopup: (){
+                    openPopup: () {
                       showDialog(
                         context: context,
-                        builder: (BuildContext) => _buildPopupDialog(context,jobs[i]),
+                        builder: (BuildContext) =>
+                            _buildPopupDialog(context, jobs[i]),
                       );
                     },
-                    onTap: (){clickTile(jobs[i]);},
+                    onTap: () {
+                      clickTile(jobs[i]);
+                    },
                     c: (i % 2 + 1) * 100,
                     job: jobs[i],
                     dist: jobs[i].location.distance(
@@ -162,7 +170,7 @@ class _MapPageState extends State<MapPage> {
   }
 
   Widget _buildPopupDialog(BuildContext context, Job job) {
-    User? userData = Provider.of<User?>(context,listen: false);
+    User? userData = Provider.of<User?>(context, listen: false);
     return AlertDialog(
       title: Text(job.title),
       content: Column(
@@ -184,7 +192,11 @@ class _MapPageState extends State<MapPage> {
         ElevatedButton(
             onPressed: () async {
               Claim claim = Claim(
-                  id: "", jobId: job.id, userId: userData!.uid, approved: false);
+                  id: "",
+                  jobId: job.id,
+                  userId: userData!.uid,
+                  approved: false,
+                  completed: false);
               await FirebaseFirestore.instance
                   .collection("claims")
                   .add(claim.toJson());
