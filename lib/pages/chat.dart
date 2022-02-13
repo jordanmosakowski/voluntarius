@@ -142,7 +142,7 @@ class _ChatPageState extends State<ChatPage> {
                           children: [
                             if (messages[index].userId != userData.id)
                               Text(
-                                  '${messages[index].userName} ${DateFormat.yMMMMd('jm').format(messages[index].timeStamp)}'),
+                                  '${messages[index].userName} ${DateFormat.yMMMMd('en_US').format(messages[index].timeStamp)}'),
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
