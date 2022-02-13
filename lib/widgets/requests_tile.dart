@@ -60,8 +60,7 @@ class _ReqTileState extends State<ReqTile> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) => ChatPage(widget.j, widget.j.title)),
+              MaterialPageRoute(builder: (context) => ChatPage(widget.j)),
             );
           },
         ),

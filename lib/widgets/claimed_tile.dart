@@ -34,8 +34,7 @@ class ClmTile extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => ChatPage(j, j.title)),
+                      MaterialPageRoute(builder: (context) => ChatPage(j)),
                     );
                   },
                   icon: Icon(Icons.chat))

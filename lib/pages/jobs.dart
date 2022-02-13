@@ -47,18 +47,16 @@ class _JobsPageState extends State<JobsPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ChatPage(
-                      Job(
-                          appointmentTime: DateTime.now(),
-                          description: "a",
-                          hoursRequired: 1,
-                          id: "claims",
-                          peopleRequired: 1,
-                          requestorId: "aa",
-                          title: "all",
-                          urgency: "now",
-                          location: GeoFirePoint(0, 0)),
-                      "all")),
+                  builder: (context) => ChatPage(Job(
+                      appointmentTime: DateTime.now(),
+                      description: "a",
+                      hoursRequired: 1,
+                      id: "allchat",
+                      peopleRequired: 1,
+                      requestorId: "asndaooain",
+                      title: "all",
+                      urgency: "now",
+                      location: GeoFirePoint(0, 0)))),
             );
           },
         ),
@@ -73,9 +71,8 @@ class _JobsPageState extends State<JobsPage> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30))),
 
         for (int i = 0; i < claims.length; i++)
-          if(claims[i].job!=null)
-            ClmTile(c: 100, j: claims[i].job!, cl:claims[i]),
-        
+          if (claims[i].job != null)
+            ClmTile(c: 100, j: claims[i].job!, cl: claims[i]),
 
         // Expanded(
         //       child: ListView(
