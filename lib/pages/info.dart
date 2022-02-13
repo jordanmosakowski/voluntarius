@@ -34,7 +34,9 @@ class _InfoPageState extends State<InfoPage> {
     User? userData = Provider.of<User?>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Info'),
+        title: Text(job?.title ?? 'Info',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40)),
       ),
       body: job!=null ? ListView(
         children: [
