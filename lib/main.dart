@@ -67,7 +67,7 @@ void main() async {
     provisional: false,
     sound: true,
   );
-  setPathUrlStrategy();
+  // setPathUrlStrategy();
 
   print('User granted permission: ${settings.authorizationStatus}');
   runApp(MyApp());

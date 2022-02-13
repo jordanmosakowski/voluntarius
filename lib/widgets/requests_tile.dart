@@ -81,6 +81,8 @@ class _ReqTileState extends State<ReqTile> {
                   padding: const EdgeInsets.symmetric(vertical: 3.0),
                   child: Row(children: [
                     Text(claim.userData?.name ?? claim.userId),
+                    Icon(Icons.star),
+                    Text(" ${claim.userData?.averageStars ?? 0} (${claim.userData?.numReviews ?? 0} reviews)"),
                     Container(width: 10),
                     if (!claim.approved)
                       InkWell(
