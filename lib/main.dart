@@ -95,7 +95,8 @@ class _MyAppState extends State<MyApp> {
           User? user = Provider.of<User?>(context);
           return Scaffold(
             appBar: AppBar(
-              title: const Text("Voluntarius"),
+              title: const Text("Voluntarius",
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.w600)),
               leading: new Image(
                   image: AssetImage('assets/whitetransparentbk.png'),
                   height: 30,
@@ -142,9 +143,7 @@ class _MyAppState extends State<MyApp> {
                             .where("userId", isEqualTo: user.uid)
                             .snapshots()
                             .map((snap) => snap.docs
-                                .map(
-                                  (doc) => Claim.fromFirestore(doc, true)
-                                )
+                                .map((doc) => Claim.fromFirestore(doc, true))
                                 .toList()))
                   ],
                   child: _widgetOptions.elementAt(_selectedIndex),

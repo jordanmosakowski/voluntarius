@@ -111,12 +111,12 @@ class _MapPageState extends State<MapPage> {
               ),
             ),
             Expanded(
-              child: ListView(
+                child: ListView(
               padding: const EdgeInsets.all(8.0),
               children: [
                 for (int i = 0; i < jobs.length; i++)
                   JobTile(
-                    c: (i%2 +1) * 50,
+                    c: (i % 2 + 1) * 100,
                     job: jobs[i],
                     dist: jobs[i].location.distance(
                           lat: location.latitude ?? 0,
