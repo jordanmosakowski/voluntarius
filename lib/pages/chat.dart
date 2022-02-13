@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../classes/chatMessagesModel.dart';
@@ -54,22 +55,23 @@ class _ChatPageState extends State<ChatPage> {
             itemBuilder: (context, index) {
               return Container(
                 padding:
-                    EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
+                    EdgeInsets.only(left: 14, right: 14, top: 5, bottom: 5),
                 child: Align(
                   alignment: (messages[index].userID != myUserID
                       ? Alignment.topLeft
                       : Alignment.topRight),
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(25),
                       color: (messages[index].userID != myUserID
                           ? Colors.grey.shade200
                           : Colors.green[200]),
                     ),
-                    padding: EdgeInsets.all(16),
+                    padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                    constraints: BoxConstraints(maxWidth: 1000),
                     child: Text(
                       messages[index].messageContent,
-                      style: TextStyle(fontSize: 15),
+                      style: TextStyle(fontSize: 24),
                     ),
                   ),
                 ),
@@ -90,6 +92,7 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                   Expanded(
                     child: TextField(
+                      expands: false,
                       autofocus: true,
                       controller: fieldText,
                       focusNode: myFocusNode,
