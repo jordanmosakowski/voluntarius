@@ -50,6 +50,7 @@ class _ReqTileState extends State<ReqTile> {
   Widget build(BuildContext context) {
     return ExpansionTile(
       title: Text(widget.j.title),
+      subtitle: Text(widget.j.description),
       children: <Widget>[
         //dropdowns
         ListTile(
@@ -230,8 +231,19 @@ class _ReqTileState extends State<ReqTile> {
             ],
           ),
            ]
-        )
-          
+        ),
+       ListTile(
+          ///CHATTT
+          // tileColor: Colors.green[widget.c],
+          title: Text("Comptete Job"),
+
+          onTap: () {
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => completePage;),
+            // );
+          },
+        ),
       ],
     );
   }
