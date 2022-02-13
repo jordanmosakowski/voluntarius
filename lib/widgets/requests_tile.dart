@@ -36,7 +36,7 @@ class ReqTile extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text("title"),
+              Text("Title: "+j.title),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
@@ -50,7 +50,7 @@ class ReqTile extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("description"),
+              Text("Description: "+j.description),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
@@ -64,7 +64,7 @@ class ReqTile extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("description"),
+              Text("Hours Required: "+ j.hoursRequired.toString()),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
@@ -78,7 +78,7 @@ class ReqTile extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("description"),
+              Text("People Required: "+ j.peopleRequired.toString()),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
@@ -90,7 +90,7 @@ class ReqTile extends StatelessWidget {
                   child: Icon(Icons.edit)),
             ],
           ),
-
+        
           // ElevatedButton(onPressed: onPressed, child: child)(child: Text("Hours Required: " + j.hoursRequired.toString())),
           // ElevatedButton(onPressed: onPressed, child: child)(child: Text("People Required: " + j.peopleRequired.toString())),
           // ElevatedButton(onPressed: onPressed, child: child)(child: Text("Appointment Time: " + j.appointmentTime.toString()))
@@ -111,7 +111,7 @@ class ReqTile extends StatelessWidget {
     final nameController = TextEditingController(text: fieldval);
 
     return AlertDialog(
-      title: Text('Enter New ${prop}'),
+      title: Text('Enter New ${prop[0].toUpperCase()}${prop.substring(1)}'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
