@@ -48,54 +48,54 @@ exports.processChat = functions.firestore
     const newValue = snap.data();
     const userId = newValue.userId;
     const jobId = newValue.jobId;
-    const claimsRef = db.collection('claims').doc(jobId);
-    const claim = await claimsRef.get();
+    const claimsRef = db.collection('claims').where('jobId', '==', jobId);
+    const claims = await claimsRef.get();
 
-    if (!claim.exists){
-        console.log('Claim not found');
-    }else{
-        const user = job.data().userId;
-        const requestorId = job.data().requestorId;
-        const approved = job.data().approved;
+    const job = (await db.collection('jobs').doc(jobId).get()).data();
+    if(userId != job.requestorId){
+        const userRef = db.collection('users').doc(job.requestorId);
+        const user = await userRef.get();
+        const message = {
+            data: {
+                title: 'New Message in '+job.title,
+                body: newValue.messageContent
+            },
+            notification: {
+                title: 'New Message in '+job.title,
+                body: newValue.messageContent
+            },
+            tokens: user.data().notificationTokens
+        };
+
+        admin.messaging().sendMulticast(message)
+        .then((response) => {
+            console.log(response.successCount+" messages sent succesfully");
+        });
+    }
+
+    claims.forEach(async (claim) => {
+        const user = claim.data().userId;
+        const approved = claim.data().approved;
 
         if(approved && user!=userId){
-            console.log(user.data().notificationTokens.toString());
+            const userRef = db.collection('users').doc(user);
+            const userInfo = await userRef.get();
             const message = {
                 data: {
-                    title: 'New Message in '+job.data().title,
-                    body: 'Click to view new messages'
+                    title: 'New Message in '+job.title,
+                    body: newValue.messageContent
                 },
                 notification: {
-                    title: 'New Message in '+job.data().title,
-                    body: 'Click to view new messages'
+                    title: 'New Message in '+job.title,
+                    body: newValue.messageContent
                 },
-                tokens: user.data().notificationTokens
+                tokens: userInfo.data().notificationTokens
             };
-    
-            admin.messaging().sendMulticast(message)
-            .then((response) => {
-                console.log(response.successCount+" messages sent succesfully");
-            })
-        }
 
-        if(userId != requestorId){
-            console.log(requestorId.data().notificationTokens.toString());
-            const message = {
-                data: {
-                    title: 'New Message in '+job.data().title,
-                    body: 'Click to view new messages'
-                },
-                notification: {
-                    title: 'New Message in '+job.data().title,
-                    body: 'Click to view new messages'
-                },
-                tokens: user.data().notificationTokens
-            };
-    
             admin.messaging().sendMulticast(message)
             .then((response) => {
                 console.log(response.successCount+" messages sent succesfully");
-            })
+            });
         }
-    }
+    });
 });
