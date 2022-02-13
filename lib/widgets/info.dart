@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
@@ -25,7 +26,7 @@ class info extends StatelessWidget {
           Text("Description: " + j.description),
           Text("Hours Required: " + j.hoursRequired.toString()),
           Text("People Required: " + j.peopleRequired.toString()),
-          Text("Appointment Time: " + j.appointmentTime.toString()),
+          Text("Appointment Time: " + DateFormat.yMMMMd('en_US').add_jm().format(j.appointmentTime)),
           IconButton(
             onPressed: (){
               String url = "https://example.com";
