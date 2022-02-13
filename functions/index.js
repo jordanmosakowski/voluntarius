@@ -99,3 +99,16 @@ exports.processChat = functions.firestore
         }
     });
 });
+
+exports.processRating= functions.firestore
+.document('ratings/{id}')
+.onCreate(async(snap, context) => {
+    const newValue = snap.data();
+    const userId = newValue.ratedId;
+    const userRef = db.collection('users').where('id', '==', userId);
+    const user = await userRef.get();
+
+    const currRating = user.data().ratings;
+    const numReviews = user.data().numReviews;
+    user.data().ratings = (newValue.rating+currRating)/(numReviews+1);
+});
