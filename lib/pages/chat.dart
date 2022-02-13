@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:voluntarius/classes/job.dart';
 import 'package:voluntarius/classes/user.dart';
@@ -67,7 +68,11 @@ class _ChatPageState extends State<ChatPage> {
       });
     });
     //Load job
-    FirebaseFirestore.instance.collection('jobs').doc(widget.jobId).get().then((doc) {
+    FirebaseFirestore.instance
+        .collection('jobs')
+        .doc(widget.jobId)
+        .get()
+        .then((doc) {
       if (doc.exists) {
         setState(() {
           job = Job.fromFirestore(doc);
@@ -114,7 +119,8 @@ class _ChatPageState extends State<ChatPage> {
           children: <Widget>[
             Builder(
               builder: (context) {
-                List<ChatMessage> messages = Provider.of<List<ChatMessage>>(context);
+                List<ChatMessage> messages =
+                    Provider.of<List<ChatMessage>>(context);
                 UserData userData = Provider.of<UserData>(context);
                 print(messages.length);
                 return ListView.builder(
@@ -136,7 +142,7 @@ class _ChatPageState extends State<ChatPage> {
                           children: [
                             if (messages[index].userId != userData.id)
                               Text(
-                                  "   ${messages[index].userName}       ${messages[index].timeStamp.hour}: ${messages[index].timeStamp.minute}"),
+                                  '${messages[index].userName} ${DateFormat.yMMMMd('jm').format(messages[index].timeStamp)}'),
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),

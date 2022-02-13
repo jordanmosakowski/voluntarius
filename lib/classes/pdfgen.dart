@@ -75,7 +75,8 @@ Future<Uint8List> generateDocument(
                     ])),
             pw.Paragraph(text: 'Service Hours For: ' + userData.name),
             pw.Paragraph(
-                text: 'Report Generated: ' + DateTime.now().toString()),
+                text: 'Report Generated: ' +
+                    DateFormat.yMMMMd('en_US').add_jm().format(DateTime.now())),
             pw.Paragraph(text: 'Total Hours: ' + totalHours.toString()),
             pw.Table.fromTextArray(context: context, data: data),
           ]));
