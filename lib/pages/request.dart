@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:voluntarius/classes/job.dart';
@@ -182,7 +183,7 @@ class _reqFormState extends State<reqForm> {
                         child: InkWell(
                           child: Center(
                             child: Text(
-                                '${selectedDate.weekday}, ${months[selectedDate.month - 1]}, ${selectedDate.year}'),
+                                '${DateFormat.yMMMMd('en_US').add_jm().format(selectedDate)}'),
                           ),
                           onTap: () => _selectDate(context),
                         ),
