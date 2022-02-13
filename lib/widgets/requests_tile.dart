@@ -42,7 +42,7 @@ class ReqTile extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext) => _buildNestedPopupDialog(
-                          context, j.title, j.id, "title"),
+                          context, j.title, j.id, "title", j),
                     );
                   },
                   child: Icon(Icons.edit)),
@@ -56,7 +56,7 @@ class ReqTile extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext) => _buildNestedPopupDialog(
-                          context, j.description, j.id, "description"),
+                          context, j.description, j.id, "description", j),
                     );
                   },
                   child: Icon(Icons.edit)),
@@ -73,7 +73,8 @@ class ReqTile extends StatelessWidget {
                           context,
                           j.hoursRequired.toString(),
                           j.id,
-                          "hoursRequired"),
+                          "hoursRequired",
+                          j),
                     );
                   },
                   child: Icon(Icons.edit)),
@@ -90,7 +91,8 @@ class ReqTile extends StatelessWidget {
                           context,
                           j.peopleRequired.toString(),
                           j.id,
-                          "peopleRequired"),
+                          "peopleRequired",
+                          j),
                     );
                   },
                   child: Icon(Icons.edit)),
@@ -113,7 +115,7 @@ class ReqTile extends StatelessWidget {
   }
 
   Widget _buildNestedPopupDialog(
-      BuildContext context, String fieldval, String jid, String prop) {
+      BuildContext context, String fieldval, String jid, String prop, Job _j) {
     final nameController = TextEditingController(text: fieldval);
 
     return AlertDialog(
@@ -139,8 +141,15 @@ class ReqTile extends StatelessWidget {
               await FirebaseFirestore.instance
                   .collection("jobs")
                   .doc(jid)
-                  .update({"${prop}": nameController.text});
+                  .update({
+                "${prop}": (double.tryParse(nameController.text) != null)
+                    ? double.tryParse(nameController.text)
+                    : nameController.text
+              });
               Navigator.of(context).pop();
+              Navigator.of(context).pop();
+
+              ///sdiufgsd9ugfiu
             },
             child: const Text("Submit")),
       ],
