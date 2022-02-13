@@ -19,7 +19,9 @@ class _JobsPageState extends State<JobsPage> {
     List<Job> jobs = Provider.of<List<Job>>(context); 
     List<Claim> claims = Provider.of<List<Claim>>(context);
     for(Claim c in claims){
-      c.getJob().then((a) => setState(() {}));
+      if(c.job==null){
+        c.getJob().then((a) => setState(() {}));
+      }
     }
     print("Claims: ${claims.length}");
     print(jobs.length);
