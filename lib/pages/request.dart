@@ -179,11 +179,11 @@ class _reqFormState extends State<reqForm> {
                     Row(children: [
                       Text("Event Date: "),
                       SizedBox(
-                        width: 200,
+                        width: 150,
                         child: InkWell(
                           child: Center(
                             child: Text(
-                                '${DateFormat.yMMMMd('en_US').add_jm().format(selectedDate)}'),
+                                '${DateFormat.yMMMMd('en_US').format(selectedDate)}'),
                           ),
                           onTap: () => _selectDate(context),
                         ),
@@ -193,7 +193,7 @@ class _reqFormState extends State<reqForm> {
                         child: InkWell(
                           child: Center(
                               child: Text(
-                                  '${selectedDate.hour} : ${selectedDate.minute}')),
+                                  '${DateFormat.jm().format(selectedDate)}')),
                           onTap: () => _selectTime(context),
                         ),
                       ),

@@ -44,7 +44,7 @@ class _ReqTileState extends State<ReqTile> {
           .get());
       claims[i].userData = data;
     }
-    if(mounted){
+    if (mounted) {
       setState(() {});
     }
   }
@@ -82,7 +82,8 @@ class _ReqTileState extends State<ReqTile> {
                   child: Row(children: [
                     Text(claim.userData?.name ?? claim.userId),
                     Icon(Icons.star),
-                    Text(" ${claim.userData?.averageStars ?? 0} (${claim.userData?.numReviews ?? 0} reviews)"),
+                    Text(
+                        " ${claim.userData?.averageStars ?? 0} (${claim.userData?.numReviews ?? 0} reviews)"),
                     Container(width: 10),
                     if (!claim.approved)
                       InkWell(
@@ -102,14 +103,15 @@ class _ReqTileState extends State<ReqTile> {
                               .collection("claims")
                               .doc(claim.id)
                               .update({"approved": true});
-                              FirebaseFirestore.instance
+                          FirebaseFirestore.instance
                               .collection("jobs")
                               .doc(claim.jobId)
-                              .update({"peopleRequired": widget.j.peopleRequired-1});
+                              .update({
+                            "peopleRequired": widget.j.peopleRequired - 1
+                          });
                           setState(() {
                             claim.approved = true;
                             print("Appoved");
-                            
                           });
                         },
                       ),
@@ -132,11 +134,14 @@ class _ReqTileState extends State<ReqTile> {
                               .collection("claims")
                               .doc(claim.id)
                               .delete();
-                              if(claim.approved){
-                               FirebaseFirestore.instance
-                              .collection("jobs")
-                              .doc(claim.jobId)
-                              .update({"peopleRequired": widget.j.peopleRequired+1});}
+                          if (claim.approved) {
+                            FirebaseFirestore.instance
+                                .collection("jobs")
+                                .doc(claim.jobId)
+                                .update({
+                              "peopleRequired": widget.j.peopleRequired + 1
+                            });
+                          }
                           setState(() {
                             claims.remove(claim);
                             print("Removed");
@@ -240,6 +245,41 @@ class _ReqTileState extends State<ReqTile> {
             );
           },
         ),
+        ListTile(
+          ///CHATTT
+          // tileColor: Colors.green[widget.c],
+          title: Text("Delete Job"),
+          leading: Icon(Icons.close),
+
+          onTap: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext) => _buildDeletePopupDialog(context));
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDeletePopupDialog(BuildContext context) {
+    BuildContext temp = context;
+    return AlertDialog(
+      title: Text("Delete ${widget.j.title}?"),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("Cancel")),
+        TextButton(
+            onPressed: () async {
+              await FirebaseFirestore.instance
+                  .collection("jobs")
+                  .doc(widget.j.id)
+                  .delete();
+              Navigator.of(temp).pop();
+            },
+            child: const Text("Delete")),
       ],
     );
   }
