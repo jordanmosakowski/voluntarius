@@ -53,7 +53,6 @@ class _reqFormState extends State<reqForm> {
   TimeOfDay selectedTime = TimeOfDay.now();
   GeoFirePoint? fireloc;
   bool dateset = false, locset = false;
-  String legibleAdr = "";
   init() {
     super.initState();
     // _setPlace(context);
@@ -291,22 +290,6 @@ class _reqFormState extends State<reqForm> {
     //   });
     // }
   }
-
-  // _getAddr(BuildContext context) async {
-  //   try {
-  //     List<Placemark> placemarks = await placemarkFromCoordinates(
-  //         locationData.latitude, locationData.longitude);
-
-  //     Placemark place = placemarks[0];
-
-  //     setState(() {
-  //       legibleAdr =
-  //           "${place.locality}, ${place.postalCode}, ${place.country}";
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 
   _makeJob(BuildContext context) async {
     User? user = Provider.of<User?>(context, listen: false);
