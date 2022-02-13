@@ -128,8 +128,7 @@ class _ChatPageState extends State<ChatPage> {
                           children: [
                             if (messages[index].userId != userData.id)
                               Text(
-                                "  " + messages[index].userName,
-                              ),
+                                  "   ${messages[index].userName}       ${messages[index].timeStamp.hour}: ${messages[index].timeStamp.minute}"),
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),

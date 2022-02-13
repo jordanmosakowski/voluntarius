@@ -64,7 +64,7 @@ class JobTile extends StatelessWidget {
         ElevatedButton(
             onPressed: () async {
               Claim claim = Claim(
-                  id: "", jobId: job.id, userId: userData!.uid, approved: false);
+                  id: "", jobId: job.id, userId: userData!.uid, approved: false, completed: false);
               await FirebaseFirestore.instance
                   .collection("claims")
                   .add(claim.toJson());
