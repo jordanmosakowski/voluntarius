@@ -60,7 +60,9 @@ class _JobsPageState extends State<JobsPage> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30))),
 
         for (int i = 0; i < claims.length; i++)
-          if (claims[i].job != null) ClmTile(c: 100, j: claims[i].job!),
+          if(claims[i].job!=null)
+            ClmTile(c: 100, j: claims[i].job!, cl:claims[i]),
+        
 
         // Expanded(
         //       child: ListView(
