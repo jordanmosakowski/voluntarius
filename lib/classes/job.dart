@@ -12,7 +12,6 @@ class Job {
   DateTime appointmentTime;
   GeoFirePoint location;
   String title;
-  bool completed;
 
   Job(
       {required this.id,
@@ -23,8 +22,7 @@ class Job {
       required this.title,
       required this.urgency,
       required this.appointmentTime,
-      required this.location,
-      required this.completed});
+      required this.location});
 
   static Job fromFirestore(DocumentSnapshot snap) {
     Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
@@ -42,8 +40,7 @@ class Job {
         location: GeoFirePoint(
           data['location']['geopoint'].latitude,
           data['location']['geopoint'].longitude,
-        ),
-        completed: data['completed'] ?? false);
+        ));
   }
 
   Map<String, dynamic> toJson() {
@@ -55,8 +52,7 @@ class Job {
       "urgency": urgency,
       "title": title,
       "appointmentTime": appointmentTime,
-      "location": location.data,
-      "completed": completed
+      "location": location.data
     };
   }
 }
