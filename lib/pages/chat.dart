@@ -10,7 +10,9 @@ import 'package:voluntarius/classes/user.dart';
 import '../classes/chatMessagesModel.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+  const ChatPage(this.jobId, {Key? key}) : super(key: key);
+
+  final String jobId;
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -32,11 +34,8 @@ class _ChatPageState extends State<ChatPage> {
             userId: uid,
             userName: name,
             timeStamp: DateTime.now(),
-            jobId: 'test',
+            jobId: widget.jobId,
           ).toJson());
-      // setState(() {
-      //   messages.add(ChatMessage(messageContent: a, userID: myUserID));
-      // });
       fieldText.clear();
       temporaryString = "";
     }
@@ -50,6 +49,14 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
+    stream = FirebaseFirestore.instance
+        .collection("messages")
+        .where("jobId", isEqualTo: widget.jobId)
+        .orderBy("timeStamp")
+        .snapshots()
+        .map((snap) =>
+            snap.docs.map((doc) => ChatMessage.fromFirestore(doc)).toList())
+        .asBroadcastStream();
     stream.listen((a) {
       Future.delayed(Duration(milliseconds: 50), () {
         if (_controller.hasClients) {
@@ -63,14 +70,7 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  Stream<List<ChatMessage>> stream = FirebaseFirestore.instance
-      .collection("messages")
-      .where("jobId", isEqualTo: "test")
-      .orderBy("timeStamp")
-      .snapshots()
-      .map((snap) =>
-          snap.docs.map((doc) => ChatMessage.fromFirestore(doc)).toList())
-      .asBroadcastStream();
+  late Stream<List<ChatMessage>> stream;
 
   @override
   Widget build(BuildContext context) {
