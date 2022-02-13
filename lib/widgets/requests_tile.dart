@@ -36,7 +36,7 @@ class ReqTile extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text("title"),
+              Text("Title: " + j.title),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
@@ -50,7 +50,7 @@ class ReqTile extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("description"),
+              Text("Description: " + j.description),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
@@ -64,13 +64,16 @@ class ReqTile extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("description"),
+              Text("Hours Required: " + j.hoursRequired.toString()),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext) => _buildNestedPopupDialog(
-                          context, j.description, j.id, "hoursRequired"),
+                          context,
+                          j.hoursRequired.toString(),
+                          j.id,
+                          "hoursRequired"),
                     );
                   },
                   child: Icon(Icons.edit)),
@@ -78,13 +81,16 @@ class ReqTile extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("description"),
+              Text("People Required: " + j.peopleRequired.toString()),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext) => _buildNestedPopupDialog(
-                          context, j.description, j.id, "peopleRequired"),
+                          context,
+                          j.peopleRequired.toString(),
+                          j.id,
+                          "peopleRequired"),
                     );
                   },
                   child: Icon(Icons.edit)),
@@ -111,7 +117,7 @@ class ReqTile extends StatelessWidget {
     final nameController = TextEditingController(text: fieldval);
 
     return AlertDialog(
-      title: Text('Enter New ${prop}'),
+      title: Text('Enter New ${prop[0].toUpperCase()}${prop.substring(1)}'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
