@@ -1,8 +1,12 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
+import 'package:voluntarius/classes/job.dart';
 import 'package:voluntarius/widgets/job_tile.dart';
 
 class MapPage extends StatefulWidget {
@@ -16,7 +20,9 @@ class _MapPageState extends State<MapPage> {
 
   final LatLng _initialcameraposition = const LatLng(37.3490496, -121.9388039);
   late GoogleMapController _controller;
+  CollectionReference jobsRef = FirebaseFirestore.instance.collection("jobs");
   final Location _location = Location();
+  final geo = Geoflutterfire();
 
   void _onMapCreated(GoogleMapController _cntlr)
   {
@@ -51,39 +57,65 @@ class _MapPageState extends State<MapPage> {
   
   @override
   Widget build(BuildContext context) {
-    return  Column(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GoogleMap(
-              initialCameraPosition: CameraPosition(target: _initialcameraposition, zoom: 15),
-              markers: {
-                const Marker(
-                  markerId: MarkerId("SCDI"),
-                  position: LatLng(37.3490496, -121.9388039),
-                  
-                )
-              },
-              mapType: MapType.normal,
-              onMapCreated: _onMapCreated,
-              myLocationEnabled: true,
-            ),
-          ),
-        ),
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.all(8),
-            children: [
-              for(int i=0; i<jobs.length; i++)
-                JobTile(
-                  c: (i+1) * 100,
-                  Job: jobs[i], dist: 50, desc: descs[i],
-                )
-            ],
-          )
+    LocationData location = Provider.of<LocationData>(context);
+    return  MultiProvider(
+      providers: [
+        StreamProvider<List<Job>>.value(
+          initialData: const [], 
+          value: geo.collection(collectionRef: jobsRef)
+            .within(
+              center: geo.point(
+                latitude: location.latitude ?? 0,
+                longitude: location.longitude ?? 0,
+              ),
+              radius: 10,
+              field: "location"
+            ).map((docs) => docs.map((snap) {return Job.fromFirestore(snap);}).toList())
         )
       ],
+      child: Builder(
+        builder: (context){
+          List<Job> jobs = Provider.of<List<Job>>(context);
+          return Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GoogleMap(
+                  initialCameraPosition: CameraPosition(target: _initialcameraposition, zoom: 15),
+                  // markers: {
+                  //   const Marker(
+                  //     markerId: MarkerId("SCDI"),
+                  //     position: LatLng(37.3490496, -121.9388039),
+                      
+                  //   )
+                  // },
+                  markers: jobs.map((job) => Marker(
+                    markerId: MarkerId(job.id),
+                    position: LatLng(job.location.latitude,job.location.longitude)
+                  )).toSet(),
+                  mapType: MapType.normal,
+                  onMapCreated: _onMapCreated,
+                  myLocationEnabled: true,
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(8),
+                children: [
+                  for(int i=0; i<jobs.length; i++)
+                    JobTile(
+                      c: (min(i,7)+1) * 100,
+                      Job: jobs[i].title, dist: jobs[i].location.distance(lat: location.latitude ?? 0, lng: location.longitude ?? 0,), desc: jobs[i].description,
+                    )
+                ],
+              )
+            )
+          ],
+        );
+        }
+      ),
     );
   }
 
