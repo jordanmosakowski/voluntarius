@@ -6,6 +6,7 @@ class Claim {
   String jobId;
   String userId;
   bool approved;
+  bool completed;
   Job? job;
   UserData? userData;
   String id;
@@ -15,6 +16,7 @@ class Claim {
       required this.jobId,
       required this.userId,
       required this.approved,
+      required this.completed,
       this.job});
 
   static Claim fromFirestore(DocumentSnapshot snap) {
@@ -22,6 +24,7 @@ class Claim {
     Claim newClaim = Claim(
       id: snap.id,
       approved: data['approved'] ?? false,
+      completed: data['completed'] ?? false,
       userId: data['userId'] ?? "",
       jobId: data['jobId'] ?? "",
     );
@@ -37,6 +40,11 @@ class Claim {
   }
 
   Map<String, dynamic> toJson() {
-    return {'jobId': jobId, 'userId': userId, 'approved': approved};
+    return {
+      'jobId': jobId,
+      'userId': userId,
+      'approved': approved,
+      'completed': completed
+    };
   }
 }
