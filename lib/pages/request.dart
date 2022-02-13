@@ -24,13 +24,14 @@ Longer Description
 Document/picture upload?
 Estimated time to complete
 Requestor ID (grab Firebase UID)
+NOPAST
 */
 class _RequestPageState extends State<RequestPage> {
   Job? job;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(backgroundColor: Colors.cyan),
+        appBar: AppBar(backgroundColor: Colors.green),
         body: Container(
           child: Column(
             children: [reqForm()],
@@ -50,7 +51,6 @@ class _reqFormState extends State<reqForm> {
   String requestorId = "";
   int hoursRequired = 0;
   int peopleRequired = 0;
-  String urgency = "";
   Location location = new Location();
   LocationData? locationData;
   DateTime selectedDate = DateTime.now();
@@ -64,101 +64,140 @@ class _reqFormState extends State<reqForm> {
   }
 
   final _formKey = GlobalKey<FormState>();
+  List<String> months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
   Widget build(BuildContext context) {
+    _setPlace(context);
     return Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'Enter Job Title',
-              ),
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return 'enter text';
-                }
-                return null;
-              },
-              onChanged: (value) => setState(() {
-                title = value;
-                print(value);
-              }),
-              inputFormatters: [new LengthLimitingTextInputFormatter(25)],
-            ),
-            TextFormField(
-              minLines: 1,
-              maxLines: 5,
-              keyboardType: TextInputType.multiline,
-              decoration: const InputDecoration(
-                hintText: 'Enter job description',
-              ),
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return 'enter text';
-                }
-                return null;
-              },
-              onChanged: (value) => setState(() {
-                description = value;
-                print(value);
-              }),
-            ),
-            TextFormField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              decoration: const InputDecoration(
-                hintText: 'hours required',
-              ),
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return 'enter number';
-                }
-                return null;
-              },
-              onChanged: (value) =>
-                  setState(() => hoursRequired = int.parse(value)),
-            ),
-            TextFormField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              decoration: const InputDecoration(
-                hintText: 'Enter people required',
-              ),
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return 'enter number';
-                }
-                return null;
-              },
-              onChanged: (value) =>
-                  setState(() => peopleRequired = int.parse(value)),
-            ),
-            Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              ElevatedButton(
-                onPressed: () {
-                  _selectDate(context);
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              child: TextFormField(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter Job Title',
+                ),
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'enter text';
+                  }
+
+                  return null;
                 },
-                child: Text("Choose Date"),
+                onChanged: (value) => setState(() {
+                  title = value;
+                  print(value);
+                }),
+                inputFormatters: [new LengthLimitingTextInputFormatter(25)],
               ),
-              Text("Selected Date: $selectedDate!"),
-            ]),
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'urgency',
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              child: TextFormField(
+                minLines: 1,
+                maxLines: 5,
+                keyboardType: TextInputType.multiline,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter job description',
+                ),
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'enter text';
+                  }
+                  return null;
+                },
+                onChanged: (value) => setState(() {
+                  description = value;
+                  print(value);
+                }),
               ),
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return 'enter text';
-                }
-                return null;
-              },
-              onChanged: (value) => setState(() => urgency = value),
-              inputFormatters: [new LengthLimitingTextInputFormatter(25)],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'hours required',
+                ),
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'enter number';
+                  }
+                  return null;
+                },
+                onChanged: (value) =>
+                    setState(() => hoursRequired = int.parse(value)),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter people required',
+                ),
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'enter number';
+                  }
+                  return null;
+                },
+                onChanged: (value) =>
+                    setState(() => peopleRequired = int.parse(value)),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(children: [
+                      Text("Event Date: "),
+                      SizedBox(
+                        width: 200,
+                        child: InkWell(
+                          child: Center(
+                            child: Text(
+                                '${selectedDate.weekday}, ${months[selectedDate.month - 1]}, ${selectedDate.year}'),
+                          ),
+                          onTap: () => _selectDate(context),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 100,
+                        child: InkWell(
+                          child: Center(
+                              child: Text(
+                                  '${selectedDate.hour} : ${selectedDate.minute}')),
+                          onTap: () => _selectTime(context),
+                        ),
+                      ),
+                    ], mainAxisAlignment: MainAxisAlignment.center),
+                  ]),
             ),
             Padding(
                 padding: const EdgeInsets.only(top: 20.0),
@@ -167,6 +206,7 @@ class _reqFormState extends State<reqForm> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
+                          //in the future set location with map view
                           _setPlace(context);
                           print("set loc");
                         },
@@ -209,12 +249,13 @@ class _reqFormState extends State<reqForm> {
     final DateTime? selected = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(DateTime.now().year),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2025),
     );
     if (selected != null && selected != selectedDate) {
       setState(() {
         selectedDate = selected;
+        dateset = true;
       });
       _selectTime(context);
     }
@@ -238,6 +279,7 @@ class _reqFormState extends State<reqForm> {
 
   _setPlace(BuildContext context) async {
     final LocationData? loc = await location.getLocation();
+
     print('longitude:${loc!.longitude}');
     if (loc != null && locationData != loc) {
       setState(() {
@@ -258,7 +300,7 @@ class _reqFormState extends State<reqForm> {
         requestorId: user?.uid ?? "",
         hoursRequired: hoursRequired,
         peopleRequired: peopleRequired,
-        urgency: urgency,
+        urgency: "",
         appointmentTime: selectedDate,
         location: fireloc);
     await FirebaseFirestore.instance.collection('jobs').add(rjob.toJson());
