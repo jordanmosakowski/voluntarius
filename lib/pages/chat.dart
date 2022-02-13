@@ -112,7 +112,7 @@ class _ChatPageState extends State<ChatPage> {
             children: <Widget>[
               Text(job?.title ?? "",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
             ],
           ),
         ),
@@ -192,8 +192,9 @@ class _ChatPageState extends State<ChatPage> {
                             focusNode: myFocusNode,
                             onSubmitted: (value) {
                               Future.delayed(Duration(milliseconds: 10), () {
-                                UserData userData =
-                                    Provider.of<UserData>(context, listen: false);
+                                UserData userData = Provider.of<UserData>(
+                                    context,
+                                    listen: false);
                                 makeUserMessage(
                                     value, userData.id, userData.name);
                               });
