@@ -60,6 +60,18 @@ class _MyAppState extends State<MyApp> {
 
   Location location = Location();
 
+  late Stream<LocationData>? locationStream;
+
+  @override
+  initState(){
+    super.initState();
+    locationStream = location.onLocationChanged.asBroadcastStream();
+    location.getLocation();
+    locationStream!.listen((LocationData? l){
+      print("location updated ${l?.latitude} ${l?.longitude}");
+    });
+  }
+
 
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -77,53 +89,57 @@ class _MyAppState extends State<MyApp> {
           //       .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
           // ),
         ),
-        home: Scaffold(
-          appBar: AppBar(title: const Text("Voluntarius")),
-          body: Builder(
-            builder: (context) {
-              User? user = Provider.of<User?>(context);
-              if (user == null) {
-                return SignInPage();
-              }
-              Stream<UserData> userData = FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(user.uid)
-                  .snapshots()
-                  .map((snap) => UserData.fromFirestore(snap));
-              return MultiProvider(
-                providers: [
-                  StreamProvider<LocationData>.value(
-                    initialData: LocationData.fromMap({
-                      "latitude": 0, "longitude": 0
-                    }),
-                    value: location.onLocationChanged,
-                  ),
-                  StreamProvider<UserData>.value(
-                      initialData: UserData(
-                          id: "",
-                          name: "",
-                          notificationTokens: [],
-                          averageStars: 0,
-                          numReviews: 0),
-                      value: userData)
+        home: Builder(
+          builder: (context) {
+            User? user = Provider.of<User?>(context);
+            return Scaffold(
+              appBar: AppBar(title: const Text("Voluntarius")),
+              body: Builder(
+                builder: (context) {
+                  if (user == null) {
+                    return SignInPage();
+                  }
+                  Stream<UserData> userData = FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(user.uid)
+                      .snapshots()
+                      .map((snap) => UserData.fromFirestore(snap));
+                  return MultiProvider(
+                    providers: [
+                      StreamProvider<LocationData>.value(
+                        initialData: LocationData.fromMap({
+                          "latitude": 0.0, "longitude": 0.0
+                        }),
+                        value: locationStream,
+                      ),
+                      StreamProvider<UserData>.value(
+                          initialData: UserData(
+                              id: "",
+                              name: "",
+                              notificationTokens: [],
+                              averageStars: 0,
+                              numReviews: 0),
+                          value: userData)
+                    ],
+                    child: _widgetOptions.elementAt(_selectedIndex),
+                  );
+                },
+              ),
+              bottomNavigationBar: user != null ? BottomNavigationBar(
+                items: const <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.map), label: 'Local Jobs'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.list), label: 'Current Jobs'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.account_circle), label: 'Account'),
                 ],
-                child: _widgetOptions.elementAt(_selectedIndex),
-              );
-            },
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.map), label: 'Local Jobs'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.list), label: 'Current Jobs'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.account_circle), label: 'Account'),
-            ],
-            currentIndex: _selectedIndex,
-            selectedItemColor: Colors.green[800],
-            onTap: _onItemTapped,
-          ),
+                currentIndex: _selectedIndex,
+                selectedItemColor: Colors.green[800],
+                onTap: _onItemTapped,
+              ) : null,
+            );
+          }
         ),
       ),
     );
