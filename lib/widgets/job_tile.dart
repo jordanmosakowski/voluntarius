@@ -20,7 +20,7 @@ class JobTile extends StatelessWidget {
     return ListTile(
       tileColor: Colors.green[c],
       title: Text(job.title),
-      subtitle: Text("Distance: " + dist.toString()),
+      subtitle: Text("Distance: " + dist.toString() + " mi"),
       trailing: ElevatedButton(
           onPressed: () {
             showDialog(
@@ -40,7 +40,6 @@ class JobTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(job.description),
           Text("Description: " + job.description),
           Text("Hours Required: " + job.hoursRequired.toString()),
           Text("People Required: " + job.peopleRequired.toString()),
