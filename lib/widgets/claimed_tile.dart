@@ -49,7 +49,7 @@ class ClmTile extends StatelessWidget {
                     // );
                   },
                   icon: Icon(Icons.chat))
-              : null,
+              : Text("Awaiting Approval"),
         ),
       ),
     );

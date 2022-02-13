@@ -202,7 +202,7 @@ class _MapPageState extends State<MapPage> {
                   .add(claim.toJson());
               Navigator.of(context).pop();
             },
-            child: Text("Accept"))
+            child: Text("Apply"))
       ],
     );
   }

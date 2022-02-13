@@ -63,7 +63,7 @@ class JobTile extends StatelessWidget {
                   .add(claim.toJson());
               Navigator.of(context).pop();
             },
-            child: Text("Accept"))
+            child: Text("Apply"))
      
       ],
     );
