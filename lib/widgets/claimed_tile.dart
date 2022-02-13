@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
+import 'package:voluntarius/main.dart';
 import 'package:voluntarius/widgets/text_field.dart';
 
 import '../pages/chat.dart';
@@ -39,10 +40,12 @@ class ClmTile extends StatelessWidget {
           trailing: cl.approved
               ? IconButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ChatPage(j)),
-                    );
+
+                    router.navigateTo(context, "/chat/${j.id}");
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => ChatPage(j)),
+                    // );
                   },
                   icon: Icon(Icons.chat))
               : null,
