@@ -135,89 +135,85 @@ class _ReqTileState extends State<ReqTile> {
           ]),
         ),
         ExpansionTile(
-          // tileColor: Colors.green[widget.c],
-          title: Text("Options"),
-          leading: Icon(Icons.settings),
-           children: [
-          Row(
+            // tileColor: Colors.green[widget.c],
+            title: Text("Options"),
+            leading: Icon(Icons.settings),
             children: [
-             
-              IconButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext) => _buildNestedPopupDialog(
-                          context,
-                          widget.j.title,
-                          widget.j.id,
-                          "title",
-                          widget.j),
-                    );
-                  },
-                  icon: Icon(Icons.edit)),
-                   Text("Title: " + widget.j.title),
-            ],
-          ),
-          Row(
-            children: [
-             
-              IconButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext) => _buildNestedPopupDialog(
-                          context,
-                          widget.j.description,
-                          widget.j.id,
-                          "description",
-                          widget.j),
-                    );
-                  },
-                 icon: Icon(Icons.edit)),
-                   Text("Description: " + widget.j.description),
-            ],
-          ),
-          Row(
-            children: [
-             
-              IconButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext) => _buildNestedPopupDialog(
-                          context,
-                          widget.j.hoursRequired.toString(),
-                          widget.j.id,
-                          "hoursRequired",
-                          widget.j),
-                    );
-                  },
-                  icon: Icon(Icons.edit)),
-                   Text("Hours Required: " + widget.j.hoursRequired.toString()),
-            ],
-          ),
-          Row(
-            children: [
-             
-              IconButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext) => _buildNestedPopupDialog(
-                          context,
-                          widget.j.peopleRequired.toString(),
-                          widget.j.id,
-                          "peopleRequired",
-                          widget.j),
-                    );
-                  },
-                  icon: Icon(Icons.edit)),
-                   Text("People Required: " + widget.j.peopleRequired.toString()),
-            ],
-          ),
-           ]
-        ),
-       ListTile(
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext) => _buildNestedPopupDialog(
+                              context,
+                              widget.j.title,
+                              widget.j.id,
+                              "title",
+                              widget.j),
+                        );
+                      },
+                      icon: Icon(Icons.edit)),
+                  Text("Title: " + widget.j.title),
+                ],
+              ),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext) => _buildNestedPopupDialog(
+                              context,
+                              widget.j.description,
+                              widget.j.id,
+                              "description",
+                              widget.j),
+                        );
+                      },
+                      icon: Icon(Icons.edit)),
+                  Text("Description: " + widget.j.description),
+                ],
+              ),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext) => _buildNestedPopupDialog(
+                              context,
+                              widget.j.hoursRequired.toString(),
+                              widget.j.id,
+                              "hoursRequired",
+                              widget.j),
+                        );
+                      },
+                      icon: Icon(Icons.edit)),
+                  Text("Hours Required: " + widget.j.hoursRequired.toString()),
+                ],
+              ),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext) => _buildNestedPopupDialog(
+                              context,
+                              widget.j.peopleRequired.toString(),
+                              widget.j.id,
+                              "peopleRequired",
+                              widget.j),
+                        );
+                      },
+                      icon: Icon(Icons.edit)),
+                  Text(
+                      "People Required: " + widget.j.peopleRequired.toString()),
+                ],
+              ),
+            ]),
+        ListTile(
           ///CHATTT
           // tileColor: Colors.green[widget.c],
           title: Text("Comptete Job"),
@@ -237,13 +233,11 @@ class _ReqTileState extends State<ReqTile> {
   Widget _buildJobPopupDialog(BuildContext context) {
     return ExpansionTile(
       title: Text("Edit Job"),
-       
-          // ElevatedButton(onPressed: onPressed, child: child)(child: Text("Hours Required: " + j.hoursRequired.toString())),
-          // ElevatedButton(onPressed: onPressed, child: child)(child: Text("People Required: " + j.peopleRequired.toString())),
-          // ElevatedButton(onPressed: onPressed, child: child)(child: Text("Appointment Time: " + j.appointmentTime.toString()))
-      
-      );
-     
+
+      // ElevatedButton(onPressed: onPressed, child: child)(child: Text("Hours Required: " + j.hoursRequired.toString())),
+      // ElevatedButton(onPressed: onPressed, child: child)(child: Text("People Required: " + j.peopleRequired.toString())),
+      // ElevatedButton(onPressed: onPressed, child: child)(child: Text("Appointment Time: " + j.appointmentTime.toString()))
+    );
   }
 
   Widget _buildNestedPopupDialog(
