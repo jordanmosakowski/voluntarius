@@ -32,40 +32,28 @@ class _JobsPageState extends State<JobsPage> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListView(children: [
-        ElevatedButton(
-          child: const Text("Make new request"),
-          onPressed: () {
-            router.navigateTo(context, "/request");
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => const RequestPage()),
-            // );
-          },
+        Align(
+          child: ElevatedButton(
+            child: const Text("Make new request", style: TextStyle(fontSize: 20)),
+            onPressed: () {
+              router.navigateTo(context, "/request");
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => const RequestPage()),
+              // );
+            },
+          ),
         ),
 
-        Divider(
-          height: 20,
-        ),
-        ElevatedButton(
-          child: const Text("Chat"),
-          onPressed: () {
-            router.navigateTo(context, "/chat/allchat");
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => ChatPage(new Job(
-            //           appointmentTime: DateTime.now(),
-            //           description: "a",
-            //           hoursRequired: 1,
-            //           id: "allchat",
-            //           peopleRequired: 1,
-            //           requestorId: "asndaooain",
-            //           title: "all",
-            //           urgency: "now",
-            //           location: GeoFirePoint(0, 0)))),
-            // );
-          },
-        ),
+        // Divider(
+        //   height: 20,
+        // ),
+        // ElevatedButton(
+        //   child: const Text("Chat"),
+        //   onPressed: () {
+        //     router.navigateTo(context, "/chat/allchat");
+        //   },
+        // ),
         const Divider(),
         const Center(
             child: Text("My Requested Jobs",

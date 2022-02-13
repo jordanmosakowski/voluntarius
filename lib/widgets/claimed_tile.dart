@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
 import 'package:voluntarius/main.dart';
@@ -29,6 +30,8 @@ class ClmTile extends StatelessWidget {
         ),
         child: ListTile(
           // tileColor:
+
+          subtitle: Text("Due "+DateFormat.yMMMMd('en_US').add_jm().format(j.appointmentTime)),
           title: Text(j.title),
           onTap: () {
             showDialog(

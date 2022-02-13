@@ -79,43 +79,45 @@ class _ReqTileState extends State<ReqTile> {
           subtitle: Column(children: [
             ...claims.map((Claim claim) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 3.0),
-                  child: Row(children: [
+                  child: Wrap(children: [
                     Text(claim.userData?.name ?? claim.userId),
-                    Icon(Icons.star),
                     Text(
-                        " ${(claim.userData?.averageStars ?? 0).toStringAsFixed(2)} (${claim.userData?.numReviews ?? 0} reviews)"),
+                        "  ★${(claim.userData?.averageStars ?? 0).toStringAsFixed(2)} (${claim.userData?.numReviews ?? 0} reviews)"),
                     Container(width: 10),
-                    if (!claim.approved)
-                      InkWell(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(3),
-                            color: Colors.green,
+                    Row(
+                      // mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (!claim.approved)
+                          InkWell(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(3),
+                                color: Colors.green,
+                              ),
+                              padding: EdgeInsets.all(3.0),
+                              child: Text(
+                                " Approve ",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            onTap: () async {
+                              await FirebaseFirestore.instance
+                                  .collection("claims")
+                                  .doc(claim.id)
+                                  .update({"approved": true});
+                              FirebaseFirestore.instance
+                                  .collection("jobs")
+                                  .doc(claim.jobId)
+                                  .update({
+                                "peopleRequired": widget.j.peopleRequired - 1
+                              });
+                              setState(() {
+                                claim.approved = true;
+                                print("Appoved");
+                              });
+                            },
                           ),
-                          padding: EdgeInsets.all(3.0),
-                          child: Text(
-                            " Approve ",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        onTap: () async {
-                          await FirebaseFirestore.instance
-                              .collection("claims")
-                              .doc(claim.id)
-                              .update({"approved": true});
-                          FirebaseFirestore.instance
-                              .collection("jobs")
-                              .doc(claim.jobId)
-                              .update({
-                            "peopleRequired": widget.j.peopleRequired - 1
-                          });
-                          setState(() {
-                            claim.approved = true;
-                            print("Appoved");
-                          });
-                        },
-                      ),
-                    Padding(
+                      Padding(
                       padding: const EdgeInsets.only(left: 10.0),
                       child: InkWell(
                         child: Container(
@@ -149,6 +151,9 @@ class _ReqTileState extends State<ReqTile> {
                         },
                       ),
                     ),
+                      ],
+                    ),
+                    
                   ]),
                 ))
           ]),

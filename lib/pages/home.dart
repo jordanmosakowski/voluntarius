@@ -114,9 +114,9 @@ class _HomePageState extends State<HomePage> {
                 ? BottomNavigationBar(
                     items: const <BottomNavigationBarItem>[
                       BottomNavigationBarItem(
-                          icon: Icon(Icons.map), label: 'Local Jobs'),
+                          icon: Icon(Icons.map), label: 'Find Jobs'),
                       BottomNavigationBarItem(
-                          icon: Icon(Icons.list), label: 'Current Jobs'),
+                          icon: Icon(Icons.list), label: 'My Jobs'),
                       BottomNavigationBarItem(
                           icon: Icon(Icons.account_circle), label: 'Account'),
                     ],
