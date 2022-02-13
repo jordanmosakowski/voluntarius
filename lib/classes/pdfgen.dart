@@ -12,6 +12,11 @@ Future<Uint8List> generateDocument(PdfPageFormat format) async {
   final font1 = await PdfGoogleFonts.openSansRegular();
   final font2 = await PdfGoogleFonts.openSansBold();
 
+  final logo = pw.MemoryImage(
+    (await rootBundle.load('assets/colortransparentbk.png'))
+        .buffer
+        .asUint8List(),
+  );
   doc.addPage(pw.MultiPage(
       theme: pw.ThemeData.withFont(
         base: font1,
@@ -21,8 +26,26 @@ Future<Uint8List> generateDocument(PdfPageFormat format) async {
       orientation: pw.PageOrientation.portrait,
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       build: (pw.Context context) => <pw.Widget>[
+            pw.Header(
+                level: 0,
+                title: 'Voluntarius Service Hours Report',
+                child: pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: <pw.Widget>[
+                      pw.Text('Voluntarius Service Hours Report',
+                          textScaleFactor: 2),
+                      pw.Container(
+                          alignment: pw.Alignment.centerRight,
+                          child: pw.Image(logo),
+                          width: 60,
+                          height: 60)
+                    ])),
+            pw.Paragraph(
+                text: 'Service hours report generated ' +
+                    DateTime.now().toString()),
+            pw.Paragraph(text: 'Total Hours: 100'),
             pw.Table.fromTextArray(context: context, data: const <List<String>>[
-              <String>['Date', 'PDF Version', 'Acrobat Version'],
+              <String>['Hours', 'Volunteer Title', 'Hours Distributed By'],
               <String>['1993', 'PDF 1.0', 'Acrobat 1'],
               <String>['1994', 'PDF 1.1', 'Acrobat 2'],
               <String>['1996', 'PDF 1.2', 'Acrobat 3'],
