@@ -70,7 +70,7 @@ class ReqTile extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext) => _buildNestedPopupDialog(
-                          context, j.description, j.id, "hoursRequired"),
+                          context, j.hoursRequired, j.id, "hoursRequired"),
                     );
                   },
                   child: Icon(Icons.edit)),
@@ -84,7 +84,7 @@ class ReqTile extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext) => _buildNestedPopupDialog(
-                          context, j.description, j.id, "peopleRequired"),
+                          context, j.peopleRequired, j.id, "peopleRequired"),
                     );
                   },
                   child: Icon(Icons.edit)),
