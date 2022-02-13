@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:voluntarius/classes/claim.dart';
@@ -8,7 +9,7 @@ import 'package:voluntarius/classes/user.dart';
 
 import 'info.dart';
 
-class JobTile extends StatelessWidget {
+class JobTile extends StatefulWidget {
   const JobTile({
     Key? key,
     required this.onTap,
@@ -22,6 +23,32 @@ class JobTile extends StatelessWidget {
   final double dist;
   final VoidCallback onTap;
   final VoidCallback openPopup;
+
+  @override
+  State<JobTile> createState() => _JobTileState();
+}
+
+class _JobTileState extends State<JobTile> {
+  String? image = null;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadImage();
+  }
+
+  Future<void> loadImage() async{
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('users').doc(widget.job.requestorId).get();
+    if (snapshot.exists && (snapshot.data() as Map<String,dynamic>)['hasProfilePic'] == true){
+      String url = await FirebaseStorage.instance
+        .ref('pictures/${widget.job.requestorId}')
+        .getDownloadURL();
+        setState(() => image = url);
+    }
+  
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -29,44 +56,30 @@ class JobTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Colors.green[c],
+            color: Colors.green[widget.c],
           ),
         child: ListTile(
-          onTap: onTap,
-          title: Text(job.title),
-          subtitle: Text("Distance: " + dist.toString() + " km"),
+          leading: Container(
+            width: 40.0,
+            height: 40.0,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: (image!=null) ? NetworkImage(
+                        image!
+                      ) : (AssetImage("assets/defaultProfile.png") as ImageProvider)
+                ),
+            ),
+          ),
+          onTap: widget.onTap,
+          title: Text(widget.job.title),
+          subtitle: Text("Distance: " + widget.dist.toString() + " km"),
           trailing: ElevatedButton(
-              onPressed: openPopup,
+              onPressed: widget.openPopup,
               child: Text("More Info")),
         ),
       ),
     );
-  }
-
-  Widget _buildPopupDialog(BuildContext context) {
-    User? userData = Provider.of<User?>(context);
-    return AlertDialog(
-      title: Text(job.title),
-      content: info( j: job,),
-      actions: [
-        TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text("Done")),
-        ElevatedButton(
-            onPressed: () async {
-              Claim claim = Claim(
-                  id: "", jobId: job.id, userId: userData!.uid, approved: false, completed: false);
-              await FirebaseFirestore.instance
-                  .collection("claims")
-                  .add(claim.toJson());
-              Navigator.of(context).pop();
-            },
-            child: Text("Apply"))
-     
-      ],
-    );
-    
   }
 }

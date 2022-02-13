@@ -6,9 +6,11 @@ class UserData {
   double averageStars;
   int numReviews;
   String name;
+  bool hasProfilePic;
 
   UserData(
       {required this.id,
+      required this.hasProfilePic,
       required this.name,
       required this.notificationTokens,
       required this.averageStars,
@@ -18,10 +20,11 @@ class UserData {
     Map<String,dynamic> data = snap.data() as Map<String, dynamic>;
     return UserData(
       id: snap.id,
-      name: data['name'],
+      hasProfilePic: data['hasProfilePic'] ?? false,
+      name: data['name'] ?? "",
       notificationTokens: data['notificationTokens'].cast<String>(),
-      averageStars: data['averageStars'].toDouble(),
-      numReviews: data['numReviews']
+      averageStars: data['averageStars'].toDouble() ?? 0.0,
+      numReviews: data['numReviews'] ?? 0.0
     );
   }
 
@@ -31,6 +34,7 @@ class UserData {
       'averageStars': averageStars,
       'numReviews': numReviews,
       "name": name,
+      "hasProfilePic": hasProfilePic
     };
   }
 }

@@ -35,6 +35,7 @@ class _SignInPageState extends State<SignInPage> {
           .collection("users")
           .doc(user!.uid)
           .set(UserData(
+            hasProfilePic: false,
             id: user.uid,
             averageStars: 0,
             notificationTokens: [if (token != null) token],
