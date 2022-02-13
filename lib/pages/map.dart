@@ -84,54 +84,40 @@ class _MapPageState extends State<MapPage> {
                     }).where((j) => !j.completed && j.peopleRequired!=0 && j.requestorId != user.uid).toList()))
       ],
       child: Builder(builder: (context) {
+        double width = MediaQuery.of(context).size.width;
         List<Job> jobs = Provider.of<List<Job>>(context);
-        return Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GoogleMap(
-                  initialCameraPosition:
-                      CameraPosition(target: _initialcameraposition, zoom: 15),
-                  // markers: {
-                  //   const Marker(
-                  //     markerId: MarkerId("SCDI"),
-                  //     position: LatLng(37.3490496, -121.9388039),
-
-                  //   )
-                  // },
-                  markers: jobs
-                      .map((job) => Marker(
-                          onTap: () {
-                            print("Complete");
-                            int index = jobs.indexOf(job);
-                            print(_scrollController.position.maxScrollExtent);
-                            double position =
-                                _scrollController.position.maxScrollExtent /
-                                    jobs.length;
-                            _scrollController.animateTo(
-                              position * index,
-                              duration: Duration(milliseconds: 500),
-                              curve: Curves.fastOutSlowIn,
-                            );
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext) =>
-                                  _buildPopupDialog(context, job),
-                            );
-                          },
-                          markerId: MarkerId(job.id),
-                          position: LatLng(
-                              job.location.latitude, job.location.longitude)))
-                      .toSet(),
-                  mapType: MapType.normal,
-                  onMapCreated: _onMapCreated,
-                  myLocationEnabled: true,
-                ),
-              ),
-            ),
-            Expanded(
-                child: ListView(
+        Widget map = GoogleMap(
+          initialCameraPosition:
+              CameraPosition(target: _initialcameraposition, zoom: 15),
+          markers: jobs
+              .map((job) => Marker(
+                  onTap: () {
+                    print("Complete");
+                    int index = jobs.indexOf(job);
+                    print(_scrollController.position.maxScrollExtent);
+                    double position =
+                        _scrollController.position.maxScrollExtent /
+                            jobs.length;
+                    _scrollController.animateTo(
+                      position * index,
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.fastOutSlowIn,
+                    );
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext) =>
+                          _buildPopupDialog(context, job),
+                    );
+                  },
+                  markerId: MarkerId(job.id),
+                  position: LatLng(
+                      job.location.latitude, job.location.longitude)))
+              .toSet(),
+          mapType: MapType.normal,
+          onMapCreated: _onMapCreated,
+          myLocationEnabled: true,
+        );
+        Widget list = ListView(
               controller: _scrollController,
               padding: const EdgeInsets.all(8.0),
               children: [
@@ -155,7 +141,31 @@ class _MapPageState extends State<MapPage> {
                         ),
                   )
               ],
-            ))
+        );
+        if(width> 600){
+          return Row(
+          children: [
+            Expanded(
+              flex: 4,
+              child: list
+            ),
+            Expanded(
+              flex: 6,
+              child: map
+            ),
+          ],
+        );
+        }
+        return Column(
+          children: [
+            Expanded(
+              flex: 6,
+              child: map
+            ),
+            Expanded(
+              flex: 4,
+              child: list
+            )
           ],
         );
       }),
