@@ -92,7 +92,16 @@ class _ChatPageState extends State<ChatPage> {
                 .map((snap) => UserData.fromFirestore(snap)))
       ],
       child: Scaffold(
-        appBar: AppBar(title: const Text("Voluntarius")),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Row(
+            children: <Widget>[
+              Text("title",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40)),
+            ],
+          ),
+        ),
         body: Stack(
           children: <Widget>[
             Builder(

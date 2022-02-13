@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
@@ -37,5 +38,7 @@ Future<Uint8List> generateDocument(PdfPageFormat format) async {
               <String>['2017', 'PDF 2.0', 'Acrobat DC'],
             ]),
           ]));
-  return await doc.save();
+  return doc.save();
+  // final file = File('example.pdf');
+  // await file.writeAsBytes(await doc.save());
 }

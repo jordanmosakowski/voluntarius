@@ -6,6 +6,8 @@ import 'package:voluntarius/pages/chat.dart';
 import 'package:voluntarius/pages/request.dart';
 import 'package:voluntarius/widgets/requests_tile.dart';
 
+import '../widgets/claimed_tile.dart';
+
 class JobsPage extends StatefulWidget {
   const JobsPage({Key? key}) : super(key: key);
 
@@ -16,10 +18,10 @@ class JobsPage extends StatefulWidget {
 class _JobsPageState extends State<JobsPage> {
   @override
   Widget build(BuildContext context) {
-    List<Job> jobs = Provider.of<List<Job>>(context); 
+    List<Job> jobs = Provider.of<List<Job>>(context);
     List<Claim> claims = Provider.of<List<Claim>>(context);
-    for(Claim c in claims){
-      if(c.job==null){
+    for (Claim c in claims) {
+      if (c.job == null) {
         c.getJob().then((a) => setState(() {}));
       }
     }
@@ -43,20 +45,22 @@ class _JobsPageState extends State<JobsPage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ChatPage("test1")),
+              MaterialPageRoute(builder: (context) => const ChatPage("test2")),
             );
           },
         ),
-        Divider(),
-        Center(child: Text("My Requested Jobs", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30))),
-        for (int i = 0; i < jobs.length; i++) ReqTile(c: 500, j: jobs[i]),
-        Divider(),
-        Center(child: Text("My Claimed Jobs", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30))),
+        const Divider(),
+        const Center(
+            child: Text("My Requested Jobs",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30))),
+        for (int i = 0; i < jobs.length; i++) ReqTile(c: 100, j: jobs[i]),
+        const Divider(),
+        const Center(
+            child: Text("My Claimed Jobs",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30))),
 
         for (int i = 0; i < claims.length; i++)
-          if(claims[i].job!=null)
-            ReqTile(c: 500, j: claims[i].job!),
-        
+          if (claims[i].job != null) ClmTile(c: 100, j: claims[i].job!),
 
         // Expanded(
         //       child: ListView(

@@ -18,18 +18,26 @@ class JobTile extends StatelessWidget {
   final double dist;
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      tileColor: Colors.green[c],
-      title: Text(job.title),
-      subtitle: Text("Distance: " + dist.toString() + " mi"),
-      trailing: ElevatedButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext) => _buildPopupDialog(context),
-            );
-          },
-          child: Text("More Info")),
+    return Padding(
+      padding: const EdgeInsets.all(3.0),
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.green[c],
+          ),
+        child: ListTile(
+          title: Text(job.title),
+          subtitle: Text("Distance: " + dist.toString() + " km"),
+          trailing: ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext) => _buildPopupDialog(context),
+                );
+              },
+              child: Text("More Info")),
+        ),
+      ),
     );
   }
 
