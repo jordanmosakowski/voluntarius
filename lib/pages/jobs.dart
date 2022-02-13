@@ -39,7 +39,12 @@ class _JobsPageState extends State<JobsPage> {
             );
           },
         ),
-        for (int i = 0; i < jobs.length; i++) ReqTile(c: 500, j: jobs[i])
+        Divider(),
+        Center(child: Text("My Requested Jobs", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30))),
+        for (int i = 0; i < jobs.length; i++) ReqTile(c: 500, j: jobs[i]),
+        Divider(),
+        Center(child: Text("My Claimed Jobs", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30))),
+        
         // Expanded(
         //       child: ListView(
         //     padding: const EdgeInsets.all(8),

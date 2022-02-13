@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/user.dart';
 import 'package:voluntarius/firebase_options.dart';
 import 'package:voluntarius/pages/home.dart';
@@ -85,10 +86,10 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.green,
-          textTheme: GoogleFonts.poppinsTextTheme(
-            Theme.of(context)
-                .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
-          ),
+          // textTheme: GoogleFonts.poppinsTextTheme(
+          //   Theme.of(context)
+          //       .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
+          // ),
         ),
         home: Builder(builder: (context) {
           User? user = Provider.of<User?>(context);
@@ -133,6 +134,15 @@ class _MyAppState extends State<MyApp> {
                             .snapshots()
                             .map((snap) => snap.docs
                                 .map((doc) => Job.fromFirestore(doc))
+                                .toList())),
+                    StreamProvider<List<Claim>>.value(
+                        initialData: [],
+                        value: FirebaseFirestore.instance
+                            .collection("claims")
+                            .where("userId", isEqualTo: user.uid)
+                            .snapshots()
+                            .map((snap) => snap.docs
+                                .map((doc) => Claim.fromFirestore(doc, true))
                                 .toList()))
                   ],
                   child: _widgetOptions.elementAt(_selectedIndex),
