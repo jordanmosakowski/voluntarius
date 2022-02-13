@@ -9,6 +9,7 @@ import 'package:voluntarius/classes/user.dart';
 import 'package:voluntarius/firebase_options.dart';
 import 'package:voluntarius/pages/home.dart';
 import 'package:voluntarius/pages/chat.dart';
+import 'package:voluntarius/pages/info.dart';
 import 'package:voluntarius/pages/jobs.dart';
 import 'package:voluntarius/pages/map.dart';
 import 'package:voluntarius/pages/profile.dart';
@@ -26,6 +27,9 @@ void main() async {
   Handler chatHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
     return ChatPage(params["id"][0]);
   });
+  Handler infoHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+    return InfoPage(params["id"][0]);
+  });
   Handler homeHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
     return HomePage();
   });
@@ -36,6 +40,11 @@ void main() async {
   router.define("/", handler: homeHandler);
   router.define("/request", handler: requestHandler);
   router.define("/chat/:id", handler: chatHandler);
+  router.define("/info/:id", handler: infoHandler);
+  router.notFoundHandler = Handler(
+        handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return HomePage();
+    });
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

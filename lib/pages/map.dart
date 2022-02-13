@@ -9,6 +9,7 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
+import 'package:voluntarius/widgets/info.dart';
 import 'package:voluntarius/widgets/job_tile.dart';
 
 class MapPage extends StatefulWidget {
@@ -32,17 +33,6 @@ class _MapPageState extends State<MapPage> {
       print(l.longitude);
     });
   }
-
-  List<String> jobs = ["Pylons", "Barrel Roll", "The Way", "a", "b", "c", "d"];
-  List<String> descs = [
-    "You must construct additional pylons",
-    "Do a Barrel Roll",
-    "Do you know da wae?",
-    "a",
-    "b",
-    "c",
-    "d"
-  ];
 
   void clickTile(Job job) {
     _controller.animateCamera(
@@ -173,16 +163,7 @@ class _MapPageState extends State<MapPage> {
     User? userData = Provider.of<User?>(context, listen: false);
     return AlertDialog(
       title: Text(job.title),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text("Description: " + job.description),
-          Text("Hours Required: " + job.hoursRequired.toString()),
-          Text("People Required: " + job.peopleRequired.toString()),
-          Text("Appointment Time: " + job.appointmentTime.toString())
-        ],
-      ),
+      content: info(j: job,),
       actions: [
         TextButton(
             onPressed: () {
@@ -202,7 +183,7 @@ class _MapPageState extends State<MapPage> {
                   .add(claim.toJson());
               Navigator.of(context).pop();
             },
-            child: Text("Accept"))
+            child: Text("Apply"))
       ],
     );
   }
