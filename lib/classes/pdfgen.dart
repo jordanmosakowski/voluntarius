@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -33,8 +35,10 @@ Future<Uint8List> generateDocument(
     if (claims[i].completed) {
       await claims[i].getJob();
       data.add([
-        claims[i].job?.title ?? "",
-        claims[i].job?.appointmentTime.toString() ?? "",
+        claims[i].job!.title,
+        DateFormat.yMMMMd('en_US')
+            .add_jm()
+            .format(claims[i].job!.appointmentTime),
         claims[i].hours.toString()
       ]);
       totalHours += claims[i].hours ?? 0;
