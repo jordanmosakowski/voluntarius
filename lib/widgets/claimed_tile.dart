@@ -6,6 +6,7 @@ import 'package:voluntarius/main.dart';
 import 'package:voluntarius/widgets/text_field.dart';
 
 import '../pages/chat.dart';
+import 'info.dart';
 
 class ClmTile extends StatelessWidget {
   const ClmTile({
@@ -56,16 +57,7 @@ class ClmTile extends StatelessWidget {
    Widget _buildPopupDialog(BuildContext context, Job job) {
     return AlertDialog(
       title: Text(job.title),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text("Description: " + job.description),
-          Text("Hours Required: " + job.hoursRequired.toString()),
-          Text("People Required: " + job.peopleRequired.toString()),
-          Text("Appointment Time: " + job.appointmentTime.toString())
-        ],
-      ),
+      content:info(j: job),
       actions: [
         TextButton(
             onPressed: () {

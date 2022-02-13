@@ -6,6 +6,8 @@ import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
 import 'package:voluntarius/classes/user.dart';
 
+import 'info.dart';
+
 class JobTile extends StatelessWidget {
   const JobTile({
     Key? key,
@@ -45,16 +47,7 @@ class JobTile extends StatelessWidget {
     User? userData = Provider.of<User?>(context);
     return AlertDialog(
       title: Text(job.title),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text("Description: " + job.description),
-          Text("Hours Required: " + job.hoursRequired.toString()),
-          Text("People Required: " + job.peopleRequired.toString()),
-          Text("Appointment Time: " + job.appointmentTime.toString())
-        ],
-      ),
+      content: info( j: job,),
       actions: [
         TextButton(
             onPressed: () {
@@ -71,7 +64,9 @@ class JobTile extends StatelessWidget {
               Navigator.of(context).pop();
             },
             child: Text("Accept"))
+     
       ],
     );
+    
   }
 }
