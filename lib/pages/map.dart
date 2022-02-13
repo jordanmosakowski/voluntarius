@@ -107,7 +107,7 @@ class _MapPageState extends State<MapPage> {
                   for(int i=0; i<jobs.length; i++)
                     JobTile(
                       c: (min(i,7)+1) * 100,
-                      Job: jobs[i].title, dist: jobs[i].location.distance(lat: location.latitude ?? 0, lng: location.longitude ?? 0,), desc: jobs[i].description,
+                      j: jobs[i], dist: jobs[i].location.distance(lat: location.latitude ?? 0, lng: location.longitude ?? 0,),
                     )
                 ],
               )
