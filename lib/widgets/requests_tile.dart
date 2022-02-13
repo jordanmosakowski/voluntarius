@@ -34,9 +34,12 @@ class _ReqTileState extends State<ReqTile> {
         .collection("claims")
         .where("jobId", isEqualTo: widget.j.id)
         .get();
-    setState(() {
-      claims = query.docs.map((doc) => Claim.fromFirestore(doc)).toList();
-    });
+        if(mounted){
+          setState(() {
+            claims = query.docs.map((doc) => Claim.fromFirestore(doc)).toList();
+          });
+
+        }
     for (int i = 0; i < claims.length; i++) {
       UserData data = UserData.fromFirestore(await FirebaseFirestore.instance
           .collection("users")
