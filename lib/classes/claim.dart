@@ -10,6 +10,7 @@ class Claim {
   Job? job;
   UserData? userData;
   String id;
+  double? hours;
 
   Claim(
       {required this.id,
@@ -17,6 +18,7 @@ class Claim {
       required this.userId,
       required this.approved,
       required this.completed,
+      this.hours,
       this.job});
 
   static Claim fromFirestore(DocumentSnapshot snap) {
@@ -44,7 +46,8 @@ class Claim {
       'jobId': jobId,
       'userId': userId,
       'approved': approved,
-      'completed': completed
+      'completed': completed,
+      'hours': hours
     };
   }
 }
