@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
@@ -44,7 +45,9 @@ class _JobTileState extends State<JobTile> {
       String url = await FirebaseStorage.instance
         .ref('pictures/${widget.job.requestorId}')
         .getDownloadURL();
-        setState(() => image = url);
+        if(mounted){
+          setState(() => image = url);
+        }
     }
   
   }
@@ -74,7 +77,8 @@ class _JobTileState extends State<JobTile> {
           ),
           onTap: widget.onTap,
           title: Text(widget.job.title),
-          subtitle: Text("Distance: " + widget.dist.toString() + " km"),
+          // subtitle: Text("Distance: " + widget.dist.toString() + " km"),
+          subtitle: Text("Due "+DateFormat.yMMMMd('en_US').add_jm().format(widget.job.appointmentTime)),
           trailing: ElevatedButton(
               onPressed: widget.openPopup,
               child: Text("More Info")),

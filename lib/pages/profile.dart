@@ -58,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
     if(image==null && userData.hasProfilePic){
       FirebaseStorage.instance
         .ref('pictures/${userData.id}')
-        .getDownloadURL().then((a) => setState(() => image = a));
+        .getDownloadURL().then((a){ if(mounted) setState(() => image = a);});
     }
     return Padding(
       padding: const EdgeInsets.all(8.0),
