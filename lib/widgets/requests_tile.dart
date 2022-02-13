@@ -44,7 +44,9 @@ class _ReqTileState extends State<ReqTile> {
           .get());
       claims[i].userData = data;
     }
-    setState(() {});
+    if(mounted){
+      setState(() {});
+    }
   }
 
   @override
