@@ -99,3 +99,7 @@ class _MyAppState extends State<MyApp> {
           //       .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
           // ),
         ),
+      )
+    );
+  }
+}
