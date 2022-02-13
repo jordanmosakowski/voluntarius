@@ -1,31 +1,34 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatMessage {
+  String id;
   String messageContent;
-  String userID;
+  String userId;
   DateTime timeStamp;
-  String jobID;
+  String jobId;
   ChatMessage(
-      {required this.messageContent,
-      required this.userID,
+      {this.id = "",
+      required this.messageContent,
+      required this.userId,
       required this.timeStamp,
-      required this.jobID});
+      required this.jobId});
 
   static ChatMessage fromFirestore(DocumentSnapshot snap) {
     Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
     return ChatMessage(
+        id: snap.id,
         messageContent: data["messageContent"] ?? "",
-        userID: data["userID"] ?? "",
-        timeStamp: data["timeStamp"],
-        jobID: data["jobID"] ?? "");
+        userId: data["userId"] ?? "",
+        timeStamp: data["timeStamp"].toDate(),
+        jobId: data["jobId"] ?? "");
   }
 
   Map<String, dynamic> toJson() {
     return {
       "messageContent": messageContent,
-      "userID": userID,
+      "userId": userId,
       "timeStamp": timeStamp,
-      "jobID": jobID
+      "jobId": jobId
     };
   }
 }
