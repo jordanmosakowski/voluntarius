@@ -26,7 +26,6 @@ class JobTile extends StatelessWidget {
             color: Colors.green[c],
           ),
         child: ListTile(
-          tileColor: Colors.green[c],
           title: Text(job.title),
           subtitle: Text("Distance: " + dist.toString() + " mi"),
           trailing: ElevatedButton(
