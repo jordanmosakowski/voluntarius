@@ -11,9 +11,11 @@ class ClmTile extends StatelessWidget {
     Key? key,
     required this.c,
     required this.j,
+    required this.cl,
   }) : super(key: key);
   final int c;
   final Job j;
+  final Claim cl;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,14 +28,16 @@ class ClmTile extends StatelessWidget {
         child: ListTile(
           // tileColor: 
           title: Text(j.title),
-          trailing: IconButton(
+         
+          trailing: cl.approved ?  IconButton(
               onPressed: () {
                 Navigator.push(
               context,
               MaterialPageRoute(builder: (context) =>  ChatPage(j.id)),
             );
               },
-              icon: Icon(Icons.chat)),
+              
+              icon: Icon(Icons.chat)) : null,
         ),
       ),
     );
