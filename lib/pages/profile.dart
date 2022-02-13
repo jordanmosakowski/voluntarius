@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
 import 'package:provider/provider.dart';
+import 'package:voluntarius/classes/pdfgen.dart';
 import 'package:voluntarius/classes/user.dart';
 
 import '../widgets/text_field.dart';
@@ -49,6 +53,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 )
               ),
             ],
+          ),
+          Center(
+            child: ElevatedButton(
+              child: Text("Print PDF"),
+              onPressed: () async{
+                if(!kIsWeb){
+                  Printing.sharePdf(bytes: await generateDocument(PdfPageFormat.letter), filename: 'my-document.pdf');
+                }
+                else{
+                  Printing.layoutPdf(onLayout: (PdfPageFormat format) => generateDocument(format));
+                }
+              },
+            ),
           ),
           Center(
             child: ElevatedButton(
