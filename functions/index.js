@@ -41,3 +41,61 @@ exports.processClaim = functions.firestore
             }
         }
     });
+
+exports.processChat = functions.firestore
+.document('messages/{id}')
+.onCreate(async(snap, context) => {
+    const newValue = snap.data();
+    const userId = newValue.userId;
+    const jobId = newValue.jobId;
+    const claimsRef = db.collection('claims').doc(jobId);
+    const claim = await claimsRef.get();
+
+    if (!claim.exists){
+        console.log('Claim not found');
+    }else{
+        const user = job.data().userId;
+        const requestorId = job.data().requestorId;
+        const approved = job.data().approved;
+
+        if(approved && user!=userId){
+            console.log(user.data().notificationTokens.toString());
+            const message = {
+                data: {
+                    title: 'New Message in '+job.data().title,
+                    body: 'Click to view new messages'
+                },
+                notification: {
+                    title: 'New Message in '+job.data().title,
+                    body: 'Click to view new messages'
+                },
+                tokens: user.data().notificationTokens
+            };
+    
+            admin.messaging().sendMulticast(message)
+            .then((response) => {
+                console.log(response.successCount+" messages sent succesfully");
+            })
+        }
+
+        if(userId != requestorId){
+            console.log(requestorId.data().notificationTokens.toString());
+            const message = {
+                data: {
+                    title: 'New Message in '+job.data().title,
+                    body: 'Click to view new messages'
+                },
+                notification: {
+                    title: 'New Message in '+job.data().title,
+                    body: 'Click to view new messages'
+                },
+                tokens: user.data().notificationTokens
+            };
+    
+            admin.messaging().sendMulticast(message)
+            .then((response) => {
+                console.log(response.successCount+" messages sent succesfully");
+            })
+        }
+    }
+});
