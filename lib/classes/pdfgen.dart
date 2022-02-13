@@ -34,15 +34,22 @@ Future<Uint8List> generateDocument(
   for (int i = 0; i < claims.length; i++) {
     if (claims[i].completed) {
       await claims[i].getJob();
-      data.add([
-        claims[i].job!.title,
-        DateFormat.yMMMMd('en_US')
-            .add_jm()
-            .format(claims[i].job?.appointmentTime ?? DateTime.now()),
-        claims[i].hours.toString()
-      ]);
-      totalHours += claims[i].hours ?? 0;
     }
+  }
+  claims = claims.where((claim) => claim.job!=null).toList();
+
+  //sort claims by job time
+  claims.sort((a, b) => a.job!.appointmentTime.compareTo(b.job!.appointmentTime));
+
+  for(int i=0; i<claims.length; i++){
+    data.add([
+      claims[i].job!.title,
+      DateFormat.yMMMMd('en_US')
+          .add_jm()
+          .format(claims[i].job?.appointmentTime ?? DateTime.now()),
+      claims[i].hours.toString()
+    ]);
+    totalHours += claims[i].hours ?? 0;
   }
 
   final logo = pw.MemoryImage(
