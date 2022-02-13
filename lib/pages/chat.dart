@@ -110,34 +110,29 @@ class _ChatPageState extends State<ChatPage> {
                           color: Colors.black54,
                           fontSize: 24.0,
                         ),
-                        border: InputBorder.none,
-                      ),
-                      style: TextStyle(
-                        fontSize: 24.0,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  FloatingActionButton(
-                    onPressed: () {
-                      makeUserMessage(temporaryString);
-                    },
-                    child: Icon(
-                      Icons.send,
-                      color: Colors.white,
-                      size: 18,
+                    SizedBox(
+                      width: 15,
                     ),
-                    backgroundColor: Colors.green,
-                    elevation: 0,
-                  ),
-                ],
+                    FloatingActionButton(
+                      onPressed: () {
+                        makeUserMessage(temporaryString);
+                      },
+                      child: Icon(
+                        Icons.send,
+                        color: Colors.white,
+                        size: 18,
+                      ),
+                      backgroundColor: Colors.green,
+                      elevation: 0,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
   }
 }

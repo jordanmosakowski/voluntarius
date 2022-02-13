@@ -7,6 +7,7 @@ import 'package:voluntarius/classes/user.dart';
 import 'package:voluntarius/firebase_options.dart';
 import 'package:voluntarius/pages/home.dart';
 import 'package:voluntarius/pages/chat.dart';
+import 'package:voluntarius/pages/jobs.dart';
 import 'package:voluntarius/pages/map.dart';
 import 'package:voluntarius/pages/profile.dart';
 import 'package:voluntarius/pages/request.dart';
@@ -43,18 +44,19 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
-  int _selectedIndex =0;
+  int _selectedIndex = 0;
   @override
   static const List<Widget> _widgetOptions = <Widget>[
     MapPage(),
-    ChatPage(),
+    JobsPage(),
     ProfilePage(),
   ];
-  void _onItemTapped(int index){
+  void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex=index;
+      _selectedIndex = index;
     });
   }
+
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
@@ -67,45 +69,51 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primarySwatch: Colors.green,
           textTheme: GoogleFonts.poppinsTextTheme(
-            Theme.of(context).textTheme, // If this is not set, then ThemeData.light().textTheme is used.
+            Theme.of(context)
+                .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
           ),
         ),
         home: Scaffold(
-            appBar: AppBar(title: const Text("Voluntarius")),
-            body: Builder(
-              builder: (context) {
-                User? user = Provider.of<User?>(context);
-                if (user == null) {
-                  return SignInPage();
-                }
-                Stream<UserData> userData = FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(user.uid)
-                    .snapshots()
-                    .map((snap) => UserData.fromFirestore(snap));
+          appBar: AppBar(title: const Text("Voluntarius")),
+          body: Builder(
+            builder: (context) {
+              User? user = Provider.of<User?>(context);
+              if (user == null) {
+                return SignInPage();
+              }
+              Stream<UserData> userData = FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(user.uid)
+                  .snapshots()
+                  .map((snap) => UserData.fromFirestore(snap));
               return MultiProvider(
                 providers: [
-                  StreamProvider<UserData>.value(initialData: UserData(
-                    id: "", name: "", 
-                    notificationTokens: [], 
-                    averageStars: 0, 
-                    numReviews: 0), value: userData)
+                  StreamProvider<UserData>.value(
+                      initialData: UserData(
+                          id: "",
+                          name: "",
+                          notificationTokens: [],
+                          averageStars: 0,
+                          numReviews: 0),
+                      value: userData)
                 ],
                 child: _widgetOptions.elementAt(_selectedIndex),
-                );
+              );
             },
           ),
-          bottomNavigationBar: BottomNavigationBar(items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Local Jobs'),
-           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Current Jobs'),
-            BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Account'),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.green[800],
-          onTap: _onItemTapped,
-          
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.map), label: 'Local Jobs'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.list), label: 'Current Jobs'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.account_circle), label: 'Account'),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.green[800],
+            onTap: _onItemTapped,
           ),
-
         ),
       ),
     );
