@@ -93,14 +93,17 @@ class _ProfilePageState extends State<ProfilePage> {
                           : null,
                     ),
                   ),
-                ElevatedButton.icon(
-                    onPressed: uploadImage,
-                    icon: Icon(Icons.upload,
-                        color: userData.hasProfilePic
-                            ? Colors.white
-                            : Colors.black,
-                        size: 30),
-                    label: Text("Upload Profile Picture")),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton.icon(
+                      onPressed: uploadImage,
+                      icon: Icon(Icons.upload,
+                          color: userData.hasProfilePic
+                              ? Colors.white
+                              : Colors.black,
+                          size: 30),
+                      label: Text("Upload Profile Picture")),
+                ),
               ],
             ),
           ),
@@ -130,29 +133,41 @@ class _ProfilePageState extends State<ProfilePage> {
                   style: TextStyle(fontSize: 17)),
             ],
           ),
-          Center(
-            child: ElevatedButton(
-              child: Text("Print PDF"),
-              onPressed: () async {
-                if (!kIsWeb) {
-                  Printing.sharePdf(
-                      bytes: await generateDocument(
-                          PdfPageFormat.letter, userData),
-                      filename: 'my-document.pdf');
-                } else {
-                  Printing.layoutPdf(
-                      onLayout: (PdfPageFormat format) =>
-                          generateDocument(format, userData));
-                }
-              },
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: ElevatedButton(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Print Volunteer Hours"),
+                ),
+                onPressed: () async {
+                  if (!kIsWeb) {
+                    Printing.sharePdf(
+                        bytes: await generateDocument(
+                            PdfPageFormat.letter, userData),
+                        filename: 'my-document.pdf');
+                  } else {
+                    Printing.layoutPdf(
+                        onLayout: (PdfPageFormat format) =>
+                            generateDocument(format, userData));
+                  }
+                },
+              ),
             ),
           ),
-          Center(
-              child: ElevatedButton(
-                  onPressed: () {
-                    FirebaseAuth.instance.signOut();
-                  },
-                  child: Text("Sign Out")))
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+                child: ElevatedButton(
+                    onPressed: () {
+                      FirebaseAuth.instance.signOut();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Sign Out"),
+                    ))),
+          )
         ],
       ),
     );

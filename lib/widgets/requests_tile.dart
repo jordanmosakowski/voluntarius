@@ -81,45 +81,47 @@ class _ReqTileState extends State<ReqTile> {
                   padding: const EdgeInsets.symmetric(vertical: 3.0),
                   child: Wrap(children: [
                     Text(claim.userData?.name ?? claim.userId),
+                    Container(width: 5),
+                    Icon(Icons.star,size: 15),
                     Text(
-                        "  ★${(claim.userData?.averageStars ?? 0).toStringAsFixed(2)} (${claim.userData?.numReviews ?? 0} reviews)"),
+                        "${(claim.userData?.averageStars ?? 0).toStringAsFixed(2)} (${claim.userData?.numReviews ?? 0} reviews)"),
                     Container(width: 10),
                     Row(
-                      // mainAxisSize: MainAxisSize.min,
                       children: [
                         if (!claim.approved)
-                          InkWell(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(3),
-                                color: Colors.green,
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: InkWell(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
+                                  color: Colors.green,
+                                ),
+                                padding: EdgeInsets.all(3.0),
+                                child: Text(
+                                  " Approve ",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
-                              padding: EdgeInsets.all(3.0),
-                              child: Text(
-                                " Approve ",
-                                style: TextStyle(color: Colors.white),
-                              ),
+                              onTap: () async {
+                                await FirebaseFirestore.instance
+                                    .collection("claims")
+                                    .doc(claim.id)
+                                    .update({"approved": true});
+                                FirebaseFirestore.instance
+                                    .collection("jobs")
+                                    .doc(claim.jobId)
+                                    .update({
+                                  "peopleRequired": widget.j.peopleRequired - 1
+                                });
+                                setState(() {
+                                  claim.approved = true;
+                                  print("Appoved");
+                                });
+                              },
                             ),
-                            onTap: () async {
-                              await FirebaseFirestore.instance
-                                  .collection("claims")
-                                  .doc(claim.id)
-                                  .update({"approved": true});
-                              FirebaseFirestore.instance
-                                  .collection("jobs")
-                                  .doc(claim.jobId)
-                                  .update({
-                                "peopleRequired": widget.j.peopleRequired - 1
-                              });
-                              setState(() {
-                                claim.approved = true;
-                                print("Appoved");
-                              });
-                            },
                           ),
-                      Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: InkWell(
+                      InkWell(
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(3),
@@ -150,7 +152,6 @@ class _ReqTileState extends State<ReqTile> {
                           });
                         },
                       ),
-                    ),
                       ],
                     ),
                     

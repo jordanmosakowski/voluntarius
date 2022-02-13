@@ -101,7 +101,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
         StreamProvider<LocationData>.value(
           initialData: LocationData.fromMap(
-              {"latitude": 0.0, "longitude": 0.0}),
+              {"latitude": 37.34759885104362, "longitude": -121.93787108112451}),
           value: locationStream,
         ),
         StreamProvider<User?>.value(
