@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
+import 'package:voluntarius/classes/user.dart';
+import 'package:voluntarius/pages/chat.dart';
 import 'package:voluntarius/widgets/text_field.dart';
 
-class ReqTile extends StatelessWidget {
+class ReqTile extends StatefulWidget {
   const ReqTile({
     Key? key,
     required this.c,
@@ -11,28 +14,70 @@ class ReqTile extends StatelessWidget {
   }) : super(key: key);
   final int c;
   final Job j;
+
+  @override
+  _ReqTileState createState() => _ReqTileState();
+}
+
+class _ReqTileState extends State<ReqTile> {
+  @override
+  void initState() {
+    super.initState();
+    loadVolunteers();
+  }
+
+  List<UserData> userData = [];
+
+  Future<void> loadVolunteers() async {
+    QuerySnapshot query = await FirebaseFirestore.instance
+        .collection("claims")
+        .where("jobId", isEqualTo: widget.j.id)
+        .get();
+    List<Claim> claims =
+        query.docs.map((doc) => Claim.fromFirestore(doc)).toList();
+    for (int i = 0; i < claims.length; i++) {
+      UserData data = UserData.fromFirestore(await FirebaseFirestore.instance
+          .collection("users")
+          .doc(claims[i].userId)
+          .get());
+      userData.add(data);
+    }
+    setState(() {
+      print(userData.map((u) => u.name).join("\n"));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(3.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.green[c],
+    return ExpansionTile(
+      title: Text(widget.j.title),
+      children: <Widget>[
+        //dropdowns
+        ListTile(
+          ///CHATTT
+          // tileColor: Colors.green[widget.c],
+          title: Text("Chat"),
+
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChatPage(widget.j.id)),
+            );
+          },
         ),
-        child: ListTile(
-          // tileColor: 
-          title: Text(j.title),
-          trailing: ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext) => _buildJobPopupDialog(context),
-                );
-              },
-              child: Text("Options")),
+        ListTile(
+          //chat!!
+          // tileColor: Colors.green[widget.c],
+          title: Text("Volunteers"),
+          // isThreeLine: true,
+          subtitle: Text(userData.map((d) => d.name).join("\n")),
         ),
-      ),
+        ListTile(
+          // tileColor: Colors.green[widget.c],
+          title: Text("Options"),
+          onTap: () => _buildJobPopupDialog(context),
+        )
+      ],
     );
   }
 
@@ -45,45 +90,53 @@ class ReqTile extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text("Title: " + j.title),
-              ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext) => _buildNestedPopupDialog(
-                          context, j.title, j.id, "title", j),
-                    );
-                  },
-                  child: Icon(Icons.edit)),
-            ],
-          ),
-          Row(
-            children: [
-              Text("Description: " + j.description),
-              ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext) => _buildNestedPopupDialog(
-                          context, j.description, j.id, "description", j),
-                    );
-                  },
-                  child: Icon(Icons.edit)),
-            ],
-          ),
-          Row(
-            children: [
-              Text("Hours Required: " + j.hoursRequired.toString()),
+              Text("Title: " + widget.j.title),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext) => _buildNestedPopupDialog(
                           context,
-                          j.hoursRequired.toString(),
-                          j.id,
+                          widget.j.title,
+                          widget.j.id,
+                          "title",
+                          widget.j),
+                    );
+                  },
+                  child: Icon(Icons.edit)),
+            ],
+          ),
+          Row(
+            children: [
+              Text("Description: " + widget.j.description),
+              ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext) => _buildNestedPopupDialog(
+                          context,
+                          widget.j.description,
+                          widget.j.id,
+                          "description",
+                          widget.j),
+                    );
+                  },
+                  child: Icon(Icons.edit)),
+            ],
+          ),
+          Row(
+            children: [
+              Text("Hours Required: " + widget.j.hoursRequired.toString()),
+              ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext) => _buildNestedPopupDialog(
+                          context,
+                          widget.j.hoursRequired.toString(),
+                          widget.j.id,
                           "hoursRequired",
-                          j),
+                          widget.j),
                     );
                   },
                   child: Icon(Icons.edit)),
@@ -91,17 +144,17 @@ class ReqTile extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("People Required: " + j.peopleRequired.toString()),
+              Text("People Required: " + widget.j.peopleRequired.toString()),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext) => _buildNestedPopupDialog(
                           context,
-                          j.peopleRequired.toString(),
-                          j.id,
+                          widget.j.peopleRequired.toString(),
+                          widget.j.id,
                           "peopleRequired",
-                          j),
+                          widget.j),
                     );
                   },
                   child: Icon(Icons.edit)),
