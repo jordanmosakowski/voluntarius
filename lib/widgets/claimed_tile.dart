@@ -26,23 +26,22 @@ class ClmTile extends StatelessWidget {
           color: Colors.green[c],
         ),
         child: ListTile(
-          // tileColor: 
+          // tileColor:
           title: Text(j.title),
-         
-          trailing: cl.approved ?  IconButton(
-              onPressed: () {
-                Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) =>  ChatPage(j.id)),
-            );
-              },
-              
-              icon: Icon(Icons.chat)) : null,
+
+          trailing: cl.approved
+              ? IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ChatPage(j, j.title)),
+                    );
+                  },
+                  icon: Icon(Icons.chat))
+              : null,
         ),
       ),
     );
   }
-
- 
-  }
-
+}
