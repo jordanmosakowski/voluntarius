@@ -24,8 +24,8 @@ exports.processClaim = functions.firestore
             for(i=0; i<tokens.length(); i++)
                 const message = {
                     data: {
-                        title: 'Claim accepted',
-                        body: 'Someone accepted your job request!'
+                        title: 'Someone Accepted',
+                        body: 'Click to view respondants'
                     },
                     token: tokens[i]
                 };
