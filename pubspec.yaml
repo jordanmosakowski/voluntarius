@@ -45,10 +45,19 @@ dependencies:
   firebase_messaging_web: ^2.2.7
   google_fonts: ^2.3.1
   firebase_messaging: ^11.2.6
+  pdf: ^3.7.1
+  printing: ^5.7.2
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.9.2"
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/whitecolorbk.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
