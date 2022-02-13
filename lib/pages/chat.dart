@@ -95,6 +95,7 @@ class _ChatPageState extends State<ChatPage> {
             initialData: UserData(
                 id: "",
                 name: "",
+                hasProfilePic: false,
                 notificationTokens: [],
                 averageStars: 0,
                 numReviews: 0),

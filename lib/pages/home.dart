@@ -82,6 +82,7 @@ class _HomePageState extends State<HomePage> {
                             name: "",
                             notificationTokens: [],
                             averageStars: 0,
+                            hasProfilePic: false,
                             numReviews: 0),
                         value: userData),
                     StreamProvider<List<Job>>.value(

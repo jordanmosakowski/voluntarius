@@ -82,7 +82,7 @@ class _ReqTileState extends State<ReqTile> {
                   child: Row(children: [
                     Text(claim.userData?.name ?? claim.userId),
                     Icon(Icons.star),
-                    Text(" ${claim.userData?.averageStars ?? 0} (${claim.userData?.numReviews ?? 0} reviews)"),
+                    Text(" ${(claim.userData?.averageStars ?? 0).toStringAsFixed(2)} (${claim.userData?.numReviews ?? 0} reviews)"),
                     Container(width: 10),
                     if (!claim.approved)
                       InkWell(
