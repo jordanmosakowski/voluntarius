@@ -20,6 +20,7 @@ class _ChatPageState extends State<ChatPage> {
   // List<ChatMessage> messages = [];
 
   final fieldText = TextEditingController();
+  final ScrollController _controller = ScrollController();
   var temporaryString = " ";
   var myFocusNode = FocusNode();
   var myUserID = "12345"; // GET USER ID!!!!
@@ -45,6 +46,22 @@ class _ChatPageState extends State<ChatPage> {
     temporaryString = value;
   }
 
+  @override
+  void initState() {
+    super.initState();
+    stream.listen((a) {
+      Future.delayed(Duration(milliseconds: 50), () {
+        if (_controller.hasClients) {
+          _controller.animateTo(
+            _controller.position.maxScrollExtent,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.fastOutSlowIn,
+          );
+        }
+      });
+    });
+  }
+
   makeFriendMessage(String input) {
     setState(() {
       // messages.add(ChatMessage(
@@ -55,23 +72,24 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
+  Stream<List<ChatMessage>> stream = FirebaseFirestore.instance
+      .collection("messages")
+      .where("jobId", isEqualTo: "test")
+      .orderBy("timeStamp")
+      .snapshots()
+      .map((snap) =>
+          snap.docs.map((doc) => ChatMessage.fromFirestore(doc)).toList())
+      .asBroadcastStream();
+
   @override
   Widget build(BuildContext context) {
     User? userData = Provider.of<User?>(context);
     return MultiProvider(
       providers: [
-        StreamProvider<List<ChatMessage>>.value(
-            initialData: [],
-            value: FirebaseFirestore.instance
-                .collection("messages")
-                .where("jobId", isEqualTo: "test")
-                .orderBy("timeStamp")
-                .snapshots()
-                .map((snap) => snap.docs
-                    .map((doc) => ChatMessage.fromFirestore(doc))
-                    .toList()))
+        StreamProvider<List<ChatMessage>>.value(initialData: [], value: stream)
       ],
       child: Scaffold(
+        appBar: AppBar(title: const Text("Voluntarius")),
         body: Stack(
           children: <Widget>[
             Builder(
@@ -80,6 +98,7 @@ class _ChatPageState extends State<ChatPage> {
                     Provider.of<List<ChatMessage>>(context);
                 print(messages.length);
                 return ListView.builder(
+                  controller: _controller,
                   itemCount: messages.length,
                   shrinkWrap: true,
                   padding: EdgeInsets.only(top: 10, bottom: 60),
@@ -94,7 +113,7 @@ class _ChatPageState extends State<ChatPage> {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(25),
-                            color: (messages[index].userId != userData!.uid
+                            color: (messages[index].userId != userData.uid
                                 ? Colors.grey.shade200
                                 : Colors.green[200]),
                           ),
@@ -125,6 +144,9 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                     Expanded(
                       child: TextField(
+                        style: TextStyle(
+                          fontSize: 24,
+                        ),
                         expands: false,
                         autofocus: true,
                         controller: fieldText,
