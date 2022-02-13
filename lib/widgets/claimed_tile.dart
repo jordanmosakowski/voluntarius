@@ -28,6 +28,13 @@ class ClmTile extends StatelessWidget {
         child: ListTile(
           // tileColor:
           title: Text(j.title),
+          onTap: (){
+            showDialog(
+                        context: context,
+                        builder: (BuildContext) =>
+                            _buildPopupDialog(context, j),
+                      );
+          },
 
           trailing: cl.approved
               ? IconButton(
@@ -43,4 +50,26 @@ class ClmTile extends StatelessWidget {
       ),
     );
   }
+   Widget _buildPopupDialog(BuildContext context, Job job) {
+    return AlertDialog(
+      title: Text(job.title),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("Description: " + job.description),
+          Text("Hours Required: " + job.hoursRequired.toString()),
+          Text("People Required: " + job.peopleRequired.toString()),
+          Text("Appointment Time: " + job.appointmentTime.toString())
+        ],
+      ),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("Done")),
+      ]
+    );
+   }
 }
