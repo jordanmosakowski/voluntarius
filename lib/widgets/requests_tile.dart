@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
 import 'package:voluntarius/classes/user.dart';
+import 'package:voluntarius/main.dart';
 import 'package:voluntarius/pages/chat.dart';
 import 'package:voluntarius/widgets/text_field.dart';
 
@@ -60,10 +61,11 @@ class _ReqTileState extends State<ReqTile> {
           leading: Icon(Icons.chat),
 
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ChatPage(widget.j)),
-            );
+            router.navigateTo(context, "/chat/${widget.j.id}");
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => ChatPage(widget.j)),
+            // );
           },
         ),
         ListTile(
@@ -96,9 +98,14 @@ class _ReqTileState extends State<ReqTile> {
                               .collection("claims")
                               .doc(claim.id)
                               .update({"approved": true});
+                              FirebaseFirestore.instance
+                              .collection("jobs")
+                              .doc(claim.jobId)
+                              .update({"peopleRequired": widget.j.peopleRequired-1});
                           setState(() {
                             claim.approved = true;
                             print("Appoved");
+                            
                           });
                         },
                       ),
@@ -121,6 +128,11 @@ class _ReqTileState extends State<ReqTile> {
                               .collection("claims")
                               .doc(claim.id)
                               .delete();
+                              if(claim.approved){
+                               FirebaseFirestore.instance
+                              .collection("jobs")
+                              .doc(claim.jobId)
+                              .update({"peopleRequired": widget.j.peopleRequired+1});}
                           setState(() {
                             claims.remove(claim);
                             print("Removed");

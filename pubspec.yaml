@@ -47,6 +47,13 @@ dependencies:
   firebase_messaging: ^11.2.6
   printing: ^5.7.2
   pdf: ^3.7.1
+  intl: ^0.17.0
+  firebase_dynamic_links: ^4.0.6
+  fluro: ^2.0.3
+  url_strategy: ^0.2.0
+  share_plus: ^3.0.4
+  share_plus_web: ^2.0.4
+  url_launcher_web: ^2.0.8
 
 dev_dependencies:
   flutter_launcher_icons: "^0.9.2"
