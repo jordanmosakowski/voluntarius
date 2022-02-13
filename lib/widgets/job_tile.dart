@@ -41,6 +41,10 @@ class JobTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(job.description),
+          Text("Description: " + job.description),
+          Text("Hours Required: " + job.hoursRequired.toString()),
+          Text("People Required: " + job.peopleRequired.toString()),
+          Text("Appointment Time: " + job.appointmentTime.toString())
         ],
       ),
       actions: [
