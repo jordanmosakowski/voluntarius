@@ -68,10 +68,10 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.green,
-          textTheme: GoogleFonts.poppinsTextTheme(
-            Theme.of(context)
-                .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
-          ),
+          // textTheme: GoogleFonts.poppinsTextTheme(
+          //   Theme.of(context)
+          //       .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
+          // ),
         ),
         home: Scaffold(
           appBar: AppBar(title: const Text("Voluntarius")),
