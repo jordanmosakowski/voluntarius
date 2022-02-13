@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
 import 'package:voluntarius/classes/user.dart';
+import 'package:voluntarius/main.dart';
 import 'package:voluntarius/pages/chat.dart';
 import 'package:voluntarius/widgets/text_field.dart';
 
@@ -60,10 +61,11 @@ class _ReqTileState extends State<ReqTile> {
           leading: Icon(Icons.chat),
 
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ChatPage(widget.j)),
-            );
+            router.navigateTo(context, "/chat/${widget.j.id}");
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => ChatPage(widget.j)),
+            // );
           },
         ),
         ListTile(

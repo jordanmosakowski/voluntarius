@@ -5,11 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
 import 'package:voluntarius/widgets/job_tile.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -84,7 +86,7 @@ class _MapPageState extends State<MapPage> {
                       latitude: location.latitude ?? 0,
                       longitude: location.longitude ?? 0,
                     ),
-                    radius: 10,
+                    radius: 50,
                     field: "location")
                 .map((docs) => docs.map((snap) {
                       return Job.fromFirestore(snap);
@@ -180,7 +182,8 @@ class _MapPageState extends State<MapPage> {
           Text("Description: " + job.description),
           Text("Hours Required: " + job.hoursRequired.toString()),
           Text("People Required: " + job.peopleRequired.toString()),
-          Text("Appointment Time: " + job.appointmentTime.toString())
+          Text("Appointment Time: " +
+              DateFormat.yMMMMd('en_US').add_jm().format(job.appointmentTime))
         ],
       ),
       actions: [
@@ -202,7 +205,7 @@ class _MapPageState extends State<MapPage> {
                   .add(claim.toJson());
               Navigator.of(context).pop();
             },
-            child: Text("Accept"))
+            child: Text("Apply"))
       ],
     );
   }

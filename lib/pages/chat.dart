@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:voluntarius/classes/job.dart';
@@ -11,8 +10,8 @@ import 'package:voluntarius/classes/user.dart';
 import '../classes/chatMessagesModel.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage(this._job, {Key? key}) : super(key: key);
-  final Job _job;
+  const ChatPage(this.jobId, {Key? key}) : super(key: key);
+  final String jobId;
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -33,7 +32,7 @@ class _ChatPageState extends State<ChatPage> {
             userId: uid,
             userName: name,
             timeStamp: DateTime.now(),
-            jobId: widget._job.id,
+            jobId: widget.jobId,
           ).toJson());
       fieldText.clear();
       temporaryString = "";
@@ -50,7 +49,7 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
     stream = FirebaseFirestore.instance
         .collection("messages")
-        .where("jobId", isEqualTo: widget._job.id)
+        .where("jobId", isEqualTo: widget.jobId)
         .orderBy("timeStamp")
         .snapshots()
         .map((snap) =>
@@ -67,9 +66,19 @@ class _ChatPageState extends State<ChatPage> {
         }
       });
     });
+    //Load job
+    FirebaseFirestore.instance.collection('jobs').doc(widget.jobId).get().then((doc) {
+      if (doc.exists) {
+        setState(() {
+          job = Job.fromFirestore(doc);
+        });
+      }
+    });
   }
 
   late Stream<List<ChatMessage>> stream;
+
+  Job? job;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +104,7 @@ class _ChatPageState extends State<ChatPage> {
           centerTitle: true,
           title: Row(
             children: <Widget>[
-              Text(widget._job.title,
+              Text(job?.title ?? "",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40)),
             ],
@@ -127,8 +136,7 @@ class _ChatPageState extends State<ChatPage> {
                           children: [
                             if (messages[index].userId != userData.id)
                               Text(
-                                "  " + messages[index].userName,
-                              ),
+                                  "   ${messages[index].userName}       ${messages[index].timeStamp.hour}: ${messages[index].timeStamp.minute}"),
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
