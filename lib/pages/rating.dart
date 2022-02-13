@@ -62,6 +62,9 @@ class _RatingPageState extends State<RatingPage> {
         "hours": (double.tryParse(hours[i].text) ?? 0) + 1,
         "completed": true,
       });
+      await FirebaseFirestore.instance.collection("jobs").doc(widget.j.id).update({
+        "completed": true,
+      });
     }
     Navigator.pop(context);
   }
@@ -78,15 +81,6 @@ class _RatingPageState extends State<RatingPage> {
             Column(
               children: [
                 Text(claims[j].userData?.name ?? "", style: TextStyle(fontSize: 20)),
-                TextField(
-                  controller: hours[j],
-                  decoration: InputDecoration(
-                    labelText: "Hours",
-                    hintText: "Hours",
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center, 
                   children: [
@@ -105,6 +99,16 @@ class _RatingPageState extends State<RatingPage> {
                         alignment: Alignment.center,
                       )
                     ]),
+                TextField(
+                  controller: hours[j],
+                  decoration: InputDecoration(
+                    labelText: "Hours",
+                    hintText: "Hours",
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                ),
+                Divider(),
               ],
             ),
           ElevatedButton(
