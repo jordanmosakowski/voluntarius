@@ -33,8 +33,7 @@ class _RequestPageState extends State<RequestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(backgroundColor: Colors.green),
-        body: SafeArea(child: reqForm())
-    );
+        body: SafeArea(child: reqForm()));
   }
 }
 
@@ -54,6 +53,7 @@ class _reqFormState extends State<reqForm> {
   TimeOfDay selectedTime = TimeOfDay.now();
   GeoFirePoint? fireloc;
   bool dateset = false, locset = false;
+  String legibleAdr = "";
   init() {
     super.initState();
     // _setPlace(context);
@@ -62,20 +62,7 @@ class _reqFormState extends State<reqForm> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  List<String> months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ];
+
   Widget build(BuildContext context) {
     LocationData locationData = Provider.of<LocationData>(context);
     return Form(
@@ -170,38 +157,50 @@ class _reqFormState extends State<reqForm> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                Text("Approx. Date and Time: ", style: TextStyle(fontSize: 18),),
-                Row(children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1.0),
-                      borderRadius: BorderRadius.circular(5.0),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Approx. Date and Time: ",
+                      style: TextStyle(fontSize: 18),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-                    child: InkWell(
-                      child: Text(
-                          '${DateFormat.yMMMMd('en_US').format(selectedDate)}', style: TextStyle(fontSize: 18),),
-                      onTap: () => _selectDate(context),
-                    ),
-                  ),
-                  Container(width: 30),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1.0),
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-                    child: InkWell(
-                      child: Center(
-                          child: Text(
-                              '${DateFormat.jm().format(selectedDate)}', style: TextStyle(fontSize: 18),)),
-                      onTap: () => _selectTime(context),
-                    ),
-                  ),
-                ],)
-              ], mainAxisAlignment: MainAxisAlignment.center),
+                    Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 16),
+                          child: InkWell(
+                            child: Text(
+                              '${DateFormat.yMMMMd('en_US').format(selectedDate)}',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            onTap: () => _selectDate(context),
+                          ),
+                        ),
+                        Container(width: 30),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 16),
+                          child: InkWell(
+                            child: Center(
+                                child: Text(
+                              '${DateFormat.jm().format(selectedDate)}',
+                              style: TextStyle(fontSize: 18),
+                            )),
+                            onTap: () => _selectTime(context),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.center),
             ),
             // Padding(
             //     padding: const EdgeInsets.only(top: 20.0),
@@ -223,7 +222,7 @@ class _reqFormState extends State<reqForm> {
             Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       ElevatedButton(
@@ -293,9 +292,26 @@ class _reqFormState extends State<reqForm> {
     // }
   }
 
+  // _getAddr(BuildContext context) async {
+  //   try {
+  //     List<Placemark> placemarks = await placemarkFromCoordinates(
+  //         locationData.latitude, locationData.longitude);
+
+  //     Placemark place = placemarks[0];
+
+  //     setState(() {
+  //       legibleAdr =
+  //           "${place.locality}, ${place.postalCode}, ${place.country}";
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
   _makeJob(BuildContext context) async {
     User? user = Provider.of<User?>(context, listen: false);
-    LocationData locationData = Provider.of<LocationData>(context,listen: false);
+    LocationData locationData =
+        Provider.of<LocationData>(context, listen: false);
     final fireloc =
         GeoFirePoint(locationData.latitude ?? 0, locationData.longitude ?? 0);
     final Job rjob = Job(
