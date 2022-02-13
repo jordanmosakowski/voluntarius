@@ -301,7 +301,7 @@ class _reqFormState extends State<reqForm> {
         requestorId: user?.uid ?? "",
         hoursRequired: hoursRequired,
         peopleRequired: peopleRequired,
-        urgency: "",
+        completed: false,
         appointmentTime: selectedDate,
         location: fireloc);
     await FirebaseFirestore.instance.collection('jobs').add(rjob.toJson());

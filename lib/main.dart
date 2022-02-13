@@ -51,9 +51,9 @@ void main() async {
     });
 
   WidgetsFlutterBinding.ensureInitialized();
-  if(!kIsWeb){
-    final PendingDynamicLinkData? initialLink = await FirebaseDynamicLinks.instance.getInitialLink();
-  }
+  // if(!kIsWeb){
+  //   final PendingDynamicLinkData? initialLink = await FirebaseDynamicLinks.instance.getInitialLink();
+  // }
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

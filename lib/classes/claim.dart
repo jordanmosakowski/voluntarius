@@ -29,6 +29,7 @@ class Claim {
       completed: data['completed'] ?? false,
       userId: data['userId'] ?? "",
       jobId: data['jobId'] ?? "",
+      hours: (data['hours'] ?? 0).toDouble(),
     );
     // print(newClaim.jobId);
     return newClaim;

@@ -33,11 +33,11 @@ Future<Uint8List> generateDocument(
     if (claims[i].completed) {
       await claims[i].getJob();
       data.add([
-        claims[i].job!.title,
-        claims[i].job!.appointmentTime.toString(),
+        claims[i].job?.title ?? "",
+        claims[i].job?.appointmentTime.toString() ?? "",
         claims[i].hours.toString()
       ]);
-      totalHours += claims[i].hours!;
+      totalHours += claims[i].hours ?? 0;
     }
   }
 
