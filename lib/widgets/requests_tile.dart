@@ -50,12 +50,14 @@ class _ReqTileState extends State<ReqTile> {
   Widget build(BuildContext context) {
     return ExpansionTile(
       title: Text(widget.j.title),
+      subtitle: Text(widget.j.description),
       children: <Widget>[
         //dropdowns
         ListTile(
           ///CHATTT
           // tileColor: Colors.green[widget.c],
           title: Text("Chat"),
+          leading: Icon(Icons.chat),
 
           onTap: () {
             Navigator.push(
@@ -68,6 +70,7 @@ class _ReqTileState extends State<ReqTile> {
           //chat!!
           // tileColor: Colors.green[widget.c],
           title: Text("Volunteers"),
+          leading: Icon(Icons.person),
           // isThreeLine: true,
           subtitle: Column(children: [
             ...claims.map((Claim claim) => Padding(
@@ -129,26 +132,15 @@ class _ReqTileState extends State<ReqTile> {
                 ))
           ]),
         ),
-        ListTile(
+        ExpansionTile(
           // tileColor: Colors.green[widget.c],
           title: Text("Options"),
-          onTap: () => _buildJobPopupDialog(context),
-        )
-      ],
-    );
-  }
-
-  Widget _buildJobPopupDialog(BuildContext context) {
-    return AlertDialog(
-      title: Text("Edit Job"),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+          leading: Icon(Icons.settings),
+           children: [
           Row(
             children: [
-              Text("Title: " + widget.j.title),
-              ElevatedButton(
+             
+              IconButton(
                   onPressed: () {
                     showDialog(
                       context: context,
@@ -160,13 +152,14 @@ class _ReqTileState extends State<ReqTile> {
                           widget.j),
                     );
                   },
-                  child: Icon(Icons.edit)),
+                  icon: Icon(Icons.edit)),
+                   Text("Title: " + widget.j.title),
             ],
           ),
           Row(
             children: [
-              Text("Description: " + widget.j.description),
-              ElevatedButton(
+             
+              IconButton(
                   onPressed: () {
                     showDialog(
                       context: context,
@@ -178,13 +171,14 @@ class _ReqTileState extends State<ReqTile> {
                           widget.j),
                     );
                   },
-                  child: Icon(Icons.edit)),
+                 icon: Icon(Icons.edit)),
+                   Text("Description: " + widget.j.description),
             ],
           ),
           Row(
             children: [
-              Text("Hours Required: " + widget.j.hoursRequired.toString()),
-              ElevatedButton(
+             
+              IconButton(
                   onPressed: () {
                     showDialog(
                       context: context,
@@ -196,13 +190,14 @@ class _ReqTileState extends State<ReqTile> {
                           widget.j),
                     );
                   },
-                  child: Icon(Icons.edit)),
+                  icon: Icon(Icons.edit)),
+                   Text("Hours Required: " + widget.j.hoursRequired.toString()),
             ],
           ),
           Row(
             children: [
-              Text("People Required: " + widget.j.peopleRequired.toString()),
-              ElevatedButton(
+             
+              IconButton(
                   onPressed: () {
                     showDialog(
                       context: context,
@@ -214,23 +209,39 @@ class _ReqTileState extends State<ReqTile> {
                           widget.j),
                     );
                   },
-                  child: Icon(Icons.edit)),
+                  icon: Icon(Icons.edit)),
+                   Text("People Required: " + widget.j.peopleRequired.toString()),
             ],
           ),
+           ]
+        ),
+       ListTile(
+          ///CHATTT
+          // tileColor: Colors.green[widget.c],
+          title: Text("Comptete Job"),
+          leading: Icon(Icons.check_box),
 
+          onTap: () {
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => completePage;),
+            // );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildJobPopupDialog(BuildContext context) {
+    return ExpansionTile(
+      title: Text("Edit Job"),
+       
           // ElevatedButton(onPressed: onPressed, child: child)(child: Text("Hours Required: " + j.hoursRequired.toString())),
           // ElevatedButton(onPressed: onPressed, child: child)(child: Text("People Required: " + j.peopleRequired.toString())),
           // ElevatedButton(onPressed: onPressed, child: child)(child: Text("Appointment Time: " + j.appointmentTime.toString()))
-        ],
-      ),
-      actions: [
-        TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text("Done"))
-      ],
-    );
+      
+      );
+     
   }
 
   Widget _buildNestedPopupDialog(
@@ -265,7 +276,6 @@ class _ReqTileState extends State<ReqTile> {
                     ? double.tryParse(nameController.text)
                     : nameController.text
               });
-              Navigator.of(context).pop();
               Navigator.of(context).pop();
 
               ///sdiufgsd9ugfiu
