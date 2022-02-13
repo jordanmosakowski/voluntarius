@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:voluntarius/classes/claim.dart';
@@ -12,6 +13,7 @@ import 'package:voluntarius/pages/chat.dart';
 import 'package:voluntarius/pages/jobs.dart';
 import 'package:voluntarius/pages/map.dart';
 import 'package:voluntarius/pages/profile.dart';
+import 'package:voluntarius/pages/rating.dart';
 import 'package:voluntarius/pages/request.dart';
 import 'package:voluntarius/pages/sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -105,7 +107,12 @@ class _MyAppState extends State<MyApp> {
             body: Builder(
               builder: (context) {
                 if (user == null) {
-                  return SignInPage();
+                  return RatingPage(
+                    j: FirebaseFirestore.instance
+                        .collection("jobs")
+                        .doc("Iw90V2jN4MO9fQxH0jm1")
+                        .get(),
+                  );
                 }
                 Stream<UserData> userData = FirebaseFirestore.instance
                     .collection('users')
