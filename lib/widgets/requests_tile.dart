@@ -13,17 +13,26 @@ class ReqTile extends StatelessWidget {
   final Job j;
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      tileColor: Colors.green[c],
-      title: Text(j.title),
-      trailing: ElevatedButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext) => _buildJobPopupDialog(context),
-            );
-          },
-          child: Text("Options")),
+    return Padding(
+      padding: const EdgeInsets.all(3.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.green[c],
+        ),
+        child: ListTile(
+          // tileColor: 
+          title: Text(j.title),
+          trailing: ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext) => _buildJobPopupDialog(context),
+                );
+              },
+              child: Text("Options")),
+        ),
+      ),
     );
   }
 
@@ -36,13 +45,13 @@ class ReqTile extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text("title"),
+              Text("Title: " + j.title),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext) => _buildNestedPopupDialog(
-                          context, j.title, j.id, "title"),
+                          context, j.title, j.id, "title", j),
                     );
                   },
                   child: Icon(Icons.edit)),
@@ -50,13 +59,13 @@ class ReqTile extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("description"),
+              Text("Description: " + j.description),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext) => _buildNestedPopupDialog(
-                          context, j.description, j.id, "description"),
+                          context, j.description, j.id, "description", j),
                     );
                   },
                   child: Icon(Icons.edit)),
@@ -64,13 +73,17 @@ class ReqTile extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("description"),
+              Text("Hours Required: " + j.hoursRequired.toString()),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext) => _buildNestedPopupDialog(
-                          context, j.description, j.id, "hoursRequired"),
+                          context,
+                          j.hoursRequired.toString(),
+                          j.id,
+                          "hoursRequired",
+                          j),
                     );
                   },
                   child: Icon(Icons.edit)),
@@ -78,13 +91,17 @@ class ReqTile extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("description"),
+              Text("People Required: " + j.peopleRequired.toString()),
               ElevatedButton(
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext) => _buildNestedPopupDialog(
-                          context, j.description, j.id, "peopleRequired"),
+                          context,
+                          j.peopleRequired.toString(),
+                          j.id,
+                          "peopleRequired",
+                          j),
                     );
                   },
                   child: Icon(Icons.edit)),
@@ -107,11 +124,11 @@ class ReqTile extends StatelessWidget {
   }
 
   Widget _buildNestedPopupDialog(
-      BuildContext context, String fieldval, String jid, String prop) {
+      BuildContext context, String fieldval, String jid, String prop, Job _j) {
     final nameController = TextEditingController(text: fieldval);
 
     return AlertDialog(
-      title: Text('Enter New ${prop}'),
+      title: Text('Enter New ${prop[0].toUpperCase()}${prop.substring(1)}'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -133,8 +150,15 @@ class ReqTile extends StatelessWidget {
               await FirebaseFirestore.instance
                   .collection("jobs")
                   .doc(jid)
-                  .update({"${prop}": nameController.text});
+                  .update({
+                "${prop}": (double.tryParse(nameController.text) != null)
+                    ? double.tryParse(nameController.text)
+                    : nameController.text
+              });
               Navigator.of(context).pop();
+              Navigator.of(context).pop();
+
+              ///sdiufgsd9ugfiu
             },
             child: const Text("Submit")),
       ],
