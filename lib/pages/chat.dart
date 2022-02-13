@@ -10,7 +10,9 @@ import 'package:voluntarius/classes/user.dart';
 import '../classes/chatMessagesModel.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+  const ChatPage(this.jobId, {Key? key}) : super(key: key);
+
+  final String jobId;
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -20,21 +22,20 @@ class _ChatPageState extends State<ChatPage> {
   // List<ChatMessage> messages = [];
 
   final fieldText = TextEditingController();
+  final ScrollController _controller = ScrollController();
   var temporaryString = " ";
   var myFocusNode = FocusNode();
   var myUserID = "12345"; // GET USER ID!!!!
 
-  void makeUserMessage(String a, String uid) {
+  void makeUserMessage(String a, String uid, String name) {
     if (a != "") {
       FirebaseFirestore.instance.collection('messages').add(ChatMessage(
             messageContent: a,
             userId: uid,
+            userName: name,
             timeStamp: DateTime.now(),
-            jobId: 'test',
+            jobId: widget.jobId,
           ).toJson());
-      // setState(() {
-      //   messages.add(ChatMessage(messageContent: a, userID: myUserID));
-      // });
       fieldText.clear();
       temporaryString = "";
     }
@@ -45,41 +46,63 @@ class _ChatPageState extends State<ChatPage> {
     temporaryString = value;
   }
 
-  makeFriendMessage(String input) {
-    setState(() {
-      // messages.add(ChatMessage(
-      //     messageContent: input,
-      //     userId: "INCOMING USER ID!!!!!",
-      //     jobId: '',
-      //     timeStamp: DateTime.now())); //GET SENDER ID
+  @override
+  void initState() {
+    super.initState();
+    stream = FirebaseFirestore.instance
+        .collection("messages")
+        .where("jobId", isEqualTo: widget.jobId)
+        .orderBy("timeStamp")
+        .snapshots()
+        .map((snap) =>
+            snap.docs.map((doc) => ChatMessage.fromFirestore(doc)).toList())
+        .asBroadcastStream();
+    stream.listen((a) {
+      Future.delayed(Duration(milliseconds: 50), () {
+        if (_controller.hasClients) {
+          _controller.animateTo(
+            _controller.position.maxScrollExtent,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.fastOutSlowIn,
+          );
+        }
+      });
     });
   }
 
+  late Stream<List<ChatMessage>> stream;
+
   @override
   Widget build(BuildContext context) {
-    User? userData = Provider.of<User?>(context);
+    User? user = Provider.of<User?>(context);
     return MultiProvider(
       providers: [
-        StreamProvider<List<ChatMessage>>.value(
-            initialData: [],
+        StreamProvider<List<ChatMessage>>.value(initialData: [], value: stream),
+        StreamProvider<UserData>.value(
+            initialData: UserData(
+                id: "",
+                name: "",
+                notificationTokens: [],
+                averageStars: 0,
+                numReviews: 0),
             value: FirebaseFirestore.instance
-                .collection("messages")
-                .where("jobId", isEqualTo: "test")
-                .orderBy("timeStamp")
+                .collection('users')
+                .doc(user!.uid)
                 .snapshots()
-                .map((snap) => snap.docs
-                    .map((doc) => ChatMessage.fromFirestore(doc))
-                    .toList()))
+                .map((snap) => UserData.fromFirestore(snap)))
       ],
       child: Scaffold(
+        appBar: AppBar(title: const Text("Voluntarius")),
         body: Stack(
           children: <Widget>[
             Builder(
               builder: (context) {
                 List<ChatMessage> messages =
                     Provider.of<List<ChatMessage>>(context);
+                UserData userData = Provider.of<UserData>(context);
                 print(messages.length);
                 return ListView.builder(
+                  controller: _controller,
                   itemCount: messages.length,
                   shrinkWrap: true,
                   padding: EdgeInsets.only(top: 10, bottom: 60),
@@ -88,22 +111,32 @@ class _ChatPageState extends State<ChatPage> {
                       padding: EdgeInsets.only(
                           left: 14, right: 14, top: 5, bottom: 5),
                       child: Align(
-                        alignment: (messages[index].userId != userData!.uid
+                        alignment: (messages[index].userId != userData.id
                             ? Alignment.topLeft
                             : Alignment.topRight),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            color: (messages[index].userId != userData!.uid
-                                ? Colors.grey.shade200
-                                : Colors.green[200]),
-                          ),
-                          padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                          constraints: BoxConstraints(maxWidth: 1000),
-                          child: Text(
-                            messages[index].messageContent,
-                            style: TextStyle(fontSize: 24),
-                          ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (messages[index].userId != userData.id)
+                              Text(
+                                "  " + messages[index].userName,
+                              ),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                color: (messages[index].userId != userData.id
+                                    ? Colors.grey.shade200
+                                    : Colors.green[200]),
+                              ),
+                              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                              constraints: BoxConstraints(maxWidth: 1000),
+                              child: Text(
+                                messages[index].messageContent,
+                                style: TextStyle(fontSize: 24),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     );
@@ -111,60 +144,71 @@ class _ChatPageState extends State<ChatPage> {
                 );
               },
             ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: Container(
-                padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
-                height: 60,
-                width: double.infinity,
-                color: Colors.white,
-                child: Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Expanded(
-                      child: TextField(
-                        expands: false,
-                        autofocus: true,
-                        controller: fieldText,
-                        focusNode: myFocusNode,
-                        onSubmitted: (value) {
-                          Future.delayed(Duration(milliseconds: 10), () {
-                            makeUserMessage(value, userData!.uid);
-                          });
-                        },
-                        onChanged: (value) {
-                          updateMessage(value);
-                        },
-                        decoration: InputDecoration(
-                          hintText: "Write message...",
-                          hintStyle: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 24.0,
+            Builder(builder: (context) {
+              return Align(
+                alignment: Alignment.bottomLeft,
+                child: Container(
+                  padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
+                  height: 60,
+                  width: double.infinity,
+                  color: Colors.white,
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Expanded(
+                        child: TextField(
+                          style: TextStyle(
+                            fontSize: 24,
+                          ),
+                          expands: false,
+                          autofocus: true,
+                          controller: fieldText,
+                          focusNode: myFocusNode,
+                          onSubmitted: (value) {
+                            Future.delayed(Duration(milliseconds: 10), () {
+                              UserData userData =
+                                  Provider.of<UserData>(context, listen: false);
+                              makeUserMessage(
+                                  value, userData.id, userData.name);
+                            });
+                          },
+                          onChanged: (value) {
+                            updateMessage(value);
+                          },
+                          decoration: InputDecoration(
+                            hintText: "Write message...",
+                            hintStyle: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 24.0,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    FloatingActionButton(
-                      onPressed: () {
-                        makeUserMessage(temporaryString, userData!.uid);
-                      },
-                      child: Icon(
-                        Icons.send,
-                        color: Colors.white,
-                        size: 18,
+                      SizedBox(
+                        width: 15,
                       ),
-                      backgroundColor: Colors.green,
-                      elevation: 0,
-                    ),
-                  ],
+                      FloatingActionButton(
+                        onPressed: () {
+                          UserData userData =
+                              Provider.of<UserData>(context, listen: false);
+                          makeUserMessage(
+                              temporaryString, userData.id, userData.name);
+                        },
+                        child: Icon(
+                          Icons.send,
+                          color: Colors.white,
+                          size: 18,
+                        ),
+                        backgroundColor: Colors.green,
+                        elevation: 0,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
           ],
         ),
       ),

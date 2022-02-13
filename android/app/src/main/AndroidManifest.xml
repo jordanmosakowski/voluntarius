@@ -5,7 +5,7 @@
    <application
         android:label="voluntarius"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyA8KmYAvpHAZKEkNXFK2WbLzm_DlGqe_O4"/>
         <activity
