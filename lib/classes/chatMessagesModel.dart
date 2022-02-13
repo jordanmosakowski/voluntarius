@@ -4,12 +4,14 @@ class ChatMessage {
   String id;
   String messageContent;
   String userId;
+  String userName;
   DateTime timeStamp;
   String jobId;
   ChatMessage(
       {this.id = "",
       required this.messageContent,
       required this.userId,
+      required this.userName,
       required this.timeStamp,
       required this.jobId});
 
@@ -19,6 +21,7 @@ class ChatMessage {
         id: snap.id,
         messageContent: data["messageContent"] ?? "",
         userId: data["userId"] ?? "",
+        userName: data["userName"] ?? "a",
         timeStamp: data["timeStamp"].toDate(),
         jobId: data["jobId"] ?? "");
   }
@@ -27,6 +30,7 @@ class ChatMessage {
     return {
       "messageContent": messageContent,
       "userId": userId,
+      "userName": userName,
       "timeStamp": timeStamp,
       "jobId": jobId
     };
