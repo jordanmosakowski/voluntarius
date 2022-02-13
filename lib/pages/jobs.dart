@@ -70,15 +70,15 @@ class _JobsPageState extends State<JobsPage> {
         const Center(
             child: Text("My Requested Jobs",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30))),
-        for (int i = 0; i < jobs.length; i++) ReqTile(c: 100, j: jobs[i]),
+        for (Job job in jobs) ReqTile(c: 100, j: job),
         const Divider(),
         const Center(
             child: Text("My Claimed Jobs",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30))),
 
-        for (int i = 0; i < claims.length; i++)
-          if (claims[i].job != null)
-            ClmTile(c: 100, j: claims[i].job!, cl: claims[i]),
+        for (Claim claim in claims)
+          if (claim.job != null)
+            ClmTile(c: 100, j: claim.job!, cl: claim),
 
         // Expanded(
         //       child: ListView(

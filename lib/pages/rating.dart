@@ -75,47 +75,49 @@ class _RatingPageState extends State<RatingPage> {
         title: Text("Rate Volunteer"),
         backgroundColor: Colors.green,
       ),
-      body: ListView(
-        children: [ //USER NAME
-          for(int j=0; j<claims.length; j++)
-            Column(
-              children: [
-                Text(claims[j].userData?.name ?? "", style: TextStyle(fontSize: 20)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center, 
-                  children: [
-                    for (int i = 0; i < 5; i++)
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            ratings[j] = i;
-                          });
-                        },
-                        iconSize: 20,
-                        icon: Icon(
-                          ratings[j] >= i ? Icons.star : Icons.star_border_outlined,
-                          color: ratings[j]>=i ? Colors.yellow[700] : Colors.grey,
-                        ),
-                        alignment: Alignment.center,
-                      )
-                    ]),
-                TextField(
-                  controller: hours[j],
-                  decoration: InputDecoration(
-                    labelText: "Hours",
-                    hintText: "Hours",
-                    border: OutlineInputBorder(),
+      body: SafeArea(
+        child: ListView(
+          children: [ //USER NAME
+            for(int j=0; j<claims.length; j++)
+              Column(
+                children: [
+                  Text(claims[j].userData?.name ?? "", style: TextStyle(fontSize: 20)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center, 
+                    children: [
+                      for (int i = 0; i < 5; i++)
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              ratings[j] = i;
+                            });
+                          },
+                          iconSize: 20,
+                          icon: Icon(
+                            ratings[j] >= i ? Icons.star : Icons.star_border_outlined,
+                            color: ratings[j]>=i ? Colors.yellow[700] : Colors.grey,
+                          ),
+                          alignment: Alignment.center,
+                        )
+                      ]),
+                  TextField(
+                    controller: hours[j],
+                    decoration: InputDecoration(
+                      labelText: "Hours",
+                      hintText: "Hours",
+                      border: OutlineInputBorder(),
+                    ),
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
                   ),
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                ),
-                Divider(),
-              ],
-            ),
-          ElevatedButton(
-            onPressed: submit, child: Text("Submit")
-            )
-          
-        ],
+                  Divider(),
+                ],
+              ),
+            ElevatedButton(
+              onPressed: submit, child: Text("Submit")
+              )
+            
+          ],
+        ),
       ),
     );
   }

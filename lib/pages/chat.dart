@@ -116,123 +116,125 @@ class _ChatPageState extends State<ChatPage> {
             ],
           ),
         ),
-        body: Stack(
-          children: <Widget>[
-            Builder(
-              builder: (context) {
-                List<ChatMessage> messages =
-                    Provider.of<List<ChatMessage>>(context);
-                UserData userData = Provider.of<UserData>(context);
-                print(messages.length);
-                return ListView.builder(
-                  controller: _controller,
-                  itemCount: messages.length,
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(top: 10, bottom: 60),
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding: EdgeInsets.only(
-                          left: 14, right: 14, top: 5, bottom: 5),
-                      child: Align(
-                        alignment: (messages[index].userId != userData.id
-                            ? Alignment.topLeft
-                            : Alignment.topRight),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (messages[index].userId != userData.id)
-                              Text(
-                                  '   ${messages[index].userName}     ${DateFormat.jm('en_US').format(messages[index].timeStamp)}',
-                                  style: TextStyle(fontSize: 16)),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: (messages[index].userId != userData.id
-                                    ? Colors.grey.shade200
-                                    : Colors.green[200]),
+        body: SafeArea(
+          child: Stack(
+            children: <Widget>[
+              Builder(
+                builder: (context) {
+                  List<ChatMessage> messages =
+                      Provider.of<List<ChatMessage>>(context);
+                  UserData userData = Provider.of<UserData>(context);
+                  print(messages.length);
+                  return ListView.builder(
+                    controller: _controller,
+                    itemCount: messages.length,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.only(top: 10, bottom: 60),
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: EdgeInsets.only(
+                            left: 14, right: 14, top: 5, bottom: 5),
+                        child: Align(
+                          alignment: (messages[index].userId != userData.id
+                              ? Alignment.topLeft
+                              : Alignment.topRight),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (messages[index].userId != userData.id)
+                                Text(
+                                    '   ${messages[index].userName}     ${DateFormat.jm('en_US').format(messages[index].timeStamp)}',
+                                    style: TextStyle(fontSize: 16)),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color: (messages[index].userId != userData.id
+                                      ? Colors.grey.shade200
+                                      : Colors.green[200]),
+                                ),
+                                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                                constraints: BoxConstraints(maxWidth: 1000),
+                                child: Text(
+                                  messages[index].messageContent,
+                                  style: TextStyle(fontSize: 24),
+                                ),
                               ),
-                              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                              constraints: BoxConstraints(maxWidth: 1000),
-                              child: Text(
-                                messages[index].messageContent,
-                                style: TextStyle(fontSize: 24),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-            Builder(builder: (context) {
-              return Align(
-                alignment: Alignment.bottomLeft,
-                child: Container(
-                  padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
-                  height: 60,
-                  width: double.infinity,
-                  color: Colors.white,
-                  child: Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Expanded(
-                        child: TextField(
-                          style: TextStyle(
-                            fontSize: 24,
-                          ),
-                          expands: false,
-                          autofocus: true,
-                          controller: fieldText,
-                          focusNode: myFocusNode,
-                          onSubmitted: (value) {
-                            Future.delayed(Duration(milliseconds: 10), () {
-                              UserData userData =
-                                  Provider.of<UserData>(context, listen: false);
-                              makeUserMessage(
-                                  value, userData.id, userData.name);
-                            });
-                          },
-                          onChanged: (value) {
-                            updateMessage(value);
-                          },
-                          decoration: InputDecoration(
-                            hintText: "Write message...",
-                            hintStyle: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 24.0,
-                            ),
+                            ],
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      FloatingActionButton(
-                        onPressed: () {
-                          UserData userData =
-                              Provider.of<UserData>(context, listen: false);
-                          makeUserMessage(
-                              temporaryString, userData.id, userData.name);
-                        },
-                        child: Icon(
-                          Icons.send,
-                          color: Colors.white,
-                          size: 18,
+                      );
+                    },
+                  );
+                },
+              ),
+              Builder(builder: (context) {
+                return Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Container(
+                    padding: EdgeInsets.only(left: 10, bottom: 10, top: 10),
+                    height: 60,
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 15,
                         ),
-                        backgroundColor: Colors.green,
-                        elevation: 0,
-                      ),
-                    ],
+                        Expanded(
+                          child: TextField(
+                            style: TextStyle(
+                              fontSize: 24,
+                            ),
+                            expands: false,
+                            autofocus: true,
+                            controller: fieldText,
+                            focusNode: myFocusNode,
+                            onSubmitted: (value) {
+                              Future.delayed(Duration(milliseconds: 10), () {
+                                UserData userData =
+                                    Provider.of<UserData>(context, listen: false);
+                                makeUserMessage(
+                                    value, userData.id, userData.name);
+                              });
+                            },
+                            onChanged: (value) {
+                              updateMessage(value);
+                            },
+                            decoration: InputDecoration(
+                              hintText: "Write message...",
+                              hintStyle: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 24.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        FloatingActionButton(
+                          onPressed: () {
+                            UserData userData =
+                                Provider.of<UserData>(context, listen: false);
+                            makeUserMessage(
+                                temporaryString, userData.id, userData.name);
+                          },
+                          child: Icon(
+                            Icons.send,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                          backgroundColor: Colors.green,
+                          elevation: 0,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            }),
-          ],
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );

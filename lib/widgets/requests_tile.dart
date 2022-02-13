@@ -272,12 +272,12 @@ class _ReqTileState extends State<ReqTile> {
             },
             child: const Text("Cancel")),
         TextButton(
-            onPressed: () async {
-              await FirebaseFirestore.instance
+            onPressed: () {
+              Navigator.of(temp).pop();
+              FirebaseFirestore.instance
                   .collection("jobs")
                   .doc(widget.j.id)
                   .delete();
-              Navigator.of(temp).pop();
             },
             child: const Text("Delete")),
       ],

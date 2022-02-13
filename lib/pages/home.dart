@@ -59,54 +59,56 @@ class _HomePageState extends State<HomePage> {
                   height: 30,
                   width: 50),
             ),
-            body: Builder(
-              builder: (context) {
-                if (user == null) {
-                  return SignInPage();
-                }
-                Stream<UserData> userData = FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(user.uid)
-                    .snapshots()
-                    .map((snap) => UserData.fromFirestore(snap));
-                return MultiProvider(
-                  providers: [
-                    StreamProvider<LocationData>.value(
-                      initialData: LocationData.fromMap(
-                          {"latitude": 0.0, "longitude": 0.0}),
-                      value: locationStream,
-                    ),
-                    StreamProvider<UserData>.value(
-                        initialData: UserData(
-                            id: "",
-                            name: "",
-                            notificationTokens: [],
-                            averageStars: 0,
-                            hasProfilePic: false,
-                            numReviews: 0),
-                        value: userData),
-                    StreamProvider<List<Job>>.value(
-                        initialData: [],
-                        value: FirebaseFirestore.instance
-                            .collection("jobs")
-                            .where("requestorId", isEqualTo: user.uid).where("completed", isEqualTo: false)
-                            .snapshots()
-                            .map((snap) => snap.docs
-                                .map((doc) => Job.fromFirestore(doc))
-                                .toList())),
-                    StreamProvider<List<Claim>>.value(
-                        initialData: [],
-                        value: FirebaseFirestore.instance
-                            .collection("claims")
-                            .where("userId", isEqualTo: user.uid).where("completed", isEqualTo: false)
-                            .snapshots()
-                            .map((snap) => snap.docs
-                                .map((doc) => Claim.fromFirestore(doc))
-                                .toList()))
-                  ],
-                  child: _widgetOptions.elementAt(_selectedIndex),
-                );
-              },
+            body: SafeArea(
+              child: Builder(
+                builder: (context) {
+                  if (user == null) {
+                    return SignInPage();
+                  }
+                  Stream<UserData> userData = FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(user.uid)
+                      .snapshots()
+                      .map((snap) => UserData.fromFirestore(snap));
+                  return MultiProvider(
+                    providers: [
+                      StreamProvider<LocationData>.value(
+                        initialData: LocationData.fromMap(
+                            {"latitude": 0.0, "longitude": 0.0}),
+                        value: locationStream,
+                      ),
+                      StreamProvider<UserData>.value(
+                          initialData: UserData(
+                              id: "",
+                              name: "",
+                              notificationTokens: [],
+                              averageStars: 0,
+                              hasProfilePic: false,
+                              numReviews: 0),
+                          value: userData),
+                      StreamProvider<List<Job>>.value(
+                          initialData: [],
+                          value: FirebaseFirestore.instance
+                              .collection("jobs")
+                              .where("requestorId", isEqualTo: user.uid).where("completed", isEqualTo: false)
+                              .snapshots()
+                              .map((snap) => snap.docs
+                                  .map((doc) => Job.fromFirestore(doc))
+                                  .toList())),
+                      StreamProvider<List<Claim>>.value(
+                          initialData: [],
+                          value: FirebaseFirestore.instance
+                              .collection("claims")
+                              .where("userId", isEqualTo: user.uid).where("completed", isEqualTo: false)
+                              .snapshots()
+                              .map((snap) => snap.docs
+                                  .map((doc) => Claim.fromFirestore(doc))
+                                  .toList()))
+                    ],
+                    child: _widgetOptions.elementAt(_selectedIndex),
+                  );
+                },
+              ),
             ),
             bottomNavigationBar: user != null
                 ? BottomNavigationBar(

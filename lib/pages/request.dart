@@ -33,11 +33,8 @@ class _RequestPageState extends State<RequestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(backgroundColor: Colors.green),
-        body: Container(
-          child: Column(
-            children: [reqForm()],
-          ),
-        ));
+        body: SafeArea(child: reqForm())
+    );
   }
 }
 
@@ -83,8 +80,7 @@ class _reqFormState extends State<reqForm> {
   Widget build(BuildContext context) {
     return Form(
         key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
@@ -174,6 +170,7 @@ class _reqFormState extends State<reqForm> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(children: [
@@ -203,6 +200,7 @@ class _reqFormState extends State<reqForm> {
             Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       ElevatedButton(
@@ -219,6 +217,7 @@ class _reqFormState extends State<reqForm> {
             Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       ElevatedButton(

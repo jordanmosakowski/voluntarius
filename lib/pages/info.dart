@@ -38,24 +38,26 @@ class _InfoPageState extends State<InfoPage> {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40)),
       ),
-      body: job!=null ? ListView(
-        children: [
-          info(j: job!),
-          ElevatedButton(
-            onPressed: () async {
-              Claim claim = Claim(
-                  id: "",
-                  jobId: job!.id,
-                  userId: userData!.uid,
-                  approved: false,
-                  completed: false);
-              await FirebaseFirestore.instance
-                  .collection("claims")
-                  .add(claim.toJson());
-              Navigator.of(context).pop();
-            },
-            child: Text("Apply"))
-        ],
+      body: job!=null ? SafeArea(
+        child: ListView(
+          children: [
+            info(j: job!),
+            ElevatedButton(
+              onPressed: () async {
+                Claim claim = Claim(
+                    id: "",
+                    jobId: job!.id,
+                    userId: userData!.uid,
+                    approved: false,
+                    completed: false);
+                await FirebaseFirestore.instance
+                    .collection("claims")
+                    .add(claim.toJson());
+                Navigator.of(context).pop();
+              },
+              child: Text("Apply"))
+          ],
+        ),
       ) : Container()
     );
   }
