@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:voluntarius/classes/claim.dart';
@@ -15,6 +16,7 @@ import 'package:voluntarius/pages/info.dart';
 import 'package:voluntarius/pages/jobs.dart';
 import 'package:voluntarius/pages/map.dart';
 import 'package:voluntarius/pages/profile.dart';
+import 'package:voluntarius/pages/rating.dart';
 import 'package:voluntarius/pages/request.dart';
 import 'package:voluntarius/pages/sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -97,8 +99,3 @@ class _MyAppState extends State<MyApp> {
           //       .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
           // ),
         ),
-        // home: HomePage(),
-      ),
-    );
-  }
-}
