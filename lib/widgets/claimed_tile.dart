@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
+import 'package:voluntarius/main.dart';
 import 'package:voluntarius/widgets/text_field.dart';
 
 import '../pages/chat.dart';
+import 'info.dart';
 
 class ClmTile extends StatelessWidget {
   const ClmTile({
@@ -39,13 +41,15 @@ class ClmTile extends StatelessWidget {
           trailing: cl.approved
               ? IconButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ChatPage(j)),
-                    );
+
+                    router.navigateTo(context, "/chat/${j.id}");
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => ChatPage(j)),
+                    // );
                   },
                   icon: Icon(Icons.chat))
-              : null,
+              : Text("Awaiting Approval"),
         ),
       ),
     );
@@ -53,16 +57,7 @@ class ClmTile extends StatelessWidget {
    Widget _buildPopupDialog(BuildContext context, Job job) {
     return AlertDialog(
       title: Text(job.title),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text("Description: " + job.description),
-          Text("Hours Required: " + job.hoursRequired.toString()),
-          Text("People Required: " + job.peopleRequired.toString()),
-          Text("Appointment Time: " + job.appointmentTime.toString())
-        ],
-      ),
+      content:info(j: job),
       actions: [
         TextButton(
             onPressed: () {

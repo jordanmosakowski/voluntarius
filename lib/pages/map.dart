@@ -86,7 +86,7 @@ class _MapPageState extends State<MapPage> {
                       latitude: location.latitude ?? 0,
                       longitude: location.longitude ?? 0,
                     ),
-                    radius: 10,
+                    radius: 50,
                     field: "location")
                 .map((docs) => docs.map((snap) {
                       return Job.fromFirestore(snap);
@@ -205,7 +205,7 @@ class _MapPageState extends State<MapPage> {
                   .add(claim.toJson());
               Navigator.of(context).pop();
             },
-            child: Text("Accept"))
+            child: Text("Apply"))
       ],
     );
   }
