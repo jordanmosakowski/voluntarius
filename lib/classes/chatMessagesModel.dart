@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatMessage {
