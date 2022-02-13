@@ -8,7 +8,7 @@ class Claim {
   Job? job;
   String id;
 
-  Claim({required this.id, required this.jobId, required this.userId, required this.approved});
+  Claim({required this.id, required this.jobId, required this.userId, required this.approved, this.job});
 
   static Claim fromFirestore(DocumentSnapshot snap, bool loadJob){
     Map<String,dynamic> data = snap.data() as Map<String, dynamic>;
@@ -16,12 +16,16 @@ class Claim {
       id: snap.id,
       approved: data['approved'] ?? false,
       userId: data['userId'] ?? "",
-      jobId: data['jobId'] ?? ""
+      jobId: data['jobId'] ?? "",
     );
-    FirebaseFirestore.instance.collection("jobs").doc(newClaim.jobId).get().then((snapshot) => {
-      newClaim.job = Job.fromFirestore(snapshot)
-    });
+    // print(newClaim.jobId);
     return newClaim;
+  }
+
+  Future<void> getJob() async{
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection("jobs").doc(jobId).get();
+    print("Claimed job");
+    job = Job.fromFirestore(snapshot);
   }
 
   Map<String,dynamic> toJson(){
