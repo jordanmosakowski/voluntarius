@@ -1,4 +1,6 @@
 const functions = require("firebase-functions");
+const admin = require("firebase-admin");
+admin.initializeApp();
 
 exports.processClaim = functions.firestore
     .document('claim/{id}')
@@ -8,34 +10,28 @@ exports.processClaim = functions.firestore
         const jobsRef = db.collection('job').doc(jobId);
         const job = await jobsRef.get();
 
-        if (!job.exists) {
+        if (!job.exists){
             console.log('Job not found');
-        } else {
+        }else{
             const requestorId = job.data().requestorId;
             const userRef = db.collection('user').doc(requestorId);
             const user = await userRef.get();
 
             if(!user.exists){
                 console.log('User not found');
-            }
-
-            tokens = user.data().notificationTokens;
-
-            for(i=0; i<tokens.length(); i++)
+            }else{
                 const message = {
                     data: {
-                        title: 'Someone Accepted',
-                        body: 'Click to view respondants'
+                        title: 'Job '+job.data().title+' Accepted',
+                        body: 'Click to view and approve respondants'
                     },
-                    token: tokens[i]
+                    tokens: user.data().notificationTokens
                 };
         
-                getMessaging().send(message)
+                admin.messaging().sendMulticast(message)
                 .then((response) => {
-                    console.log('Successfully sent message:', response);
+                    console.log(response.succesCount+" messages sent succesfully");
                 })
-                .catch((error) => {
-                    console.log('Error sending message:', error);
-                }); 
+            }
         }
     });
