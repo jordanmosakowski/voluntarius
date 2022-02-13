@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,22 +28,36 @@ class info extends StatelessWidget {
           Text("Hours Required: " + j.hoursRequired.toString()),
           Text("People Required: " + j.peopleRequired.toString()),
           Text("Appointment Time: " + DateFormat.yMMMMd('en_US').add_jm().format(j.appointmentTime)),
-          IconButton(
-            onPressed: (){
-              String url = "https://example.com";
-              if(!kIsWeb){
-                Share.share(url);
-              }
-              else{
-                Clipboard.setData(ClipboardData(text: url));
-                final snackBar = SnackBar(
-                  content: const Text('Copied URL to Clipboard'),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              }
-            },
-            icon: Icon(Icons.ios_share)
-          )
+          // IconButton(
+          //   onPressed: () async{
+          //     final DynamicLinkParameters parameters = DynamicLinkParameters(
+          //     uriPrefix: 'https://my-awesome-app.page.link',
+          //     link: Uri.parse('https://voluntarius.web.app/info/${j.id}'),
+          //     androidParameters: const AndroidParameters(
+          //       packageName: "com.example.voluntarius",
+          //       minimumVersion: 1,
+          //     ),
+          //     iosParameters: const IOSParameters(
+          //       bundleId: "app.web.voluntarius",
+          //       minimumVersion: '1',
+          //     ),
+          //   );
+
+          //     final Uri uri = await FirebaseDynamicLinks.instance.buildLink(parameters);
+          //     String url = uri.toString();
+          //     if(!kIsWeb){
+          //       Share.share(url);
+          //     }
+          //     else{
+          //       Clipboard.setData(ClipboardData(text: url));
+          //       final snackBar = SnackBar(
+          //         content: const Text('Copied URL to Clipboard'),
+          //       );
+          //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          //     }
+          //   },
+          //   icon: Icon(Icons.ios_share)
+          // )
         ],
       );
   }
