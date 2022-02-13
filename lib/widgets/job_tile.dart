@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:voluntarius/classes/claim.dart';
@@ -33,7 +34,7 @@ class JobTile extends StatelessWidget {
   }
 
   Widget _buildPopupDialog(BuildContext context) {
-    UserData userData = Provider.of<UserData>(context);
+    User? userData = Provider.of<User?>(context);
     return AlertDialog(
       title: Text(job.title),
       content: Column(
@@ -55,7 +56,7 @@ class JobTile extends StatelessWidget {
         ElevatedButton(
             onPressed: () async {
               Claim claim = Claim(
-                  id: "", jobId: job.id, userId: userData.id, approved: false);
+                  id: "", jobId: job.id, userId: userData!.uid, approved: false);
               await FirebaseFirestore.instance
                   .collection("claims")
                   .add(claim.toJson());
