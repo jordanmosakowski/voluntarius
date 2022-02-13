@@ -59,6 +59,7 @@ class _reqFormState extends State<reqForm> {
   bool dateset = false, locset = false;
   init() {
     super.initState();
+    _setPlace(context);
     selectedDate = DateTime.now();
     selectedTime = TimeOfDay.fromDateTime(selectedDate);
   }
@@ -79,7 +80,6 @@ class _reqFormState extends State<reqForm> {
     'December'
   ];
   Widget build(BuildContext context) {
-    _setPlace(context);
     return Form(
         key: _formKey,
         child: Column(
@@ -304,6 +304,7 @@ class _reqFormState extends State<reqForm> {
         appointmentTime: selectedDate,
         location: fireloc);
     await FirebaseFirestore.instance.collection('jobs').add(rjob.toJson());
+    Navigator.of(context).pop();
     print("Done");
   }
 }
