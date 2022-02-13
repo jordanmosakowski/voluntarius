@@ -92,7 +92,10 @@ class _SignInPageState extends State<SignInPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text("LOGO PLACEHOLDER"),
+          Image(
+              image: AssetImage('assets/colortransparentbk.png'),
+              height: 75,
+              width: 125),
           VoluntariusTextField(
             "Email",
             controller: emailController,

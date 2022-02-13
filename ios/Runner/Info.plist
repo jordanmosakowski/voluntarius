@@ -26,6 +26,8 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs your location to test the location feature of the Google Maps plugin.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We always need your location</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
