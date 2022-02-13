@@ -1,11 +1,13 @@
 import 'dart:math';
-
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
 import 'package:voluntarius/widgets/job_tile.dart';
 
@@ -28,11 +30,6 @@ class _MapPageState extends State<MapPage> {
     _location.onLocationChanged.listen((l) {
       print(l.latitude);
       print(l.longitude);
-      // _controller.animateCamera(
-      //   // CameraUpdate.newCameraPosition(
-      //   //   CameraPosition(target: LatLng(l.latitude ?? 0, l.longitude ?? 0),zoom: 15),
-      //   //   ),
-      // );
     });
   }
 
@@ -47,6 +44,14 @@ class _MapPageState extends State<MapPage> {
     "d"
   ];
 
+  void clickTile(Job job){
+    _controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: LatLng(job.location.latitude, job.location.longitude),zoom: 19),
+        ),
+    );
+  }
+
   double getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     var R = 6371; // Radius of the earth in km
     var dLat = pi * 180 * (lat2 - lat1); // deg2rad below
@@ -60,6 +65,8 @@ class _MapPageState extends State<MapPage> {
     var d = R * c; // Distance in km
     return d;
   }
+
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -100,9 +107,24 @@ class _MapPageState extends State<MapPage> {
                   // },
                   markers: jobs
                       .map((job) => Marker(
-                          markerId: MarkerId(job.id),
-                          position: LatLng(
-                              job.location.latitude, job.location.longitude)))
+                        onTap: (){
+                          print("Complete");
+                          int index = jobs.indexOf(job);
+                          print(_scrollController.position.maxScrollExtent);
+                          double position = _scrollController.position.maxScrollExtent / jobs.length;
+                          _scrollController.animateTo(
+                            position * index,
+                            duration: Duration(milliseconds: 500),
+                            curve: Curves.fastOutSlowIn,
+                          );
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext) => _buildPopupDialog(context,job),
+                          );
+                        },
+                        markerId: MarkerId(job.id),
+                        position: LatLng(
+                            job.location.latitude, job.location.longitude)))
                       .toSet(),
                   mapType: MapType.normal,
                   onMapCreated: _onMapCreated,
@@ -111,11 +133,19 @@ class _MapPageState extends State<MapPage> {
               ),
             ),
             Expanded(
-                child: ListView(
+            child: ListView(
+              controller: _scrollController,
               padding: const EdgeInsets.all(8.0),
               children: [
                 for (int i = 0; i < jobs.length; i++)
                   JobTile(
+                    openPopup: (){
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext) => _buildPopupDialog(context,jobs[i]),
+                      );
+                    },
+                    onTap: (){clickTile(jobs[i]);},
                     c: (i % 2 + 1) * 100,
                     job: jobs[i],
                     dist: jobs[i].location.distance(
@@ -128,6 +158,40 @@ class _MapPageState extends State<MapPage> {
           ],
         );
       }),
+    );
+  }
+
+  Widget _buildPopupDialog(BuildContext context, Job job) {
+    User? userData = Provider.of<User?>(context,listen: false);
+    return AlertDialog(
+      title: Text(job.title),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("Description: " + job.description),
+          Text("Hours Required: " + job.hoursRequired.toString()),
+          Text("People Required: " + job.peopleRequired.toString()),
+          Text("Appointment Time: " + job.appointmentTime.toString())
+        ],
+      ),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text("Done")),
+        ElevatedButton(
+            onPressed: () async {
+              Claim claim = Claim(
+                  id: "", jobId: job.id, userId: userData!.uid, approved: false);
+              await FirebaseFirestore.instance
+                  .collection("claims")
+                  .add(claim.toJson());
+              Navigator.of(context).pop();
+            },
+            child: Text("Accept"))
+      ],
     );
   }
 }
