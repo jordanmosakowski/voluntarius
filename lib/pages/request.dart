@@ -253,6 +253,7 @@ class _reqFormState extends State<reqForm> {
         GeoFirePoint(locationData?.latitude ?? 0, locationData?.longitude ?? 0);
     final Job rjob = Job(
         id: "",
+        title: title,
         description: description,
         requestorId: user?.uid ?? "",
         hoursRequired: hoursRequired,

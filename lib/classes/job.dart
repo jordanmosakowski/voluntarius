@@ -12,6 +12,7 @@ class Job {
   String urgency;
   DateTime appointmentTime;
   GeoFirePoint location;
+  String title;
 
   Job({
     required this.id,
@@ -19,6 +20,7 @@ class Job {
     required this.requestorId,
     required this.hoursRequired,
     required this.peopleRequired,
+    required this.title,
     required this.urgency,
     required this.appointmentTime,
     required this.location,
@@ -33,6 +35,7 @@ class Job {
       hoursRequired: data["hoursRequired"] ?? 0,
       peopleRequired: data["peopleRequired"] ?? 0,
       urgency: data["urgency"] ?? "",
+      title: data['title'] ?? "",
       //TODO: Fix this importing
       appointmentTime: data["appointmentTime"],
       location: data["location"],
@@ -46,6 +49,7 @@ class Job {
       "hoursRequired": hoursRequired,
       "peopleRequired": peopleRequired,
       "urgency": urgency,
+      "title": title,
       "appointmentTime": appointmentTime,
       "location": location.data,
     };
