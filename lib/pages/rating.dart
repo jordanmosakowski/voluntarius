@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:voluntarius/classes/rating.dart';
 import 'package:voluntarius/classes/user.dart';
 
 import '../classes/claim.dart';
@@ -9,19 +11,19 @@ class RatingPage extends StatefulWidget {
   const RatingPage({Key? key, required this.j}) : super(key: key);
   final Job j;
   @override
-  _RequestPageState createState() => _RequestPageState();
+  _RatingPageState createState() => _RatingPageState();
 }
 
-class _RequestPageState extends State<RatingPage> {
+class _RatingPageState extends State<RatingPage> {
   void initState() {
     super.initState();
     loadVolunteers();
   }
 
   Icon star = Icon(Icons.star_border_outlined);
-  int rating = 4;
   List<Claim> claims = [];
-  List<UserData> volunteers = [];
+  List<int> ratings = [];
+  List<TextEditingController> hours = [];
   Future<void> loadVolunteers() async {
     claims = (await FirebaseFirestore.instance
             .collection("claims")
@@ -30,6 +32,11 @@ class _RequestPageState extends State<RatingPage> {
         .docs
         .map((doc) => Claim.fromFirestore(doc))
         .toList();
+    ratings = List.filled(claims.length,3,growable: true);
+    hours = [];
+    for(Claim c in claims){
+      hours.add(TextEditingController(text: widget.j.hoursRequired.toString()));
+    }
     setState(() {});
     for (int i = 0; i < claims.length; i++) {
       UserData data = UserData.fromFirestore(await FirebaseFirestore.instance
@@ -37,9 +44,26 @@ class _RequestPageState extends State<RatingPage> {
           .doc(claims[i].userId)
           .get());
       claims[i].userData = data;
-      volunteers[i] = data;
     }
     setState(() {});
+  }
+
+  void submit() async{
+
+    User? user = FirebaseAuth.instance.currentUser;
+    for(int i = 0; i < this.claims.length; i++){
+      Rating rating = Rating(
+        id: "", raterId: user!.uid,
+        ratedId: claims[i].userId, rating: ratings[i].toDouble(),
+      );
+      await FirebaseFirestore.instance.collection("ratings").add(rating.toJson());
+      //update the claim with the hours
+      await FirebaseFirestore.instance.collection("claims").doc(claims[i].id).update({
+        "hours": (double.tryParse(hours[i].text) ?? 0) + 1,
+        "completed": true,
+      });
+    }
+    Navigator.pop(context);
   }
 
   Widget build(BuildContext context) {
@@ -48,30 +72,47 @@ class _RequestPageState extends State<RatingPage> {
         title: Text("Rate Volunteer"),
         backgroundColor: Colors.green,
       ),
-      body: Column(
-        children: [
-          Text("Hello"), //USER NAME
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            for (int i = 0; i < 5; i++)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      rating = i;
-                    });
-                  },
-                  iconSize: 80,
-                  icon: Icon(
-                      rating >= i ? Icons.star : Icons.star_border_outlined),
-                  alignment: Alignment.center,
+      body: ListView(
+        children: [ //USER NAME
+          for(int j=0; j<claims.length; j++)
+            Column(
+              children: [
+                Text(claims[j].userData?.name ?? "", style: TextStyle(fontSize: 20)),
+                TextField(
+                  controller: hours[j],
+                  decoration: InputDecoration(
+                    labelText: "Hours",
+                    hintText: "Hours",
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
                 ),
-              )
-          ]),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center, 
+                  children: [
+                    for (int i = 0; i < 5; i++)
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            ratings[j] = i;
+                          });
+                        },
+                        iconSize: 20,
+                        icon: Icon(
+                          ratings[j] >= i ? Icons.star : Icons.star_border_outlined,
+                          color: ratings[j]>=i ? Colors.yellow[700] : Colors.grey,
+                        ),
+                        alignment: Alignment.center,
+                      )
+                    ]),
+              ],
+            ),
+          ElevatedButton(
+            onPressed: submit, child: Text("Submit")
+            )
+          
         ],
       ),
     );
   }
 }
-
-class QuerySnapshot {}

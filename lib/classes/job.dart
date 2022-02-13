@@ -8,7 +8,7 @@ class Job {
   String requestorId;
   int hoursRequired;
   int peopleRequired;
-  String urgency;
+  bool completed;
   DateTime appointmentTime;
   GeoFirePoint location;
   String title;
@@ -20,7 +20,7 @@ class Job {
       required this.hoursRequired,
       required this.peopleRequired,
       required this.title,
-      required this.urgency,
+      required this.completed,
       required this.appointmentTime,
       required this.location});
 
@@ -32,9 +32,8 @@ class Job {
         requestorId: data["requestorId"] ?? "",
         hoursRequired: data["hoursRequired"] ?? 0,
         peopleRequired: data["peopleRequired"] ?? 0,
-        urgency: data["urgency"] ?? "",
+        completed: data["completed"] ?? false,
         title: data['title'] ?? "",
-        //TODO: Fix this importing
         appointmentTime: data["appointmentTime"].toDate(),
         location: GeoFirePoint(
           data['location']['geopoint'].latitude,
@@ -48,7 +47,7 @@ class Job {
       "requestorId": requestorId,
       "hoursRequired": hoursRequired,
       "peopleRequired": peopleRequired,
-      "urgency": urgency,
+      "completed": completed,
       "title": title,
       "appointmentTime": appointmentTime,
       "location": location.data

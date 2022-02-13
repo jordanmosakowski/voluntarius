@@ -38,7 +38,7 @@ Future<Uint8List> generateDocument(
         claims[i].job!.title,
         DateFormat.yMMMMd('en_US')
             .add_jm()
-            .format(claims[i].job!.appointmentTime),
+            .format(claims[i].job?.appointmentTime ?? DateTime.now()),
         claims[i].hours.toString()
       ]);
       totalHours += claims[i].hours ?? 0;

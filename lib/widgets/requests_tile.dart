@@ -4,7 +4,7 @@ import 'package:voluntarius/classes/claim.dart';
 import 'package:voluntarius/classes/job.dart';
 import 'package:voluntarius/classes/user.dart';
 import 'package:voluntarius/main.dart';
-import 'package:voluntarius/pages/chat.dart';
+import 'package:voluntarius/pages/rating.dart';
 import 'package:voluntarius/widgets/text_field.dart';
 
 class ReqTile extends StatefulWidget {
@@ -226,14 +226,14 @@ class _ReqTileState extends State<ReqTile> {
         ListTile(
           ///CHATTT
           // tileColor: Colors.green[widget.c],
-          title: Text("Comptete Job"),
+          title: Text("Complete Job"),
           leading: Icon(Icons.check_box),
 
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => completePage;),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RatingPage(j: widget.j)),
+            );
           },
         ),
       ],

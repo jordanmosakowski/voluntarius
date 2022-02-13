@@ -104,11 +104,16 @@ exports.processRating= functions.firestore
 .document('ratings/{id}')
 .onCreate(async(snap, context) => {
     const newValue = snap.data();
-    const userId = newValue.ratedId;
-    const userRef = db.collection('users').where('id', '==', userId);
+    const userId = newValue.revieweeId;
+    const userRef = db.collection('users').doc(userId);
     const user = await userRef.get();
 
-    const currRating = user.data().ratings;
-    const numReviews = user.data().numReviews;
-    user.data().ratings = (newValue.rating+currRating)/(numReviews+1);
+    const currRating = user.data().averageStars ?? 0;
+    const numReviews = user.data().numReviews ?? 0;
+    console.log(currRating,numReviews);
+    await userRef.update({
+        averageStars: (currRating*numReviews+newValue.rating)/(numReviews+1),
+        numReviews: numReviews+1
+    });
+    console.log("Updated ratings for "+userId);
 });
