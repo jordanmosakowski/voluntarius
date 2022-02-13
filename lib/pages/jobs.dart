@@ -42,9 +42,11 @@ class _JobsPageState extends State<JobsPage> {
             // );
           },
         ),
-        Divider(height: 20,),
+
+        Divider(
+          height: 20,
+        ),
         ElevatedButton(
-          
           child: const Text("Chat"),
           onPressed: () {
             router.navigateTo(context, "/chat/allchat");

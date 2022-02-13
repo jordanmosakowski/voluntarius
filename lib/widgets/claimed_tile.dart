@@ -30,41 +30,60 @@ class ClmTile extends StatelessWidget {
         child: ListTile(
           // tileColor:
           title: Text(j.title),
-          onTap: (){
+          onTap: () {
             showDialog(
-                        context: context,
-                        builder: (BuildContext) =>
-                            _buildPopupDialog(context, j),
-                      );
+              context: context,
+              builder: (BuildContext) => _buildPopupDialog(context, j),
+            );
           },
 
           trailing: cl.approved
-              ? IconButton(
-                  onPressed: () {
-
-                    router.navigateTo(context, "/chat/${j.id}");
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => ChatPage(j)),
-                    // );
-                  },
-                  icon: Icon(Icons.chat))
-              : Text("Awaiting Approval"),
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          router.navigateTo(context, "/chat/${j.id}");
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(builder: (context) => ChatPage(j)),
+                          // );
+                        },
+                        icon: Icon(Icons.chat)),
+                    IconButton(
+                      onPressed: () async => await FirebaseFirestore.instance
+                          .collection("claims")
+                          .doc(cl.id)
+                          .delete(),
+                      icon: Icon(Icons.close),
+                    )
+                  ],
+                )
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("Awaiting Approval"),
+                    IconButton(
+                      onPressed: () async => await FirebaseFirestore.instance
+                          .collection("claims")
+                          .doc(cl.id)
+                          .delete(),
+                      icon: Icon(Icons.close),
+                    )
+                  ],
+                ),
         ),
       ),
     );
   }
-   Widget _buildPopupDialog(BuildContext context, Job job) {
-    return AlertDialog(
-      title: Text(job.title),
-      content:info(j: job),
-      actions: [
-        TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text("Done")),
-      ]
-    );
-   }
+
+  Widget _buildPopupDialog(BuildContext context, Job job) {
+    return AlertDialog(title: Text(job.title), content: info(j: job), actions: [
+      TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text("Done")),
+    ]);
+  }
 }
