@@ -65,6 +65,7 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     LocationData location = Provider.of<LocationData>(context);
+    User? user = Provider.of<User>(context);
     return MultiProvider(
       providers: [
         StreamProvider<List<Job>>.value(
@@ -80,7 +81,7 @@ class _MapPageState extends State<MapPage> {
                     field: "location")
                 .map((docs) => docs.map((snap) {
                       return Job.fromFirestore(snap);
-                    }).toList()))
+                    }).where((j) => !j.completed && j.peopleRequired!=0 && j.requestorId != user.uid).toList()))
       ],
       child: Builder(builder: (context) {
         List<Job> jobs = Provider.of<List<Job>>(context);

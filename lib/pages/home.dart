@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                         initialData: [],
                         value: FirebaseFirestore.instance
                             .collection("jobs")
-                            .where("requestorId", isEqualTo: user.uid)
+                            .where("requestorId", isEqualTo: user.uid).where("completed", isEqualTo: false)
                             .snapshots()
                             .map((snap) => snap.docs
                                 .map((doc) => Job.fromFirestore(doc))
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                         initialData: [],
                         value: FirebaseFirestore.instance
                             .collection("claims")
-                            .where("userId", isEqualTo: user.uid)
+                            .where("userId", isEqualTo: user.uid).where("completed", isEqualTo: false)
                             .snapshots()
                             .map((snap) => snap.docs
                                 .map((doc) => Claim.fromFirestore(doc))
