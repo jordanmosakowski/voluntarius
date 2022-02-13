@@ -55,15 +55,16 @@ class _JobsPageState extends State<JobsPage> {
         //   },
         // ),
         const Divider(),
-        const Center(
-            child: Text("My Requested Jobs",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30))),
+        if(jobs.length != 0)
+          const Center(
+              child: Text("My Requested Jobs",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30))),
         for (Job job in jobs) ReqTile(c: 100, j: job),
-        const Divider(),
+        if(claims.length != 0)
+          ...[const Divider(),
         const Center(
-            child: Text("My Claimed Jobs",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30))),
-
+            child: Text("My Commitments",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30))),],
         for (Claim claim in claims)
           if (claim.job != null)
             ClmTile(c: 100, j: claim.job!, cl: claim),
