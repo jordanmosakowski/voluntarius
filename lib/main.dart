@@ -16,6 +16,8 @@ import 'package:voluntarius/pages/sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+import 'classes/job.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -60,7 +62,6 @@ class _MyAppState extends State<MyApp> {
 
   Location location = Location();
 
-
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
@@ -72,10 +73,10 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.green,
-          // textTheme: GoogleFonts.poppinsTextTheme(
-          //   Theme.of(context)
-          //       .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
-          // ),
+          textTheme: GoogleFonts.poppinsTextTheme(
+            Theme.of(context)
+                .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
+          ),
         ),
         home: Scaffold(
           appBar: AppBar(title: const Text("Voluntarius")),
@@ -90,12 +91,12 @@ class _MyAppState extends State<MyApp> {
                   .doc(user.uid)
                   .snapshots()
                   .map((snap) => UserData.fromFirestore(snap));
+
               return MultiProvider(
                 providers: [
                   StreamProvider<LocationData>.value(
-                    initialData: LocationData.fromMap({
-                      "latitude": 0, "longitude": 0
-                    }),
+                    initialData:
+                        LocationData.fromMap({"latitude": 0, "longitude": 0}),
                     value: location.onLocationChanged,
                   ),
                   StreamProvider<UserData>.value(
@@ -105,7 +106,16 @@ class _MyAppState extends State<MyApp> {
                           notificationTokens: [],
                           averageStars: 0,
                           numReviews: 0),
-                      value: userData)
+                      value: userData),
+                  StreamProvider<List<Job>>.value(
+                      initialData: [],
+                      value: FirebaseFirestore.instance
+                          .collection("jobs")
+                          .where("requestorId", isEqualTo: user.uid)
+                          .snapshots()
+                          .map((snap) => snap.docs
+                              .map((doc) => Job.fromFirestore(doc))
+                              .toList()))
                 ],
                 child: _widgetOptions.elementAt(_selectedIndex),
               );
