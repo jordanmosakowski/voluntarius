@@ -89,13 +89,13 @@ class _ReqTileState extends State<ReqTile> {
                           ),
                         ),
                         onTap: () async {
-                          FirebaseFirestore.instance
+                          await FirebaseFirestore.instance
                               .collection("claims")
                               .doc(claim.id)
                               .update({"approved": true});
                           setState(() {
-                            // claims.remove(claim);
-                            print("Removed");
+                            claim.approved = true;
+                            print("Appoved");
                           });
                         },
                       ),
