@@ -40,8 +40,9 @@ class _JobsPageState extends State<JobsPage> {
             );
           },
         ),
-        Divider(),
+        Divider(height: 20,),
         ElevatedButton(
+          
           child: const Text("Chat"),
           onPressed: () {
             Navigator.push(

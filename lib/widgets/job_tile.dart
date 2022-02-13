@@ -9,13 +9,17 @@ import 'package:voluntarius/classes/user.dart';
 class JobTile extends StatelessWidget {
   const JobTile({
     Key? key,
+    required this.onTap,
     required this.c,
     required this.job,
     required this.dist,
+    required this.openPopup,
   }) : super(key: key);
   final int c;
   final Job job;
   final double dist;
+  final VoidCallback onTap;
+  final VoidCallback openPopup;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,15 +30,11 @@ class JobTile extends StatelessWidget {
             color: Colors.green[c],
           ),
         child: ListTile(
+          onTap: onTap,
           title: Text(job.title),
           subtitle: Text("Distance: " + dist.toString() + " km"),
           trailing: ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext) => _buildPopupDialog(context),
-                );
-              },
+              onPressed: openPopup,
               child: Text("More Info")),
         ),
       ),

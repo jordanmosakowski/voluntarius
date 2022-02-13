@@ -57,6 +57,7 @@ class _ReqTileState extends State<ReqTile> {
           ///CHATTT
           // tileColor: Colors.green[widget.c],
           title: Text("Chat"),
+          leading: Icon(Icons.chat),
 
           onTap: () {
             Navigator.push(
@@ -69,6 +70,7 @@ class _ReqTileState extends State<ReqTile> {
           //chat!!
           // tileColor: Colors.green[widget.c],
           title: Text("Volunteers"),
+          leading: Icon(Icons.person),
           // isThreeLine: true,
           subtitle: Column(children: [
             ...claims.map((Claim claim) => Padding(
@@ -133,101 +135,82 @@ class _ReqTileState extends State<ReqTile> {
         ExpansionTile(
           // tileColor: Colors.green[widget.c],
           title: Text("Options"),
+          leading: Icon(Icons.settings),
            children: [
           Row(
             children: [
-              Text("Title: " + widget.j.title),
-              Expanded(
-                child: Container(
-                   width: 50,
-                    alignment: Alignment.centerRight  ,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext) => _buildNestedPopupDialog(
-                              context,
-                              widget.j.title,
-                              widget.j.id,
-                              "title",
-                              widget.j),
-                        );
-                      },
-                      child: Icon(Icons.edit)),
-                ),
-              ),
+             
+              IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext) => _buildNestedPopupDialog(
+                          context,
+                          widget.j.title,
+                          widget.j.id,
+                          "title",
+                          widget.j),
+                    );
+                  },
+                  icon: Icon(Icons.edit)),
+                   Text("Title: " + widget.j.title),
             ],
           ),
           Row(
             children: [
-              Text("Description: " + widget.j.description),
-              Expanded(
-                child: Container(
-                   width: 50,
-                  alignment: Alignment.centerRight  ,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext) => _buildNestedPopupDialog(
-                              context,
-                              widget.j.description,
-                              widget.j.id,
-                              "description",
-                              widget.j),
-                        );
-                      },
-                      child: Icon(Icons.edit)),
-                ),
-              ),
+             
+              IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext) => _buildNestedPopupDialog(
+                          context,
+                          widget.j.description,
+                          widget.j.id,
+                          "description",
+                          widget.j),
+                    );
+                  },
+                 icon: Icon(Icons.edit)),
+                   Text("Description: " + widget.j.description),
             ],
           ),
           Row(
             children: [
-              Text("Hours Required: " + widget.j.hoursRequired.toString()),
-              Expanded(
-                child: Container(
-                   width: 50,
-                  alignment: Alignment.centerRight  ,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext) => _buildNestedPopupDialog(
-                              context,
-                              widget.j.hoursRequired.toString(),
-                              widget.j.id,
-                              "hoursRequired",
-                              widget.j),
-                        );
-                      },
-                      child: Icon(Icons.edit)),
-                ),
-              ),
+             
+              IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext) => _buildNestedPopupDialog(
+                          context,
+                          widget.j.hoursRequired.toString(),
+                          widget.j.id,
+                          "hoursRequired",
+                          widget.j),
+                    );
+                  },
+                  icon: Icon(Icons.edit)),
+                   Text("Hours Required: " + widget.j.hoursRequired.toString()),
             ],
           ),
           Row(
             children: [
-              Text("People Required: " + widget.j.peopleRequired.toString()),
-              Expanded(
-                child: Container(
-                  width: 50,
-                  alignment: Alignment.centerRight  ,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext) => _buildNestedPopupDialog(
-                              context,
-                              widget.j.peopleRequired.toString(),
-                              widget.j.id,
-                              "peopleRequired",
-                              widget.j),
-                        );
-                      },
-                      child: Icon(Icons.edit)),
-                ),
-              ),
+             
+              IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext) => _buildNestedPopupDialog(
+                          context,
+                          widget.j.peopleRequired.toString(),
+                          widget.j.id,
+                          "peopleRequired",
+                          widget.j),
+                    );
+                  },
+                  icon: Icon(Icons.edit)),
+                   Text("People Required: " + widget.j.peopleRequired.toString()),
             ],
           ),
            ]
@@ -236,6 +219,7 @@ class _ReqTileState extends State<ReqTile> {
           ///CHATTT
           // tileColor: Colors.green[widget.c],
           title: Text("Comptete Job"),
+          leading: Icon(Icons.check_box),
 
           onTap: () {
             // Navigator.push(

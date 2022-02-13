@@ -105,8 +105,7 @@ class _ChatPageState extends State<ChatPage> {
           children: <Widget>[
             Builder(
               builder: (context) {
-                List<ChatMessage> messages =
-                    Provider.of<List<ChatMessage>>(context);
+                List<ChatMessage> messages = Provider.of<List<ChatMessage>>(context);
                 UserData userData = Provider.of<UserData>(context);
                 print(messages.length);
                 return ListView.builder(
